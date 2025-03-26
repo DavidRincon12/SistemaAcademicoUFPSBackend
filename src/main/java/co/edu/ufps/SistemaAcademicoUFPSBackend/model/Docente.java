@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -15,7 +16,7 @@ import java.util.*;
 @AllArgsConstructor // Constructor con parámetros
 
 
-public class Docente {
+public class Docente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.*;
 /**
  * 
  */
-public class HistorialAcademico {
+public class HistorialAcademico implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

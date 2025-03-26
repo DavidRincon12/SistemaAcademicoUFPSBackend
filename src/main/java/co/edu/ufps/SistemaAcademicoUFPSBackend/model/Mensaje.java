@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -13,7 +14,7 @@ import java.util.*;
 @NoArgsConstructor  // Constructor vacío
 @AllArgsConstructor
 
-public class Mensaje {
+public class Mensaje implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

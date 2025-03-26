@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.*;
 @AllArgsConstructor // Constructor con parámetros
 
 
-public class Foro {
+public class Foro implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

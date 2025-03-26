@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -14,7 +15,7 @@ import java.util.*;
 @NoArgsConstructor  // Constructor vacío
 @AllArgsConstructor // Constructor con parámetros
 
-public class ReservaRecurso {
+public class ReservaRecurso implements Serializable {
 
 
     @Id

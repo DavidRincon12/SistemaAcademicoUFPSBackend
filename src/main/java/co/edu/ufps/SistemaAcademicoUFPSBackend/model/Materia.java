@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "Materia")  // Define la tabla en la BD
 @Data
 @NoArgsConstructor  // Constructor vacío
 @AllArgsConstructor // Constructor con parámetros
 
-public class Materia {
+public class Materia implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

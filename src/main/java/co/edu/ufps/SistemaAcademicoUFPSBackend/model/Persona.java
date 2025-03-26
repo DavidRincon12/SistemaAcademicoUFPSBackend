@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -15,7 +16,7 @@ import java.util.*;
 @AllArgsConstructor
 
 
-public class Persona extends Estudiante {
+public class Persona implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
