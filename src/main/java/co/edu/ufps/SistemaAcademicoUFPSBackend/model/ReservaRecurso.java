@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,29 +17,24 @@ import java.util.*;
 public class ReservaRecurso {
 
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
 
-
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFin;
-
 
     private String estado;
 
-    /**
-     * @return
-     */
+
     public boolean aprovarReserva() {
-        // TODO implement here
         return false;
     }
 
-    /**
-     * @param d 
-     * @return
-     */
     public boolean extenderReserva() {
-        // TODO implement here
         return false;
     }
 

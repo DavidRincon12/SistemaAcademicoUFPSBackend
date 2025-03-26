@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,24 +15,28 @@ import java.util.*;
 
 public class Comentario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String contenido;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emisor_id", referencedColumnName = "id")
     private Persona emisor;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "foro_id", referencedColumnName = "id")
     private Foro foro;
 
-    /**
-     * @param c
-     */
+
     public void editarComentario(Comentario c) {
-        // TODO implement here
     }
 
-    /**
-     * @param c
-     */
     public void eliminarComentario(Comentario c) {
-        // TODO implement here
     }
 
 }

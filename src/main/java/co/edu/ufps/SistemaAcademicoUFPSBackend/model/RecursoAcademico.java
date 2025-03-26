@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,47 +15,40 @@ import java.util.*;
 
 public class RecursoAcademico {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private String ubicacionREcurso;
+    private Long id;
+    private String UbicacionRecurso;
 
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reserva_id", referencedColumnName = "id")
     private ReservaRecurso reserva;
 
 
     private String descripcion;
-
-
     private String nombre;
 
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
 
-    /**
-     * @return
-     */
     public boolean consultarDisponibilidad() {
-        // TODO implement here
         return false;
     }
 
-    /**
-     * @return
-     */
+
     public boolean cambiarDisponibilidad() {
-        // TODO implement here
         return false;
     }
 
 
     public void Operation1() {
-        // TODO implement here
     }
 
-    /**
-     * @return
-     */
+
     public boolean verificarRol() {
-        // TODO implement here
         return false;
     }
 

@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,36 +13,39 @@ import java.util.*;
 @Data
 @NoArgsConstructor  // Constructor vacío
 @AllArgsConstructor // Constructor con parámetros
-/**
-/**
- * 
- */
+
+
 public class Docente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String correoInstucional;
     private String tipo;
+
+    // Datos personales del docente
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date horarioAsesoria;
 
     
     public void asignarTrabajo() {
-        // TODO implement here
     }
 
 
     public void calificarPrevio() {
-        // TODO implement here
     }
 
 
     public void crearExamen() {
-        // TODO implement here
     }
 
 
     public void Operation1() {
-        // TODO implement here
     }
 
 }

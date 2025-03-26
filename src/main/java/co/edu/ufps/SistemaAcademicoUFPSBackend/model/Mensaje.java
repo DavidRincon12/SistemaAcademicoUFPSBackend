@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,27 +15,41 @@ import java.util.*;
 
 public class Mensaje {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String contenido;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emisor_id", referencedColumnName = "id")
     private Persona emisor;
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "destinatario_id", referencedColumnName = "id")
     private Persona destinatario;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEnvio;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "chat_id", referencedColumnName = "id")
     private Chat chat;
+
     private boolean editado;
     private String estado;
 
 
     public void editarMensaje() {
-        // TODO implement here
     }
 
 
     public void eliminarMensaje() {
-        // TODO implement here
     }
 
 
     public void cambiarEstado() {
-        // TODO implement here
     }
 
 }

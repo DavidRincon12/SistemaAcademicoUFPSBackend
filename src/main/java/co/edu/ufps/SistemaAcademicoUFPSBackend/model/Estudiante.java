@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,74 +15,66 @@ import java.util.*;
 
 public class Estudiante {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-
+    @Temporal(TemporalType.DATE)
     private Date fechaInscripcion;
+
+    // Un estudiante pertenece a un programa
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "programa_id", referencedColumnName = "id")
     private Programa programa;
+
     private String estado;
     private String becas;
     private String correoEstudiantil;
     private Short creditosAprobados;
+
+    // Datos personales
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
 
     public boolean matricular(Asignatura a) {
-        // TODO implement here
         return false;
     }
 
-    /**
-     * @return
-     */
+
     public short calcularCreditos() {
-        // TODO implement here
         return 0;
     }
 
-    /**
-     * @return
-     */
+
     public short calcularSemestre() {
-        // TODO implement here
         return 0;
     }
 
 
     public void solicitarBeca() {
-        // TODO implement here
     }
 
-    /**
-     * @return
-     */
+
     public boolean validarCupo() {
-        // TODO implement here
         return false;
     }
 
-    /**
-     * @return
-     */
     public boolean validarHorario() {
-        // TODO implement here
         return false;
     }
 
-    /**
-     * @return
-     */
+
     public boolean validarCreditos() {
-        // TODO implement here
         return false;
     }
 
 
     public void Operation1() {
-        // TODO implement here
     }
 
 
     public void Operation2() {
-        // TODO implement here
     }
 
 }
