@@ -12,26 +12,22 @@ import java.util.Date;
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona, Long> {
 
-    // Buscar una persona por correo electrónico
-    Optional<Persona> findByCorreo(String correo);
-
-    // Buscar todas las personas con un rol específico
-    List<Persona> findByRol(String rol);
-
-    // Buscar personas cuyo nombre contenga una palabra clave (búsqueda parcial)
-    List<Persona> findByNombreContainingIgnoreCase(String nombre);
-
-    // Buscar por número de documento (único)
+    // Buscar por número de documento
     Optional<Persona> findByNumeroDocumento(String numeroDocumento);
 
-    // Buscar personas registradas después de cierta fecha
-    List<Persona> findByFechaRegistroAfter(Date fecha);
+    // Buscar por correo electrónico (para validaciones o recuperación de cuenta)
+    Optional<Persona> findByCorreo(String correo);
 
-    // Buscar personas que sean de un país específico
-    List<Persona> findByNacionalidad(String nacionalidad);
+    // Buscar por nombre (pueden existir varias personas con el mismo nombre)
+    List<Persona> findByNombreContainingIgnoreCase(String nombre);
+
+    // Buscar por rol (Ej: Administrador, Estudiante, Docente, etc.)
+    List<Persona> findByRol_Nombre(String nombreRol);
+
+    // Buscar por fecha de registro después de una fecha dada
+    List<Persona> findByFechaRegistroAfter(Date fecha);
 
     // Consulta personalizada con JPQL para buscar por email y contraseña (Inicio de sesión)
     @Query("SELECT p FROM Persona p WHERE p.correo = ?1 AND p.contrasena = ?2")
     Optional<Persona> autenticar(String correo, String contrasena);
-
 }
