@@ -28,7 +28,7 @@ public class Clase {
     private Docente docente;
     private Asistencia asistencia;
     private String temaVisto;
-    
+
     public void IniciarClase() {
         // TODO implement here
     }
