@@ -34,7 +34,12 @@ public interface ClaseRepository extends JpaRepository<Clase, Long> {
     @Query("SELECT COUNT(a) FROM Asistencia a WHERE a.clase.id = ?1")
     int contarAsistenciasPorClase(Long claseId);
 
-    // Obtener clases con cupo disponible
-    @Query("SELECT c FROM Clase c WHERE c.cupoMaximo > (SELECT COUNT(a) FROM Asistencia a WHERE a.clase = c)")
+    @Query("""
+        SELECT c FROM Clase c 
+        LEFT JOIN Asistencia a ON a.clase = c 
+        GROUP BY c 
+        HAVING c.cupoMaximo > COUNT(a)
+    """)
     List<Clase> findClasesConCupoDisponible();
+    
 }
