@@ -19,7 +19,6 @@ public class Asignatura {
     private Materia materia;
     private Estudiante estudiante;
     private Horario horario;
-    private Matricula matricula;
     private float primerPrevio;
     private float segundoPrevio;
     private float tercerPrevio;
