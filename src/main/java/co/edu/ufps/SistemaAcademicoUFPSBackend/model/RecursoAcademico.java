@@ -44,10 +44,6 @@ public class RecursoAcademico {
     }
 
 
-    public void Operation1() {
-    }
-
-
     public boolean verificarRol() {
         return false;
     }

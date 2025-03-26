@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,10 +16,17 @@ import java.util.*;
 
 public class Horario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Materia materia;
     private String dia;
+
+    @Temporal(TemporalType.TIME)
     private Date horaInicio;
+
+    @Temporal(TemporalType.TIME)
     private Date horaFin;
+
 
 }

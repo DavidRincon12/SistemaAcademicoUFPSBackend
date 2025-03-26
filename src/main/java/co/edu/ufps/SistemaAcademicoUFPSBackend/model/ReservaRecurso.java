@@ -30,7 +30,7 @@ public class ReservaRecurso {
     private String estado;
 
 
-    public boolean aprovarReserva() {
+    public boolean aprobarReserva() {
         return false;
     }
 
