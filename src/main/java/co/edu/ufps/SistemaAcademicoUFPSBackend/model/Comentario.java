@@ -15,14 +15,8 @@ public class Comentario {
 
 
     private String contenido;
-
-
     private Date fechaCreacion;
-
-
     private Persona emisor;
-
-
     private Foro foro;
 
     /**

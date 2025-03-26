@@ -15,14 +15,8 @@ public class Horario {
 
 
     public Materia materia;
-
-
     private String dia;
-
-
     private Date horaInicio;
-
-
     private Date horaFin;
 
 }

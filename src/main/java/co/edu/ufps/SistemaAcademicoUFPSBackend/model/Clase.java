@@ -15,35 +15,16 @@ public class Clase {
 
 
     private Asignatura asignatura;
-
-
     private Date fecha;
-
-
     private String lugar;
-
-
     private Semestre semestre;
-
-
     private String nombre;
-
-
     private short cupoMaximo;
-
-
     private short creditos;
-
-
     private Docente docente;
-
-
     private Asistencia asistencia;
-
-
     private String temaVisto;
-
-
+    
     public void IniciarClase() {
         // TODO implement here
     }

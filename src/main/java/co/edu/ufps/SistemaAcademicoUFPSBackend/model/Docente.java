@@ -15,17 +15,11 @@ public class Docente {
 
 
     private String correoInstucional;
-
-
     private String tipo;
-
-
     private Persona persona;
-
-
     private Date horarioAsesoria;
 
-
+    
     public void asignarTrabajo() {
         // TODO implement here
     }

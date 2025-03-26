@@ -15,23 +15,11 @@ public class Estudiante {
 
 
     private Date fechaInscripcion;
-
-
     private Programa programa;
-
-
     private String estado;
-
-
     private String becas;
-
-
     private String correoEstudiantil;
-
-
     private Short creditosAprobados;
-
-
     private Persona persona;
 
     /**

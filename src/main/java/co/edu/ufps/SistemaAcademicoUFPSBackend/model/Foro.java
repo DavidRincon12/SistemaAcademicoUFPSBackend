@@ -15,14 +15,8 @@ public class Foro {
 
 
     private String tema;
-
-
     private String descripcion;
-
-
     private Date fechaCreacion;
-
-
     private Persona autor;
 
     /**
