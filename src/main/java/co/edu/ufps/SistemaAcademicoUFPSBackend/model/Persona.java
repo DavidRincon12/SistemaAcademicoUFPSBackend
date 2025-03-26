@@ -15,7 +15,7 @@ import java.util.*;
 @AllArgsConstructor
 
 
-public class Persona extends Estudiante {
+public class Persona{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
