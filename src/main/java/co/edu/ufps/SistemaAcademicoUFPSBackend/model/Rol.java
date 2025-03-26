@@ -1,17 +1,20 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.*;
 import java.util.*;
 
-/**
- * 
- */
-public class Rol {
+@Entity
+@Table(name = "Rol")  // Define la tabla en la BD
+@Data
+@NoArgsConstructor  // Constructor vacío
+@AllArgsConstructor // Constructor con parámetros
 
-    /**
-     * Default constructor
-     */
-    public Rol() {
-    }
+public class Rol {
 
 
     private String nombre;
