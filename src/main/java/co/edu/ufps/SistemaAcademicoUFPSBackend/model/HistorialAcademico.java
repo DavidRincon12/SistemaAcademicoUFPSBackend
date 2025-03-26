@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,26 +18,35 @@ import java.util.*;
  */
 public class HistorialAcademico {
 
-    /**
-     * Default constructor
-     */
-    public HistorialAcademico() {
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     private Estudiante estudiante;
-    private Asignatura materiaAprobadas;
-    private Asignatura materiaProceso;
+
+    // Materias aprobadas
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "historial_materias_aprobadas",
+            joinColumns = @JoinColumn(name = "historial_id"),
+            inverseJoinColumns = @JoinColumn(name = "asignatura_id"))
+    private List<Asignatura> materiasAprobadas = new ArrayList<>();
+
+    // Materias en proceso
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "historial_materias_proceso",
+            joinColumns = @JoinColumn(name = "historial_id"),
+            inverseJoinColumns = @JoinColumn(name = "asignatura_id"))
+    private List<Asignatura> materiasProceso = new ArrayList<>();
+
     private float promedioPonderado;
 
-
     public void calcularPonderado() {
-        // TODO implement here
     }
 
 
     public void Operation1() {
-        // TODO implement here
     }
 
 }

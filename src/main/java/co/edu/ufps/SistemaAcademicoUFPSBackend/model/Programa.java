@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,37 +16,32 @@ import java.util.*;
 
 public class Programa {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String nombre;
-
-
     private String codigo;
-
-
     private String duracion;
 
-
+    // Director del programa (un docente)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "director_id", referencedColumnName = "id")
     private Docente director;
-
 
     private String registroSnies;
 
-
+    // El programa pertenece a una facultad
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "facultad_id", referencedColumnName = "id")
     private Facultad facultad;
 
-    /**
-     * @return
-     */
+
     public Materia crearMateria() {
-        // TODO implement here
         return null;
     }
 
-    /**
-     * @return
-     */
     public boolean eliminarMateria() {
-        // TODO implement here
         return false;
     }
 

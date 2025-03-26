@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,24 +16,25 @@ import java.util.*;
 
 public class Facultad {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String nombre;
     private String correo;
+
+    // Decano de la facultad
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "decano_id", referencedColumnName = "id")
     private Docente decano;
 
-    /**
-     * @return
-     */
+
     public Programa crearPrograma() {
-        // TODO implement here
         return null;
     }
 
-    /**
-     * @return
-     */
+
     public boolean eliminarPrograma() {
-        // TODO implement here
         return false;
     }
 

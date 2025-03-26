@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,40 +16,53 @@ import java.util.*;
 
 public class Clase {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    // La clase se imparte como parte de una asignatura
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "asignatura_id", referencedColumnName = "id")
     private Asignatura asignatura;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+
     private String lugar;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "semestre_id", referencedColumnName = "id")
     private Semestre semestre;
+
     private String nombre;
     private short cupoMaximo;
     private short creditos;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "docente_id", referencedColumnName = "id")
     private Docente docente;
-    private Asistencia asistencia;
-    private String temaVisto;
+
+    // Una clase tiene múltiples registros de asistencia
+    @OneToMany(mappedBy = "clase", cascade = CascadeType.ALL)
+    private List<Asistencia> asistencias = new ArrayList<>();    private String temaVisto;
 
     public void IniciarClase() {
-        // TODO implement here
     }
 
 
     public void finalizarClase() {
-        // TODO implement here
     }
 
 
     public void obtenerReporte() {
-        // TODO implement here
     }
 
 
     public void registrarAsistencia() {
-        // TODO implement here
     }
 
 
     public void validarCupo() {
-        // TODO implement here
     }
 
 }

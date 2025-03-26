@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,25 +16,27 @@ import java.util.*;
 
 public class Notificacion {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEnvio;
-
-
     private String contenido;
 
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "destinatario_id", referencedColumnName = "id")
     private Persona destinatario;
 
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "remitente_id", referencedColumnName = "id")
     private Persona remitente;
 
-
     public void marcarComoLeido() {
-        // TODO implement here
     }
 
 
     public void eliminarNotificacion() {
-        // TODO implement here
     }
 
 }

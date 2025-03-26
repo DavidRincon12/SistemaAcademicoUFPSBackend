@@ -25,7 +25,7 @@ public class Persona extends Estudiante {
 
     @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
-    
+
     private String tipoDocumento;
     private String numeroDocumento;
     private String direccion;
@@ -37,20 +37,16 @@ public class Persona extends Estudiante {
     private String datosProfesionales;
     private String genero;
     private String codigo;
+
+    @ManyToOne
+    @JoinColumn(name = "rol_id")
     private Rol rol;
 
     public void CalcularEdad() {
-        // TODO implement here
     }
-
-
     public void solicitarEmpleo() {
-        // TODO implement here
     }
-
-
     public void iniciarSesion() {
-        // TODO implement here
     }
 
 }

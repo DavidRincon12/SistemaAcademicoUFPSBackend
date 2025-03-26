@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,18 +16,17 @@ import java.util.*;
 
 public class PersonalAdministrativo {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String cargo;
 
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
 
-    /**
-     * @return
-     */
+
     public void realizarCargo() {
-        // TODO implement here
- 
     }
 
 }
