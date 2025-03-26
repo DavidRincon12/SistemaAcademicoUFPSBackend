@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.*;
+
 import java.util.*;
 
 @Entity
@@ -13,9 +13,6 @@ import java.util.*;
 @NoArgsConstructor  // Constructor vacío
 @AllArgsConstructor // Constructor con parámetros
 
-/**
- * 
- */
 public class Asistencia {
 
     @Id

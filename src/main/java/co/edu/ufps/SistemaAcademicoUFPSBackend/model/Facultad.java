@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.*;
-import java.util.*;
-
 
 @Entity
 @Table(name = "Facultad")  // Define la tabla en la BD
