@@ -25,17 +25,20 @@ public class Programa {
     private String duracion;
 
     // Director del programa (un docente)
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "director_id", referencedColumnName = "id")
     private Docente director;
 
     private String registroSnies;
 
     // El programa pertenece a una facultad
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "facultad_id", referencedColumnName = "id")
     private Facultad facultad;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "materia_id")
+    private Materia materia;
 
     public Materia crearMateria() {
         return null;
