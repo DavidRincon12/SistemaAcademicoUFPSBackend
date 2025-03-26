@@ -17,7 +17,7 @@ import java.util.*;
 public class Semestre {
 
 
-    public Date efchaInicio;
+    public Date fechaInicio;
 
 
     private String nombre;
@@ -25,20 +25,15 @@ public class Semestre {
 
     private Date fechaFin;
 
-
     private CalendarioAcademico calendarioAcademico;
 
-    /**
-     * @return
-     */
+
     public boolean validarPeriodoActual() {
         // TODO implement here
         return false;
     }
 
-    /**
-     * @return
-     */
+
     public CalendarioAcademico asignarCalendario() {
         // TODO implement here
         return null;
