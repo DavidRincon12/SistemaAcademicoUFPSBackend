@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,51 +17,27 @@ import java.util.*;
 
 public class Persona extends Estudiante {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nombre;
-
-
     private String contrasena;
 
-
-    private Date fecharegistro;
-
-
+    @Temporal(TemporalType.DATE)
+    private Date fechaRegistro;
+    
     private String tipoDocumento;
-
-
     private String numeroDocumento;
-
-
     private String direccion;
-
-
     private String telefono;
-
-
     private String correo;
-
-
     private Date fechaNacimiento;
-
-
     private String estadoCivil;
-
-
     private String nacionalidad;
-
-
-    private String datosProfecionales;
-
-
+    private String datosProfesionales;
     private String genero;
-
-
     private String codigo;
-
-
     private Rol rol;
-
 
     public void CalcularEdad() {
         // TODO implement here

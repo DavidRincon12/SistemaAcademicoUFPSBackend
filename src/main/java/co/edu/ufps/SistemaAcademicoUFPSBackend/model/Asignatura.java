@@ -1,4 +1,10 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.*;
 import java.util.*;
 
@@ -10,9 +16,6 @@ import java.util.*;
 
 
 public class Asignatura {
-
-    public Asignatura() {
-    }
 
     private String nombre;
     private Docente docente;
@@ -27,9 +30,7 @@ public class Asignatura {
     private boolean vacacional;
     private float definitiva;
 
-    /**
-     * @return
-     */
+
     public boolean aprovado() {
         // TODO implement here
         return false;
