@@ -21,11 +21,7 @@ public class Facultad {
 
 
     private String nombre;
-
-
     private String correo;
-
-
     private Docente decano;
 
     /**

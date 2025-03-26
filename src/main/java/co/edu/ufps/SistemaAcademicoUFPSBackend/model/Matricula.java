@@ -21,14 +21,8 @@ public class Matricula {
 
 
     private Estudiante estudiante;
-
-
     private Clase clase;
-
-
     private Date fechaMatricula;
-
-
     private Asignatura asignatura;
 
     /**

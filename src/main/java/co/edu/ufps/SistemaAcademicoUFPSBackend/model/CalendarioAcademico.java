@@ -20,14 +20,10 @@ public class CalendarioAcademico {
 
 
     private String nombrePeriodo;
-
-
     private Date fechaInicio;
-
-
     private Date fechaFin;
 
-
+    
     public void agregarEvento() {
         // TODO implement here
     }

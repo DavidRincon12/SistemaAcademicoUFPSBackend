@@ -22,11 +22,7 @@ public class Chat {
 
 
     private Date fechaCreacion;
-
-
     private Persona participante1;
-
-
     private Persona participante2;
 
     /**

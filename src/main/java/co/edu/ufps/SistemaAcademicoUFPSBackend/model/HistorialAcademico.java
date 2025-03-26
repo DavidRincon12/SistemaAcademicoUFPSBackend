@@ -21,14 +21,8 @@ public class HistorialAcademico {
 
 
     private Estudiante estudiante;
-
-
     private Asignatura materiaAprobadas;
-
-
     private Asignatura materiaProceso;
-
-
     private float promedioPonderado;
 
 

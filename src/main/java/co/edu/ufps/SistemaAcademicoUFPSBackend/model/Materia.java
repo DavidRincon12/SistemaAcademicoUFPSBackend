@@ -21,35 +21,15 @@ public class Materia {
 
 
     private String nombre;
-
-
     private String estado;
-
-
     private Semestre semestre;
-
-
     private Programa programa;
-
-
     private boolean electiva;
-
-
     private Materia prerrequisito;
-
-
     private String contenido;
-
-
     private String objetivos;
-
-
     private String competencias;
-
-
     private short cupoMaximo;
-
-
     private short creditos;
 
 

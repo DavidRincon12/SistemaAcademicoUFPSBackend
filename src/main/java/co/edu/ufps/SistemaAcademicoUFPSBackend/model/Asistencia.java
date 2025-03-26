@@ -21,14 +21,8 @@ public class Asistencia {
 
 
     private Estudiante estudiante;
-
-
     private Clase clase;
-
-
     private Date fecha;
-
-
     private String estado;
 
 
