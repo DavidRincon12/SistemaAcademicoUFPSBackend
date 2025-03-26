@@ -1,4 +1,10 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.*;
 import java.util.*;
 
@@ -6,18 +12,10 @@ import java.util.*;
 @Table(name = "Notificacion")  // Define la tabla en la BD
 @Data
 @NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-/**
- * 
- */
+@AllArgsConstructor
+
+
 public class Notificacion {
-
-    /**
-     * Default constructor
-     */
-    public Notificacion() {
-    }
-
 
     private Date fechaEnvio;
 
