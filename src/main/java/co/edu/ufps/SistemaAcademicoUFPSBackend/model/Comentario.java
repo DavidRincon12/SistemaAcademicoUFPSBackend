@@ -33,10 +33,14 @@ public class Comentario {
     private Foro foro;
 
 
-    public void editarComentario(Comentario c) {
+    public void editarComentario(String nuevoContenido) {
+        this.contenido = nuevoContenido;
+        this.fechaCreacion = new Date(); // Actualizar fecha de modificación
     }
-
-    public void eliminarComentario(Comentario c) {
+    
+    public void eliminarComentario() {
+        this.contenido = "[Comentario eliminado]"; // Marcar como eliminado en lugar de borrarlo de la BD
     }
+    
 
 }
