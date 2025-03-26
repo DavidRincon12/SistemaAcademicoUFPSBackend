@@ -13,36 +13,24 @@ public class Asistencia {
     public Asistencia() {
     }
 
-    /**
-     * 
-     */
+
     private Estudiante estudiante;
 
-    /**
-     * 
-     */
+
     private Clase clase;
 
-    /**
-     * 
-     */
+
     private Date fecha;
 
-    /**
-     * 
-     */
+
     private String estado;
 
-    /**
-     * 
-     */
+
     public void registrarAsistencia() {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
+
     public void consultarAsistencia() {
         // TODO implement here
     }

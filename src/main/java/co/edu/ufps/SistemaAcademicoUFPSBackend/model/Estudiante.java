@@ -13,39 +13,25 @@ public class Estudiante {
     public Estudiante() {
     }
 
-    /**
-     * 
-     */
+
     private Date fechaInscripcion;
 
-    /**
-     * 
-     */
+
     private Programa programa;
 
-    /**
-     * 
-     */
+
     private String estado;
 
-    /**
-     * 
-     */
+
     private String becas;
 
-    /**
-     * 
-     */
+
     private String correoEstudiantil;
 
-    /**
-     * 
-     */
+
     private Short creditosAprobados;
 
-    /**
-     * 
-     */
+
     private Persona persona;
 
     /**
@@ -73,9 +59,7 @@ public class Estudiante {
         return 0;
     }
 
-    /**
-     * 
-     */
+
     public void solicitarBeca() {
         // TODO implement here
     }
@@ -104,16 +88,12 @@ public class Estudiante {
         return false;
     }
 
-    /**
-     * 
-     */
+
     public void Operation1() {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
+
     public void Operation2() {
         // TODO implement here
     }

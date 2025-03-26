@@ -13,14 +13,10 @@ public class PersonalAdministrativo {
     public PersonalAdministrativo() {
     }
 
-    /**
-     * 
-     */
+
     private String cargo;
 
-    /**
-     * 
-     */
+
     private Persona persona;
 
     /**

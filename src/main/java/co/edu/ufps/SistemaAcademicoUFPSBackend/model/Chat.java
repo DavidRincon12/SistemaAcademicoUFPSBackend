@@ -13,19 +13,13 @@ public class Chat {
     public Chat() {
     }
 
-    /**
-     * 
-     */
+
     private Date fechaCreacion;
 
-    /**
-     * 
-     */
+
     private Persona participante1;
 
-    /**
-     * 
-     */
+
     private Persona participante2;
 
     /**

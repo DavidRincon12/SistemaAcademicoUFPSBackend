@@ -13,29 +13,19 @@ public class RecursoAcademico {
     public RecursoAcademico() {
     }
 
-    /**
-     * 
-     */
+
     private String ubicacionREcurso;
 
-    /**
-     * 
-     */
+
     private ReservaRecurso reserva;
 
-    /**
-     * 
-     */
+
     private String descripcion;
 
-    /**
-     * 
-     */
+
     private String nombre;
 
-    /**
-     * 
-     */
+
     private Persona persona;
 
     /**
@@ -54,9 +44,7 @@ public class RecursoAcademico {
         return false;
     }
 
-    /**
-     * 
-     */
+
     public void Operation1() {
         // TODO implement here
     }

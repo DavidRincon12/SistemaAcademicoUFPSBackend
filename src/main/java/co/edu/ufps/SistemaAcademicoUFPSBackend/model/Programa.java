@@ -13,34 +13,22 @@ public class Programa {
     public Programa() {
     }
 
-    /**
-     * 
-     */
+
     private String nombre;
 
-    /**
-     * 
-     */
+
     private String codigo;
 
-    /**
-     * 
-     */
+
     private String duracion;
 
-    /**
-     * 
-     */
+
     private Docente director;
 
-    /**
-     * 
-     */
+
     private String registroSnies;
 
-    /**
-     * 
-     */
+
     private Facultad facultad;
 
     /**

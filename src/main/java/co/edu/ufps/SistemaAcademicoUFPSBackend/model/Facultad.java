@@ -13,19 +13,13 @@ public class Facultad {
     public Facultad() {
     }
 
-    /**
-     * 
-     */
+
     private String nombre;
 
-    /**
-     * 
-     */
+
     private String correo;
 
-    /**
-     * 
-     */
+
     private Docente decano;
 
     /**

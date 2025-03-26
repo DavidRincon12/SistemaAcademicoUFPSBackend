@@ -13,19 +13,13 @@ public class ReservaRecurso {
     public ReservaRecurso() {
     }
 
-    /**
-     * 
-     */
+
     private Date fechaInicio;
 
-    /**
-     * 
-     */
+
     private Date fechaFin;
 
-    /**
-     * 
-     */
+
     private String estado;
 
     /**

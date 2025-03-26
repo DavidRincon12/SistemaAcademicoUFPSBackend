@@ -13,24 +13,16 @@ public class Rol {
     public Rol() {
     }
 
-    /**
-     * 
-     */
+
     private String nombre;
 
-    /**
-     * 
-     */
+
     private String permisos;
 
-    /**
-     * 
-     */
+
     private Persona tipo;
 
-    /**
-     * 
-     */
+
     public void revocarPermiso() {
         // TODO implement here
     }

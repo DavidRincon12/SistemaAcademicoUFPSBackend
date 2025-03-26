@@ -13,24 +13,16 @@ public class Matricula {
     public Matricula() {
     }
 
-    /**
-     * 
-     */
+
     private Estudiante estudiante;
 
-    /**
-     * 
-     */
+
     private Clase clase;
 
-    /**
-     * 
-     */
+
     private Date fechaMatricula;
 
-    /**
-     * 
-     */
+
     private Asignatura asignatura;
 
     /**
@@ -57,9 +49,7 @@ public class Matricula {
         return false;
     }
 
-    /**
-     * 
-     */
+
     public void registrarMatricula() {
         // TODO implement here
     }

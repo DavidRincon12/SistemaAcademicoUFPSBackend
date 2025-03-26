@@ -2,25 +2,14 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 import java.io.*;
 import java.util.*;
 
-/**
- * 
- */
+
 public class Administrador {
 
-    /**
-     * Default constructor
-     */
     public Administrador() {
     }
 
-    /**
-     * 
-     */
-    private Persona persona;
 
-    /**
-     * 
-     */
+    private Persona persona;
     private CalendarioAcademico calendario;
 
     /**

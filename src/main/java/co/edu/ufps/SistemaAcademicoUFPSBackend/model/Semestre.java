@@ -13,24 +13,16 @@ public class Semestre {
     public Semestre() {
     }
 
-    /**
-     * 
-     */
+
     public Date efchaInicio;
 
-    /**
-     * 
-     */
+
     private String nombre;
 
-    /**
-     * 
-     */
+
     private Date fechaFin;
 
-    /**
-     * 
-     */
+
     private CalendarioAcademico calendarioAcademico;
 
     /**

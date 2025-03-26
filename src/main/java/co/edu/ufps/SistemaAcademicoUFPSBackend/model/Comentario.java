@@ -13,24 +13,16 @@ public class Comentario {
     public Comentario() {
     }
 
-    /**
-     * 
-     */
+
     private String contenido;
 
-    /**
-     * 
-     */
+
     private Date fechaCreacion;
 
-    /**
-     * 
-     */
+
     private Persona emisor;
 
-    /**
-     * 
-     */
+
     private Foro foro;
 
     /**
