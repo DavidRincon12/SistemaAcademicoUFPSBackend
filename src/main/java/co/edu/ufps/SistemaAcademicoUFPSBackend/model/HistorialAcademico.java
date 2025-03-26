@@ -1,4 +1,4 @@
-
+package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 import java.io.*;
 import java.util.*;
 
@@ -32,16 +32,6 @@ public class HistorialAcademico {
      * 
      */
     private float promedioPonderado;
-
-    /**
-     * 
-     */
-    private void nota;
-
-    /**
-     * 
-     */
-    private Estudiante estudiante;
 
     /**
      * 

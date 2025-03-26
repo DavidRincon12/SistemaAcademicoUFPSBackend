@@ -1,4 +1,4 @@
-
+package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 import java.io.*;
 import java.util.*;
 

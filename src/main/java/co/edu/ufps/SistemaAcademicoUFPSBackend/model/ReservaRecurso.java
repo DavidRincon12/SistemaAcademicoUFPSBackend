@@ -1,16 +1,16 @@
-
+package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 import java.io.*;
 import java.util.*;
 
 /**
  * 
  */
-public class ReservaCrecurso {
+public class ReservaRecurso {
 
     /**
      * Default constructor
      */
-    public ReservaCrecurso() {
+    public ReservaRecurso() {
     }
 
     /**
@@ -40,7 +40,7 @@ public class ReservaCrecurso {
      * @param d 
      * @return
      */
-    public boolean extenderReserva(fechaFin d) {
+    public boolean extenderReserva() {
         // TODO implement here
         return false;
     }

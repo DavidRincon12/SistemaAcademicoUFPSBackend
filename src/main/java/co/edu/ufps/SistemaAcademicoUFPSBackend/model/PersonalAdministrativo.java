@@ -1,4 +1,4 @@
-
+package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 import java.io.*;
 import java.util.*;
 
@@ -28,7 +28,7 @@ public class PersonalAdministrativo {
      */
     public void realizarCargo() {
         // TODO implement here
-        return null;
+ 
     }
 
 }

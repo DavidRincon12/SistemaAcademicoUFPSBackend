@@ -1,4 +1,4 @@
-
+package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 import java.io.*;
 import java.util.*;
 
@@ -61,7 +61,7 @@ public class Clase {
     /**
      * 
      */
-    private String tema visto;
+    private String temaVisto;
 
     /**
      * 

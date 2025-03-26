@@ -1,4 +1,4 @@
-
+package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 import java.io.*;
 import java.util.*;
 
@@ -42,16 +42,6 @@ public class Asignatura {
      * 
      */
     public Matricula matricula;
-
-    /**
-     * 
-     */
-    public void Attribute1;
-
-    /**
-     * 
-     */
-    private Estudiante estudiante;
 
     /**
      * 
