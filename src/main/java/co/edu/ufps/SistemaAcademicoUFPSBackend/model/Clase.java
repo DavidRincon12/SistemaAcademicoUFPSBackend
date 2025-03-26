@@ -46,7 +46,7 @@ public class Clase {
     @OneToMany(mappedBy = "clase", cascade = CascadeType.ALL)
     private List<Asistencia> asistencias = new ArrayList<>();    private String temaVisto;
 
-    public void IniciarClase() {
+    public void iniciarClase() {
     }
 
 

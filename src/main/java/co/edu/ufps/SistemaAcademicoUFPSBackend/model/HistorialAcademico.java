@@ -46,7 +46,4 @@ public class HistorialAcademico {
     }
 
 
-    public void Operation1() {
-    }
-
 }

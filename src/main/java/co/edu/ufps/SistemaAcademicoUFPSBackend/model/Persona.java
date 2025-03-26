@@ -20,6 +20,7 @@ public class Persona extends Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nombre;
     private String contrasena;
 
@@ -42,7 +43,7 @@ public class Persona extends Estudiante {
     @JoinColumn(name = "rol_id")
     private Rol rol;
 
-    public void CalcularEdad() {
+    public void calcularEdad() {
     }
     public void solicitarEmpleo() {
     }

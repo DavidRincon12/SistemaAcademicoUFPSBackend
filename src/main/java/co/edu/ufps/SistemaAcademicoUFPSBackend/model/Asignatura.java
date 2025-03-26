@@ -43,6 +43,7 @@ public class Asignatura {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "horario_id", referencedColumnName = "id")
     private Horario horario;
+
     private float primerPrevio;
     private float segundoPrevio;
     private float tercerPrevio;
@@ -52,8 +53,7 @@ public class Asignatura {
     private float definitiva;
 
 
-    public boolean aprovado() {
-        // TODO implement here
+    public boolean aprobado() {
         return false;
     }
 

@@ -70,11 +70,4 @@ public class Estudiante {
     }
 
 
-    public void Operation1() {
-    }
-
-
-    public void Operation2() {
-    }
-
 }
