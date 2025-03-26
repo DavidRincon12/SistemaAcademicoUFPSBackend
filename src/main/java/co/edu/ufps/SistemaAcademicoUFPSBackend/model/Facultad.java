@@ -21,7 +21,6 @@ public class Facultad {
     private Long id;
 
     private String nombre;
-    private String correo;
 
     // Decano de la facultad
     @OneToOne(cascade = CascadeType.ALL)
