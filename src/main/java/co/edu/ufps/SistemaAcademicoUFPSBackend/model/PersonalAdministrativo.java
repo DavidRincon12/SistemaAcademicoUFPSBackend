@@ -4,10 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.*;
-import java.util.*;
-
-
 @Entity
 @Table(name = "PersonalAdministrativo")  // Define la tabla en la BD
 @Data

@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.*;
-import java.util.*;
-
 
 @Entity
 @Table(name = "Programa")  // Define la tabla en la BD
@@ -25,20 +22,17 @@ public class Programa {
     private String duracion;
 
     // Director del programa (un docente)
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "director_id", referencedColumnName = "id")
     private Docente director;
 
     private String registroSnies;
 
     // El programa pertenece a una facultad
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "facultad_id", referencedColumnName = "id")
     private Facultad facultad;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "materia_id")
-    private Materia materia;
 
     public Materia crearMateria() {
         return null;
