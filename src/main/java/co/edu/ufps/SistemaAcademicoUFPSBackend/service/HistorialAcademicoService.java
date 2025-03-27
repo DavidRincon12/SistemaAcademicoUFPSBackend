@@ -1,23 +1,70 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.HistorialAcademico;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.HistorialAcademicoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
-public interface HistorialAcademicoService {
+@Service
+public class HistorialAcademicoService {
 
-    HistorialAcademico save(HistorialAcademico historialAcademico);
+    @Autowired
+    private HistorialAcademicoRepository historialAcademicoRepository;
 
-    HistorialAcademico update(HistorialAcademico historialAcademico);
+    // Obtener todos los historiales académicos
+    public List<HistorialAcademico> getAllHistoriales() {
+        return historialAcademicoRepository.findAll();
+    }
 
-    void delete(Long id);
+    // Obtener un historial académico por ID
+    public Optional<HistorialAcademico> getHistorialById(Long id) {
+        return historialAcademicoRepository.findById(id);
+    }
 
-    Optional<HistorialAcademico> findById(Long id);
+    // Obtener historial académico de un estudiante por su ID
+    public Optional<HistorialAcademico> getHistorialByEstudianteId(Long estudianteId) {
+        return historialAcademicoRepository.findByEstudianteId(estudianteId);
+    }
 
-    Optional<HistorialAcademico> findByEstudianteId(Long estudianteId);
+    // Crear un nuevo historial académico
+    public HistorialAcademico createHistorial(HistorialAcademico historial) {
+        return historialAcademicoRepository.save(historial);
+    }
 
-    Float findPromedioPonderadoByEstudianteId(Long estudianteId);
+    // Actualizar un historial académico
+    public HistorialAcademico updateHistorial(Long id, HistorialAcademico historialDetails) {
+        return historialAcademicoRepository.findById(id).map(historial -> {
+            historial.setEstudiante(historialDetails.getEstudiante());
+            historial.setPromedioPonderado(historialDetails.getPromedioPonderado());
+            historial.setMateriasAprobadas(historialDetails.getMateriasAprobadas());
+            historial.setMateriasProceso(historialDetails.getMateriasProceso());
+            return historialAcademicoRepository.save(historial);
+        }).orElseThrow(() -> new RuntimeException("Historial académico no encontrado"));
+    }
 
-    int countMateriasAprobadasByEstudianteId(Long estudianteId);
+    // Eliminar historial académico
+    public void deleteHistorial(Long id) {
+        if (!historialAcademicoRepository.existsById(id)) {
+            throw new RuntimeException("Historial académico no encontrado");
+        }
+        historialAcademicoRepository.deleteById(id);
+    }
 
-    int countMateriasProcesoByEstudianteId(Long estudianteId);
+    // Obtener el promedio ponderado de un estudiante
+    public Float getPromedioPonderadoByEstudianteId(Long estudianteId) {
+        return historialAcademicoRepository.findPromedioPonderadoByEstudianteId(estudianteId);
+    }
+
+    // Contar cuántas materias ha aprobado un estudiante
+    public int countMateriasAprobadasByEstudianteId(Long estudianteId) {
+        return historialAcademicoRepository.countMateriasAprobadasByEstudianteId(estudianteId);
+    }
+
+    // Contar cuántas materias está cursando actualmente un estudiante
+    public int countMateriasProcesoByEstudianteId(Long estudianteId) {
+        return historialAcademicoRepository.countMateriasProcesoByEstudianteId(estudianteId);
+    }
 }

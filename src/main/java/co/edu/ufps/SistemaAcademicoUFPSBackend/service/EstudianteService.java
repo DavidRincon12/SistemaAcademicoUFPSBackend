@@ -1,28 +1,75 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.EstudianteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface EstudianteService {
+@Service
+public class EstudianteService {
 
-    Estudiante save(Estudiante estudiante);
+    @Autowired
+    private EstudianteRepository estudianteRepository;
 
-    Estudiante update(Estudiante estudiante);
+    // Obtener todos los estudiantes
+    public List<Estudiante> getAllEstudiantes() {
+        return estudianteRepository.findAll();
+    }
 
-    void delete(Long id);
+    // Obtener un estudiante por ID
+    public Optional<Estudiante> getEstudianteById(Long id) {
+        return estudianteRepository.findById(id);
+    }
 
-    Optional<Estudiante> findById(Long id);
+    // Crear un nuevo estudiante
+    public Estudiante createEstudiante(Estudiante estudiante) {
+        return estudianteRepository.save(estudiante);
+    }
 
-    List<Estudiante> findAll();
+    // Actualizar estudiante
+    public Estudiante updateEstudiante(Long id, Estudiante estudianteDetails) {
+        return estudianteRepository.findById(id).map(estudiante -> {
+            estudiante.setCorreoEstudiantil(estudianteDetails.getCorreoEstudiantil());
+            estudiante.setEstado(estudianteDetails.getEstado());
+            estudiante.setBecas(estudianteDetails.getBecas());
+            estudiante.setPrograma(estudianteDetails.getPrograma());
+            return estudianteRepository.save(estudiante);
+        }).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+    }
 
-    Optional<Estudiante> findByCorreoEstudiantil(String correoEstudiantil);
+    // Eliminar estudiante
+    public void deleteEstudiante(Long id) {
+        if (!estudianteRepository.existsById(id)) {
+            throw new RuntimeException("Estudiante no encontrado");
+        }
+        estudianteRepository.deleteById(id);
+    }
 
-    List<Estudiante> findByEstado(String estado);
+    // Buscar estudiante por correo institucional
+    public Optional<Estudiante> getEstudianteByCorreo(String correo) {
+        return estudianteRepository.findByCorreoEstudiantil(correo);
+    }
 
-    List<Estudiante> findEstudiantesConBecas();
+    // Obtener estudiantes por estado
+    public List<Estudiante> getEstudiantesByEstado(String estado) {
+        return estudianteRepository.findByEstado(estado);
+    }
 
-    List<Estudiante> findByPrograma(Long programaId);
+    // Obtener estudiantes con becas
+    public List<Estudiante> getEstudiantesConBecas() {
+        return estudianteRepository.findEstudiantesConBecas();
+    }
 
-    List<Estudiante> searchByNombre(String nombre);
+    // Obtener estudiantes por programa académico
+    public List<Estudiante> getEstudiantesByPrograma(Long programaId) {
+        return estudianteRepository.findByPrograma(programaId);
+    }
+
+    // Buscar estudiantes por nombre
+    public List<Estudiante> searchEstudiantesByNombre(String nombre) {
+        return estudianteRepository.searchByNombre(nombre);
+    }
 }

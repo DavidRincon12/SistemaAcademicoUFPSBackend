@@ -1,26 +1,68 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Facultad;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.FacultadRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface FacultadService {
+@Service
+public class FacultadService {
 
-    Facultad save(Facultad facultad);
+    @Autowired
+    private FacultadRepository facultadRepository;
 
-    Facultad update(Facultad facultad);
+    // Obtener todas las facultades
+    public List<Facultad> getAllFacultades() {
+        return facultadRepository.findAll();
+    }
 
-    void delete(Long id);
+    // Obtener una facultad por ID
+    public Optional<Facultad> getFacultadById(Long id) {
+        return facultadRepository.findById(id);
+    }
 
-    Optional<Facultad> findById(Long id);
+    // Crear una nueva facultad
+    public Facultad createFacultad(Facultad facultad) {
+        return facultadRepository.save(facultad);
+    }
 
-    List<Facultad> findAll();
+    // Actualizar facultad
+    public Facultad updateFacultad(Long id, Facultad facultadDetails) {
+        return facultadRepository.findById(id).map(facultad -> {
+            facultad.setNombre(facultadDetails.getNombre());
+            facultad.setDecano(facultadDetails.getDecano());
+            return facultadRepository.save(facultad);
+        }).orElseThrow(() -> new RuntimeException("Facultad no encontrada"));
+    }
 
-    Optional<Facultad> findByNombreIgnoreCase(String nombre);
+    // Eliminar facultad
+    public void deleteFacultad(Long id) {
+        if (!facultadRepository.existsById(id)) {
+            throw new RuntimeException("Facultad no encontrada");
+        }
+        facultadRepository.deleteById(id);
+    }
 
-    List<Facultad> findFacultadesConDecano();
+    // Buscar facultad por nombre (sin importar mayúsculas/minúsculas)
+    public Optional<Facultad> getFacultadByNombre(String nombre) {
+        return facultadRepository.findByNombreIgnoreCase(nombre);
+    }
 
-    Optional<Facultad> findByDecanoId(Long decanoId);
+    // Obtener facultades con decano asignado
+    public List<Facultad> getFacultadesConDecano() {
+        return facultadRepository.findFacultadesConDecano();
+    }
 
-    List<Facultad> searchByNombre(String nombre);
+    // Buscar facultad por ID del decano
+    public Optional<Facultad> getFacultadByDecanoId(Long decanoId) {
+        return facultadRepository.findByDecanoId(decanoId);
+    }
+
+    // Buscar facultades por nombre con coincidencia parcial
+    public List<Facultad> searchFacultadesByNombre(String nombre) {
+        return facultadRepository.searchByNombre(nombre);
+    }
 }

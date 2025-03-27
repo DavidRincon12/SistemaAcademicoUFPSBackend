@@ -1,24 +1,62 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Administrador;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AdministradorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface AdministradorService {
+@Service
+public class AdministradorService {
 
-    Administrador save(Administrador administrador);
+    @Autowired
+    private AdministradorRepository administradorRepository;
 
-    Administrador update(Administrador administrador);
+    // Obtener todos los administradores
+    public List<Administrador> getAllAdministrators() {
+        return administradorRepository.findAll();
+    }
 
-    void delete(Long id);
+    // Obtener un administrador por ID
+    public Optional<Administrador> getAdministratorById(Long id) {
+        return administradorRepository.findById(id);
+    }
 
-    Optional<Administrador> findById(Long id);
+    // Crear un nuevo administrador
+    public Administrador createAdministrator(Administrador administrador) {
+        return administradorRepository.save(administrador);
+    }
 
-    List<Administrador> findAll();
+    // Actualizar administrador
+    public Administrador updateAdministrator(Long id, Administrador administradorDetails) {
+        return administradorRepository.findById(id).map(admin -> {
+            admin.setPersona(administradorDetails.getPersona());
+            admin.setCalendario(administradorDetails.getCalendario());
+            return administradorRepository.save(admin);
+        }).orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
+    }
 
-    Optional<Administrador> findByNumeroDocumentoPersona(String numeroDocumento);
+    // Eliminar administrador
+    public void deleteAdministrator(Long id) {
+        if (!administradorRepository.existsById(id)) {
+            throw new RuntimeException("Administrador no encontrado");
+        }
+        administradorRepository.deleteById(id);
+    }
 
-    Optional<Administrador> findByPersonaId(Long personaId);
+    // Métodos adicionales requeridos
 
-    Optional<Administrador> findByCalendarioId(Long calendarioId);
+    public Optional<Administrador> findByNumeroDocumentoPersona(String numeroDocumento) {
+        return administradorRepository.findByNumeroDocumentoPersona(numeroDocumento);
+    }
+
+    public Optional<Administrador> findByPersonaId(Long personaId) {
+        return administradorRepository.findByPersona_Id(personaId);
+    }
+
+    public Optional<Administrador> findByCalendarioId(Long calendarioId) {
+        return administradorRepository.findByCalendario_Id(calendarioId);
+    }
 }

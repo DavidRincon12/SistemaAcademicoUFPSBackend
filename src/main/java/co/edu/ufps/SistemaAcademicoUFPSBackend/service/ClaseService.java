@@ -1,37 +1,86 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asignatura;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Clase;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asignatura;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Docente;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Semestre;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ClaseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public interface ClaseService {
+@Service
+public class ClaseService {
 
-    Clase save(Clase clase);
+    @Autowired
+    private ClaseRepository claseRepository;
 
-    Clase update(Clase clase);
+    // Obtener todas las clases
+    public List<Clase> getAllClases() {
+        return claseRepository.findAll();
+    }
 
-    void delete(Long id);
+    // Obtener una clase por ID
+    public Optional<Clase> getClaseById(Long id) {
+        return claseRepository.findById(id);
+    }
 
-    Optional<Clase> findById(Long id);
+    // Crear una nueva clase
+    public Clase createClase(Clase clase) {
+        return claseRepository.save(clase);
+    }
 
-    List<Clase> findAll();
+    // Actualizar una clase
+    public Clase updateClase(Long id, Clase claseDetails) {
+        return claseRepository.findById(id).map(clase -> {
+            clase.setNombre(claseDetails.getNombre());
+            clase.setAsignatura(claseDetails.getAsignatura());
+            clase.setDocente(claseDetails.getDocente());
+            clase.setSemestre(claseDetails.getSemestre());
+            clase.setFecha(claseDetails.getFecha());
+            clase.setCupoMaximo(claseDetails.getCupoMaximo());
+            return claseRepository.save(clase);
+        }).orElseThrow(() -> new RuntimeException("Clase no encontrada"));
+    }
 
-    List<Clase> findByAsignatura(Asignatura asignatura);
+    // Eliminar una clase
+    public void deleteClase(Long id) {
+        if (!claseRepository.existsById(id)) {
+            throw new RuntimeException("Clase no encontrada");
+        }
+        claseRepository.deleteById(id);
+    }
 
-    List<Clase> findByDocente(Docente docente);
+    // Métodos adicionales requeridos
 
-    List<Clase> findBySemestre(Semestre semestre);
+    public List<Clase> findByAsignatura(Asignatura asignatura) {
+        return claseRepository.findByAsignatura(asignatura);
+    }
 
-    List<Clase> findByFecha(Date fecha);
+    public List<Clase> findByDocente(Docente docente) {
+        return claseRepository.findByDocente(docente);
+    }
 
-    Optional<Clase> findByNombre(String nombre);
+    public List<Clase> findBySemestre(Semestre semestre) {
+        return claseRepository.findBySemestre(semestre);
+    }
 
-    int contarAsistenciasPorClase(Long claseId);
+    public List<Clase> findByFecha(Date fecha) {
+        return claseRepository.findByFecha(fecha);
+    }
 
-    List<Clase> findClasesConCupoDisponible();
+    public Optional<Clase> findByNombre(String nombre) {
+        return claseRepository.findByNombre(nombre);
+    }
+
+    public int contarAsistenciasPorClase(Long claseId) {
+        return claseRepository.contarAsistenciasPorClase(claseId);
+    }
+
+    public List<Clase> findClasesConCupoDisponible() {
+        return claseRepository.findClasesConCupoDisponible();
+    }
 }

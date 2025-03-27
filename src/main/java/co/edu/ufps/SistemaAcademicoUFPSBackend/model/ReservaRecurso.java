@@ -29,6 +29,7 @@ public class ReservaRecurso implements Serializable {
     private Date fechaFin;
 
     private String estado;
+    private String nombre;
 
 
     public boolean aprobarReserva() {

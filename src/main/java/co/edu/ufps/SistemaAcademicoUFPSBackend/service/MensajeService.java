@@ -1,30 +1,79 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Mensaje;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.MensajeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface MensajeService {
+@Service
+public class MensajeService {
 
-    Mensaje save(Mensaje mensaje);
+    @Autowired
+    private MensajeRepository mensajeRepository;
 
-    Mensaje update(Mensaje mensaje);
+    // Obtener todos los mensajes
+    public List<Mensaje> getAllMensajes() {
+        return mensajeRepository.findAll();
+    }
 
-    void delete(Long id);
+    // Obtener un mensaje por ID
+    public Optional<Mensaje> getMensajeById(Long id) {
+        return mensajeRepository.findById(id);
+    }
 
-    Optional<Mensaje> findById(Long id);
+    // Obtener todos los mensajes de un chat ordenados por fecha de envío
+    public List<Mensaje> getMensajesByChatId(Long chatId) {
+        return mensajeRepository.findByChatIdOrderByFechaEnvioAsc(chatId);
+    }
 
-    List<Mensaje> findAll();
+    // Obtener todos los mensajes enviados por un usuario
+    public List<Mensaje> getMensajesByEmisorId(Long emisorId) {
+        return mensajeRepository.findByEmisorId(emisorId);
+    }
 
-    List<Mensaje> findByChatIdOrderByFechaEnvioAsc(Long chatId);
+    // Obtener todos los mensajes recibidos por un usuario
+    public List<Mensaje> getMensajesByDestinatarioId(Long destinatarioId) {
+        return mensajeRepository.findByDestinatarioId(destinatarioId);
+    }
 
-    List<Mensaje> findByEmisorId(Long emisorId);
+    // Obtener mensajes entre dos usuarios en un chat específico
+    public List<Mensaje> getMensajesEntreUsuariosEnChat(Long chatId, Long usuario1, Long usuario2) {
+        return mensajeRepository.findMensajesEntreUsuariosEnChat(chatId, usuario1, usuario2);
+    }
 
-    List<Mensaje> findByDestinatarioId(Long destinatarioId);
+    // Obtener los mensajes no leídos de un usuario en un chat
+    public List<Mensaje> getMensajesNoLeidos(Long chatId, Long destinatarioId) {
+        return mensajeRepository.findMensajesNoLeidos(chatId, destinatarioId);
+    }
 
-    List<Mensaje> findMensajesEntreUsuariosEnChat(Long chatId, Long usuario1, Long usuario2);
+    // Contar cuántos mensajes no leídos tiene un usuario en un chat
+    public long countMensajesNoLeidos(Long chatId, Long destinatarioId) {
+        return mensajeRepository.countMensajesNoLeidos(chatId, destinatarioId);
+    }
 
-    List<Mensaje> findMensajesNoLeidos(Long chatId, Long destinatarioId);
+    // Crear un nuevo mensaje
+    public Mensaje createMensaje(Mensaje mensaje) {
+        return mensajeRepository.save(mensaje);
+    }
 
-    long countMensajesNoLeidos(Long chatId, Long destinatarioId);
+    // Actualizar un mensaje
+    public Mensaje updateMensaje(Long id, Mensaje mensajeDetails) {
+        return mensajeRepository.findById(id).map(mensaje -> {
+            mensaje.setContenido(mensajeDetails.getContenido());
+            mensaje.setFechaEnvio(mensajeDetails.getFechaEnvio());
+            mensaje.setEstado(mensajeDetails.getEstado());
+            return mensajeRepository.save(mensaje);
+        }).orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+    }
+
+    // Eliminar un mensaje
+    public void deleteMensaje(Long id) {
+        if (!mensajeRepository.existsById(id)) {
+            throw new RuntimeException("Mensaje no encontrado");
+        }
+        mensajeRepository.deleteById(id);
+    }
 }

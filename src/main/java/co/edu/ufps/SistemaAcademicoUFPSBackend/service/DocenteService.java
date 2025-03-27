@@ -1,26 +1,69 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Docente;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.DocenteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface DocenteService {
+@Service
+public class DocenteService {
 
-    Docente save(Docente docente);
+    @Autowired
+    private DocenteRepository docenteRepository;
 
-    Docente update(Docente docente);
+    // Obtener todos los docentes
+    public List<Docente> getAllDocentes() {
+        return docenteRepository.findAll();
+    }
 
-    void delete(Long id);
+    // Obtener un docente por ID
+    public Optional<Docente> getDocenteById(Long id) {
+        return docenteRepository.findById(id);
+    }
 
-    Optional<Docente> findById(Long id);
+    // Crear un nuevo docente
+    public Docente createDocente(Docente docente) {
+        return docenteRepository.save(docente);
+    }
 
-    List<Docente> findAll();
+    // Actualizar un docente
+    public Docente updateDocente(Long id, Docente docenteDetails) {
+        return docenteRepository.findById(id).map(docente -> {
+            docente.setCorreoInstitucional(docenteDetails.getCorreoInstitucional());
+            docente.setTipo(docenteDetails.getTipo());
+            docente.setHorarioAsesoria(docenteDetails.getHorarioAsesoria());
+            return docenteRepository.save(docente);
+        }).orElseThrow(() -> new RuntimeException("Docente no encontrado"));
+    }
 
-    Optional<Docente> findByCorreoInstucional(String correoInstucional);
+    // Eliminar un docente
+    public void deleteDocente(Long id) {
+        if (!docenteRepository.existsById(id)) {
+            throw new RuntimeException("Docente no encontrado");
+        }
+        docenteRepository.deleteById(id);
+    }
 
-    List<Docente> findByTipo(String tipo);
+    // Buscar un docente por su correo institucional
+    public Optional<Docente> getDocenteByCorreo(String correo) {
+        return docenteRepository.findByCorreoInstucional(correo);
+    }
 
-    List<Docente> findDocentesConAsesoria();
+    // Obtener docentes por tipo
+    public List<Docente> getDocentesByTipo(String tipo) {
+        return docenteRepository.findByTipo(tipo);
+    }
 
-    List<Docente> searchByNombre(String nombre);
+    // Obtener docentes con asesorías disponibles
+    public List<Docente> getDocentesConAsesoria() {
+        return docenteRepository.findDocentesConAsesoria();
+    }
+
+    // Buscar docentes por nombre
+    public List<Docente> searchDocentesByNombre(String nombre) {
+        return docenteRepository.searchByNombre(nombre);
+    }
 }

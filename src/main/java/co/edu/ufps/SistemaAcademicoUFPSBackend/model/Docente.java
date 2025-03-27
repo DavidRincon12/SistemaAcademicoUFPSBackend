@@ -22,7 +22,7 @@ public class Docente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String correoInstucional;
+    private String correoInstitucional;
     private String tipo;
 
     // Datos personales del docente
