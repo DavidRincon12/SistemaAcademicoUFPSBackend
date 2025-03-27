@@ -49,7 +49,7 @@ public class DocenteService {
 
     // Buscar un docente por su correo institucional
     public Optional<Docente> getDocenteByCorreo(String correo) {
-        return docenteRepository.findByCorreoInstucional(correo);
+        return docenteRepository.findByCorreoInstitucional(correo);
     }
 
     // Obtener docentes por tipo
