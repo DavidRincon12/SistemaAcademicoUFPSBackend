@@ -4,6 +4,8 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.ReservaRecurso;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ReservaRecursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -14,60 +16,56 @@ public class ReservaRecursoService {
     @Autowired
     private ReservaRecursoRepository reservaRecursoRepository;
 
-    // Obtener todas las reservas
+    // ------------------------- CRUD Básico -------------------------
+    @Transactional(readOnly = true)
     public List<ReservaRecurso> getAllReservas() {
-        return reservaRecursoRepository.findAll();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener una reserva por ID
+    @Transactional(readOnly = true)
     public Optional<ReservaRecurso> getReservaById(Long id) {
-        return reservaRecursoRepository.findById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener reservas por estado
-    public List<ReservaRecurso> getReservasByEstado(String estado) {
-        return reservaRecursoRepository.findByEstado(estado);
-    }
-
-    // Obtener reservas activas dentro de un rango de fechas
-    public List<ReservaRecurso> getReservasActivas(Date fechaInicio, Date fechaFin) {
-        return reservaRecursoRepository.findByFechaInicioBeforeAndFechaFinAfter(fechaInicio, fechaFin);
-    }
-
-    // Obtener reservas por nombre del recurso
-    public List<ReservaRecurso> getReservasByNombre(String nombre) {
-        return reservaRecursoRepository.findByNombre(nombre);
-    }
-
-    // Crear una nueva reserva
+    @Transactional
     public ReservaRecurso createReserva(ReservaRecurso reserva) {
-        return reservaRecursoRepository.save(reserva);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar una reserva
+    @Transactional
     public ReservaRecurso updateReserva(Long id, ReservaRecurso reservaDetails) {
-        return reservaRecursoRepository.findById(id).map(reserva -> {
-            reserva.setFechaInicio(reservaDetails.getFechaInicio());
-            reserva.setFechaFin(reservaDetails.getFechaFin());
-            reserva.setEstado(reservaDetails.getEstado());
-            reserva.setNombre(reservaDetails.getNombre());
-            return reservaRecursoRepository.save(reserva);
-        }).orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Aprobar una reserva
-    public ReservaRecurso aprobarReserva(Long id) {
-        return reservaRecursoRepository.findById(id).map(reserva -> {
-            reserva.setEstado("Aprobada");
-            return reservaRecursoRepository.save(reserva);
-        }).orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
-    }
-
-    // Eliminar una reserva
+    @Transactional
     public void deleteReserva(Long id) {
-        if (!reservaRecursoRepository.existsById(id)) {
-            throw new RuntimeException("Reserva no encontrada");
-        }
-        reservaRecursoRepository.deleteById(id);
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Consultas Específicas -------------------------
+    @Transactional(readOnly = true)
+    public List<ReservaRecurso> getReservasByEstado(String estado) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservaRecurso> getReservasActivas(Date fechaInicio, Date fechaFin) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservaRecurso> getReservasByNombre(String nombre) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public ReservaRecurso aprobarReserva(Long id) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public ReservaRecurso extenderReserva(Long id, Date nuevaFechaFin) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

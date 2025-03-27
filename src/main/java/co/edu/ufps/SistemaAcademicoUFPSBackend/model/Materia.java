@@ -1,40 +1,37 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Materia")  // Define la tabla en la BD
+@Table(name = "Materia")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Materia implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String nombre;
     private String estado;
 
-    // Pertenece a un semestre
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "semestre_id", referencedColumnName = "id")
     private Semestre semestre;
 
-    // Pertenece a un programa
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "programa_id", referencedColumnName = "id")
     private Programa programa;
+
     private boolean electiva;
 
-    // Materia prerrequisito (relación recursiva)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "prerrequisito_id", referencedColumnName = "id")
     private Materia prerrequisito;
 
@@ -43,13 +40,4 @@ public class Materia implements Serializable {
     private String competencias;
     private short cupoMaximo;
     private short creditos;
-
-
-    public void añadirAsignatura() {
-    }
-
-
-    public void eliminarAsignatura() {
-    }
-
 }

@@ -1,37 +1,35 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "Clase")  // Define la tabla en la BD
+@Table(name = "Clase")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Clase implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // La clase se imparte como parte de una asignatura
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "asignatura_id", referencedColumnName = "id")
     private Asignatura asignatura;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-
     private String lugar;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "semestre_id", referencedColumnName = "id")
     private Semestre semestre;
 
@@ -39,31 +37,12 @@ public class Clase implements Serializable {
     private short cupoMaximo;
     private short creditos;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "docente_id", referencedColumnName = "id")
     private Docente docente;
 
-    // Una clase tiene múltiples registros de asistencia
-    @OneToMany(mappedBy = "clase", cascade = CascadeType.ALL)
-    private List<Asistencia> asistencias = new ArrayList<>();    private String temaVisto;
+    @OneToMany(mappedBy = "clase", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Asistencia> asistencias = new ArrayList<>();
 
-    public void iniciarClase() {
-    }
-
-
-    public void finalizarClase() {
-    }
-
-
-    public void obtenerReporte() {
-    }
-
-
-    public void registrarAsistencia() {
-    }
-
-
-    public void validarCupo() {
-    }
-
+    private String temaVisto;
 }

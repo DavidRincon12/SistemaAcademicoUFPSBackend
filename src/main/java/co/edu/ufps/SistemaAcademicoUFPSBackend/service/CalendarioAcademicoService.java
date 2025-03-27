@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.CalendarioAcademico;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.CalendarioAcademicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -15,54 +16,61 @@ public class CalendarioAcademicoService {
     @Autowired
     private CalendarioAcademicoRepository calendarioAcademicoRepository;
 
-    // Obtener todos los calendarios académicos
+    // ------------------------- CRUD Básico -------------------------
+    @Transactional(readOnly = true)
     public List<CalendarioAcademico> getAllCalendarios() {
-        return calendarioAcademicoRepository.findAll();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener un calendario por ID
+    @Transactional(readOnly = true)
     public Optional<CalendarioAcademico> getCalendarioById(Long id) {
-        return calendarioAcademicoRepository.findById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Crear un nuevo calendario académico
+    @Transactional
     public CalendarioAcademico createCalendario(CalendarioAcademico calendario) {
-        return calendarioAcademicoRepository.save(calendario);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar un calendario académico
+    @Transactional
     public CalendarioAcademico updateCalendario(Long id, CalendarioAcademico calendarioDetails) {
-        return calendarioAcademicoRepository.findById(id).map(calendario -> {
-            calendario.setNombrePeriodo(calendarioDetails.getNombrePeriodo());
-            calendario.setFechaInicio(calendarioDetails.getFechaInicio());
-            calendario.setFechaFin(calendarioDetails.getFechaFin());
-            return calendarioAcademicoRepository.save(calendario);
-        }).orElseThrow(() -> new RuntimeException("Calendario no encontrado"));
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Eliminar un calendario académico
+    @Transactional
     public void deleteCalendario(Long id) {
-        if (!calendarioAcademicoRepository.existsById(id)) {
-            throw new RuntimeException("Calendario no encontrado");
-        }
-        calendarioAcademicoRepository.deleteById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Métodos adicionales requeridos
-
+    // ------------------------- Consultas Específicas -------------------------
+    @Transactional(readOnly = true)
     public Optional<CalendarioAcademico> findByNombrePeriodo(String nombrePeriodo) {
-        return calendarioAcademicoRepository.findByNombrePeriodo(nombrePeriodo);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
+    @Transactional(readOnly = true)
     public List<CalendarioAcademico> findByFechaDentroDelPeriodo(Date fecha) {
-        return calendarioAcademicoRepository.findByFechaDentroDelPeriodo(fecha);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
+    @Transactional(readOnly = true)
     public List<CalendarioAcademico> findByPeriodoEntreFechas(Date fechaInicio, Date fechaFin) {
-        return calendarioAcademicoRepository.findByPeriodoEntreFechas(fechaInicio, fechaFin);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
+    @Transactional(readOnly = true)
     public Optional<CalendarioAcademico> findCalendarioActivo() {
-        return calendarioAcademicoRepository.findCalendarioActivo();
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void agregarEvento() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public void listarFechasImportantes() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

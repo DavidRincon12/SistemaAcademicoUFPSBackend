@@ -1,44 +1,32 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "Asistencia")  // Define la tabla en la BD
+@Table(name = "Asistencia")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Asistencia implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Registro de asistencia de un estudiante en una clase
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     private Estudiante estudiante;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "clase_id", referencedColumnName = "id")
     private Clase clase;
 
     @Temporal(TemporalType.DATE)
     private Date fecha;
     private String estado;
-
-
-    public void registrarAsistencia() {
-    }
-
-
-    public void consultarAsistencia() {
-    }
-
 }

@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Horario;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.HorarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,36 +15,29 @@ public class HorarioService {
     @Autowired
     private HorarioRepository horarioRepository;
 
-    // Obtener todos los horarios
+    // ------------------------- CRUD Básico -------------------------
+    @Transactional(readOnly = true)
     public List<Horario> getAllHorarios() {
-        return horarioRepository.findAll();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener un horario por ID
+    @Transactional(readOnly = true)
     public Optional<Horario> getHorarioById(Long id) {
-        return horarioRepository.findById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Crear un nuevo horario
+    @Transactional
     public Horario createHorario(Horario horario) {
-        return horarioRepository.save(horario);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar un horario
+    @Transactional
     public Horario updateHorario(Long id, Horario horarioDetails) {
-        return horarioRepository.findById(id).map(horario -> {
-            horario.setDia(horarioDetails.getDia());
-            horario.setHoraInicio(horarioDetails.getHoraInicio());
-            horario.setHoraFin(horarioDetails.getHoraFin());
-            return horarioRepository.save(horario);
-        }).orElseThrow(() -> new RuntimeException("Horario no encontrado"));
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Eliminar un horario
+    @Transactional
     public void deleteHorario(Long id) {
-        if (!horarioRepository.existsById(id)) {
-            throw new RuntimeException("Horario no encontrado");
-        }
-        horarioRepository.deleteById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

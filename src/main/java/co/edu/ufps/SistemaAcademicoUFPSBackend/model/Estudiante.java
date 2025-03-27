@@ -1,19 +1,18 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "Estudiante")  // Define la tabla en la BD
+@Table(name = "Estudiante")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Estudiante implements Serializable {
 
     @Id
@@ -23,8 +22,7 @@ public class Estudiante implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaInscripcion;
 
-    // Un estudiante pertenece a un programa
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "programa_id", referencedColumnName = "id")
     private Programa programa;
 
@@ -33,42 +31,7 @@ public class Estudiante implements Serializable {
     private String correoEstudiantil;
     private Short creditosAprobados;
 
-    // Datos personales
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
-
-    public boolean matricular(Asignatura a) {
-        return false;
-    }
-
-
-    public short calcularCreditos() {
-        return 0;
-    }
-
-
-    public short calcularSemestre() {
-        return 0;
-    }
-
-
-    public void solicitarBeca() {
-    }
-
-
-    public boolean validarCupo() {
-        return false;
-    }
-
-    public boolean validarHorario() {
-        return false;
-    }
-
-
-    public boolean validarCreditos() {
-        return false;
-    }
-
-
 }

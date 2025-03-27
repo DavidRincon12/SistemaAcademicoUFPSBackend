@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsistenciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -15,63 +16,71 @@ public class AsistenciaService {
     @Autowired
     private AsistenciaRepository asistenciaRepository;
 
-    // Obtener todas las asistencias
+    // ------------------------- CRUD Básico -------------------------
+    @Transactional(readOnly = true)
     public List<Asistencia> getAllAsistencias() {
-        return asistenciaRepository.findAll();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener una asistencia por ID
+    @Transactional(readOnly = true)
     public Optional<Asistencia> getAsistenciaById(Long id) {
-        return asistenciaRepository.findById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Crear una nueva asistencia
+    @Transactional
     public Asistencia createAsistencia(Asistencia asistencia) {
-        return asistenciaRepository.save(asistencia);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar una asistencia
+    @Transactional
     public Asistencia updateAsistencia(Long id, Asistencia asistenciaDetails) {
-        return asistenciaRepository.findById(id).map(asistencia -> {
-            asistencia.setEstudiante(asistenciaDetails.getEstudiante());
-            asistencia.setClase(asistenciaDetails.getClase());
-            asistencia.setFecha(asistenciaDetails.getFecha());
-            asistencia.setEstado(asistenciaDetails.getEstado());
-            return asistenciaRepository.save(asistencia);
-        }).orElseThrow(() -> new RuntimeException("Asistencia no encontrada"));
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Eliminar una asistencia
+    @Transactional
     public void deleteAsistencia(Long id) {
-        if (!asistenciaRepository.existsById(id)) {
-            throw new RuntimeException("Asistencia no encontrada");
-        }
-        asistenciaRepository.deleteById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Métodos adicionales requeridos
-
+    // ------------------------- Consultas Específicas -------------------------
+    @Transactional(readOnly = true)
     public List<Asistencia> findByEstudianteId(Long estudianteId) {
-        return asistenciaRepository.findByEstudianteId(estudianteId);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
+    @Transactional(readOnly = true)
     public List<Asistencia> findByClaseId(Long claseId) {
-        return asistenciaRepository.findByClaseId(claseId);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
+    @Transactional(readOnly = true)
     public List<Asistencia> findByFecha(Date fecha) {
-        return asistenciaRepository.findByFecha(fecha);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
+    @Transactional(readOnly = true)
     public List<Asistencia> findByEstudianteIdAndClaseId(Long estudianteId, Long claseId) {
-        return asistenciaRepository.findByEstudianteIdAndClaseId(estudianteId, claseId);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
+    @Transactional(readOnly = true)
     public List<Asistencia> findByEstudianteIdAndFechaBetween(Long estudianteId, Date fechaInicio, Date fechaFin) {
-        return asistenciaRepository.findByEstudianteIdAndFechaBetween(estudianteId, fechaInicio, fechaFin);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
+    @Transactional(readOnly = true)
     public Optional<Asistencia> findByEstudianteIdAndClaseIdAndFecha(Long estudianteId, Long claseId, Date fecha) {
-        return asistenciaRepository.findByEstudianteIdAndClaseIdAndFecha(estudianteId, claseId, fecha);
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void registrarAsistencia() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public void consultarAsistencia() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

@@ -1,42 +1,33 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "Semestre")  // Define la tabla en la BD
+@Table(name = "Semestre")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Semestre implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.DATE)
-    public Date fechaInicio;
-
-
     private String nombre;
+
+    @Temporal(TemporalType.DATE)
+    private Date fechaInicio;
+
+    @Temporal(TemporalType.DATE)
     private Date fechaFin;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "calendario_academico_id", referencedColumnName = "id")
     private CalendarioAcademico calendarioAcademico;
-
-    public boolean validarPeriodoActual() {
-        return false;
-    }
-
-    public CalendarioAcademico asignarCalendario() {
-        return null;
-    }
-
 }

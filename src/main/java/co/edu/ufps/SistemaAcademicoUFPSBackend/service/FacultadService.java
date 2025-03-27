@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Facultad;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.FacultadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,55 +15,61 @@ public class FacultadService {
     @Autowired
     private FacultadRepository facultadRepository;
 
-    // Obtener todas las facultades
+    // ------------------------- CRUD Básico -------------------------
+    @Transactional(readOnly = true)
     public List<Facultad> getAllFacultades() {
-        return facultadRepository.findAll();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener una facultad por ID
+    @Transactional(readOnly = true)
     public Optional<Facultad> getFacultadById(Long id) {
-        return facultadRepository.findById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Crear una nueva facultad
+    @Transactional
     public Facultad createFacultad(Facultad facultad) {
-        return facultadRepository.save(facultad);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar facultad
+    @Transactional
     public Facultad updateFacultad(Long id, Facultad facultadDetails) {
-        return facultadRepository.findById(id).map(facultad -> {
-            facultad.setNombre(facultadDetails.getNombre());
-            facultad.setDecano(facultadDetails.getDecano());
-            return facultadRepository.save(facultad);
-        }).orElseThrow(() -> new RuntimeException("Facultad no encontrada"));
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Eliminar facultad
+    @Transactional
     public void deleteFacultad(Long id) {
-        if (!facultadRepository.existsById(id)) {
-            throw new RuntimeException("Facultad no encontrada");
-        }
-        facultadRepository.deleteById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Buscar facultad por nombre (sin importar mayúsculas/minúsculas)
+    // ------------------------- Consultas Específicas -------------------------
+    @Transactional(readOnly = true)
     public Optional<Facultad> getFacultadByNombre(String nombre) {
-        return facultadRepository.findByNombreIgnoreCase(nombre);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener facultades con decano asignado
+    @Transactional(readOnly = true)
     public List<Facultad> getFacultadesConDecano() {
-        return facultadRepository.findFacultadesConDecano();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Buscar facultad por ID del decano
+    @Transactional(readOnly = true)
     public Optional<Facultad> getFacultadByDecanoId(Long decanoId) {
-        return facultadRepository.findByDecanoId(decanoId);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Buscar facultades por nombre con coincidencia parcial
+    @Transactional(readOnly = true)
     public List<Facultad> searchFacultadesByNombre(String nombre) {
-        return facultadRepository.searchByNombre(nombre);
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void crearPrograma() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public boolean eliminarPrograma() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

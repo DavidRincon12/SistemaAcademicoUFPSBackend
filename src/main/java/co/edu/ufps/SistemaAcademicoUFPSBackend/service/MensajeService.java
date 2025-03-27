@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Mensaje;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.MensajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,66 +15,76 @@ public class MensajeService {
     @Autowired
     private MensajeRepository mensajeRepository;
 
-    // Obtener todos los mensajes
+    // ------------------------- CRUD Básico -------------------------
+    @Transactional(readOnly = true)
     public List<Mensaje> getAllMensajes() {
-        return mensajeRepository.findAll();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener un mensaje por ID
+    @Transactional(readOnly = true)
     public Optional<Mensaje> getMensajeById(Long id) {
-        return mensajeRepository.findById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener todos los mensajes de un chat ordenados por fecha de envío
-    public List<Mensaje> getMensajesByChatId(Long chatId) {
-        return mensajeRepository.findByChatIdOrderByFechaEnvioAsc(chatId);
-    }
-
-    // Obtener todos los mensajes enviados por un usuario
-    public List<Mensaje> getMensajesByEmisorId(Long emisorId) {
-        return mensajeRepository.findByEmisorId(emisorId);
-    }
-
-    // Obtener todos los mensajes recibidos por un usuario
-    public List<Mensaje> getMensajesByDestinatarioId(Long destinatarioId) {
-        return mensajeRepository.findByDestinatarioId(destinatarioId);
-    }
-
-    // Obtener mensajes entre dos usuarios en un chat específico
-    public List<Mensaje> getMensajesEntreUsuariosEnChat(Long chatId, Long usuario1, Long usuario2) {
-        return mensajeRepository.findMensajesEntreUsuariosEnChat(chatId, usuario1, usuario2);
-    }
-
-    // Obtener los mensajes no leídos de un usuario en un chat
-    public List<Mensaje> getMensajesNoLeidos(Long chatId, Long destinatarioId) {
-        return mensajeRepository.findMensajesNoLeidos(chatId, destinatarioId);
-    }
-
-    // Contar cuántos mensajes no leídos tiene un usuario en un chat
-    public long countMensajesNoLeidos(Long chatId, Long destinatarioId) {
-        return mensajeRepository.countMensajesNoLeidos(chatId, destinatarioId);
-    }
-
-    // Crear un nuevo mensaje
+    @Transactional
     public Mensaje createMensaje(Mensaje mensaje) {
-        return mensajeRepository.save(mensaje);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar un mensaje
+    @Transactional
     public Mensaje updateMensaje(Long id, Mensaje mensajeDetails) {
-        return mensajeRepository.findById(id).map(mensaje -> {
-            mensaje.setContenido(mensajeDetails.getContenido());
-            mensaje.setFechaEnvio(mensajeDetails.getFechaEnvio());
-            mensaje.setEstado(mensajeDetails.getEstado());
-            return mensajeRepository.save(mensaje);
-        }).orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Eliminar un mensaje
+    @Transactional
     public void deleteMensaje(Long id) {
-        if (!mensajeRepository.existsById(id)) {
-            throw new RuntimeException("Mensaje no encontrado");
-        }
-        mensajeRepository.deleteById(id);
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Consultas Específicas -------------------------
+    @Transactional(readOnly = true)
+    public List<Mensaje> getMensajesByChatId(Long chatId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public List<Mensaje> getMensajesByEmisorId(Long emisorId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public List<Mensaje> getMensajesByDestinatarioId(Long destinatarioId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public List<Mensaje> getMensajesEntreUsuariosEnChat(Long chatId, Long usuario1, Long usuario2) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public List<Mensaje> getMensajesNoLeidos(Long chatId, Long destinatarioId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public long countMensajesNoLeidos(Long chatId, Long destinatarioId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void editarMensaje(Long mensajeId, String nuevoContenido) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void eliminarMensaje(Long mensajeId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void cambiarEstado(Long mensajeId, String nuevoEstado) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

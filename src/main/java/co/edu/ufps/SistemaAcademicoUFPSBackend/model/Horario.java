@@ -1,20 +1,18 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
-
+import java.util.Date;
 
 @Entity
-@Table(name = "Horario")  // Define la tabla en la BD
+@Table(name = "Horario")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Horario implements Serializable {
 
     @Id
@@ -28,6 +26,4 @@ public class Horario implements Serializable {
 
     @Temporal(TemporalType.TIME)
     private Date horaFin;
-
-
 }

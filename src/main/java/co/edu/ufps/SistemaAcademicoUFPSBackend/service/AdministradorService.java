@@ -1,9 +1,11 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Administrador;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AdministradorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,49 +16,70 @@ public class AdministradorService {
     @Autowired
     private AdministradorRepository administradorRepository;
 
-    // Obtener todos los administradores
+    // ------------------------- CRUD Básico -------------------------
     public List<Administrador> getAllAdministrators() {
-        return administradorRepository.findAll();
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener un administrador por ID
     public Optional<Administrador> getAdministratorById(Long id) {
-        return administradorRepository.findById(id);
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Crear un nuevo administrador
     public Administrador createAdministrator(Administrador administrador) {
-        return administradorRepository.save(administrador);
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar administrador
     public Administrador updateAdministrator(Long id, Administrador administradorDetails) {
-        return administradorRepository.findById(id).map(admin -> {
-            admin.setPersona(administradorDetails.getPersona());
-            admin.setCalendario(administradorDetails.getCalendario());
-            return administradorRepository.save(admin);
-        }).orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Eliminar administrador
     public void deleteAdministrator(Long id) {
-        if (!administradorRepository.existsById(id)) {
-            throw new RuntimeException("Administrador no encontrado");
-        }
-        administradorRepository.deleteById(id);
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Métodos adicionales requeridos
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public boolean registrarUsuario(Persona persona) {
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
+    }
 
+    @Transactional
+    public boolean actualizarInformacion(Long adminId, Persona nuevaPersona) {
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public boolean eliminarUsuario(Long adminId) {
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public boolean asignarPrivilegios(Long adminId, String privilegios) {
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Consultas Específicas -------------------------
     public Optional<Administrador> findByNumeroDocumentoPersona(String numeroDocumento) {
-        return administradorRepository.findByNumeroDocumentoPersona(numeroDocumento);
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
     public Optional<Administrador> findByPersonaId(Long personaId) {
-        return administradorRepository.findByPersona_Id(personaId);
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
     public Optional<Administrador> findByCalendarioId(Long calendarioId) {
-        return administradorRepository.findByCalendario_Id(calendarioId);
+        // Lógica pendiente
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

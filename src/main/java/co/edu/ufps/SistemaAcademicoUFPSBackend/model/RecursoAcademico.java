@@ -1,51 +1,33 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 
-
 @Entity
-@Table(name = "RecursoAcademico")  // Define la tabla en la BD
+@Table(name = "RecursoAcademico")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class RecursoAcademico implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
+
+    private String nombre;
     private String ubicacionRecurso;
+    private String descripcion;
+    private boolean disponible;
 
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "reserva_id", referencedColumnName = "id")
     private ReservaRecurso reserva;
 
-
-    private String descripcion;
-    private String nombre;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    private Persona persona;
-
-    public boolean consultarDisponibilidad() {
-        return false;
-    }
-
-
-    public boolean cambiarDisponibilidad() {
-        return false;
-    }
-
-
-    public boolean verificarRol() {
-        return false;
-    }
-
+    private Persona responsable;
 }

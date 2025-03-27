@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.PersonalAdministrativo;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonalAdministrativoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,54 +15,50 @@ public class PersonalAdministrativoService {
     @Autowired
     private PersonalAdministrativoRepository personalAdministrativoRepository;
 
-    // Obtener todos los empleados administrativos
+    // ------------------------- CRUD Básico -------------------------
+    @Transactional(readOnly = true)
     public List<PersonalAdministrativo> getAllPersonalAdministrativo() {
-        return personalAdministrativoRepository.findAll();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener un administrativo por ID
+    @Transactional(readOnly = true)
     public Optional<PersonalAdministrativo> getPersonalAdministrativoById(Long id) {
-        return personalAdministrativoRepository.findById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener administrativos por cargo
-    public List<PersonalAdministrativo> getPersonalAdministrativoByCargo(String cargo) {
-        return personalAdministrativoRepository.findByCargo(cargo);
-    }
-
-    // Obtener administrativos por departamento
-    public List<PersonalAdministrativo> getPersonalAdministrativoByDepartamento(String departamento) {
-        return personalAdministrativoRepository.findByDepartamento(departamento);
-    }
-
-    // Obtener administrativos por área de trabajo
-    public List<PersonalAdministrativo> getPersonalAdministrativoByAreaTrabajo(String areaTrabajo) {
-        return personalAdministrativoRepository.findByAreaTrabajo(areaTrabajo);
-    }
-
-    // Obtener administrativo por persona asociada
-    public Optional<PersonalAdministrativo> getPersonalAdministrativoByPersonaId(Long personaId) {
-        return personalAdministrativoRepository.findByPersonaId(personaId);
-    }
-
-    // Crear un nuevo administrativo
+    @Transactional
     public PersonalAdministrativo createPersonalAdministrativo(PersonalAdministrativo personalAdministrativo) {
-        return personalAdministrativoRepository.save(personalAdministrativo);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar un administrativo
+    @Transactional
     public PersonalAdministrativo updatePersonalAdministrativo(Long id, PersonalAdministrativo personalAdministrativoDetails) {
-        return personalAdministrativoRepository.findById(id).map(personalAdministrativo -> {
-            personalAdministrativo.setCargo(personalAdministrativoDetails.getCargo());
-            return personalAdministrativoRepository.save(personalAdministrativo);
-        }).orElseThrow(() -> new RuntimeException("Personal Administrativo no encontrado"));
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Eliminar un administrativo
+    @Transactional
     public void deletePersonalAdministrativo(Long id) {
-        if (!personalAdministrativoRepository.existsById(id)) {
-            throw new RuntimeException("Personal Administrativo no encontrado");
-        }
-        personalAdministrativoRepository.deleteById(id);
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Consultas Específicas -------------------------
+    @Transactional(readOnly = true)
+    public List<PersonalAdministrativo> getPersonalAdministrativoByCargo(String cargo) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public List<PersonalAdministrativo> getPersonalAdministrativoByDepartamento(String departamento) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public List<PersonalAdministrativo> getPersonalAdministrativoByAreaTrabajo(String areaTrabajo) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<PersonalAdministrativo> getPersonalAdministrativoByPersonaId(Long personaId) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

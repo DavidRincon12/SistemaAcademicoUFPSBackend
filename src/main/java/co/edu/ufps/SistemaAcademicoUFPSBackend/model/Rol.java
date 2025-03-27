@@ -1,18 +1,19 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "Rol")  // Define la tabla en la BD
+@Table(name = "Rol")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Rol implements Serializable {
 
     @Id
@@ -22,11 +23,11 @@ public class Rol implements Serializable {
     private String nombre;
     private String permisos;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    private Persona persona;
-
-    public void revocarPermiso() {
-    }
-
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "rol_persona",
+            joinColumns = @JoinColumn(name = "rol_id"),
+            inverseJoinColumns = @JoinColumn(name = "persona_id")
+    )
+    private List<Persona> personas = new ArrayList<>();
 }

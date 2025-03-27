@@ -1,18 +1,17 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 
-
 @Entity
-@Table(name = "Programa")  // Define la tabla en la BD
+@Table(name = "Programa")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Programa implements Serializable {
 
     @Id
@@ -22,26 +21,13 @@ public class Programa implements Serializable {
     private String nombre;
     private String codigo;
     private String duracion;
+    private String registroSnies;
 
-    // Director del programa (un docente)
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "director_id", referencedColumnName = "id")
     private Docente director;
 
-    private String registroSnies;
-
-    // El programa pertenece a una facultad
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "facultad_id", referencedColumnName = "id")
     private Facultad facultad;
-
-
-    public Materia crearMateria() {
-        return null;
-    }
-
-    public boolean eliminarMateria() {
-        return false;
-    }
-
 }

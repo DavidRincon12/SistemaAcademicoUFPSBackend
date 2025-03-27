@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,62 +15,91 @@ public class EstudianteService {
     @Autowired
     private EstudianteRepository estudianteRepository;
 
-    // Obtener todos los estudiantes
+    // ------------------------- CRUD Básico -------------------------
+    @Transactional(readOnly = true)
     public List<Estudiante> getAllEstudiantes() {
-        return estudianteRepository.findAll();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener un estudiante por ID
+    @Transactional(readOnly = true)
     public Optional<Estudiante> getEstudianteById(Long id) {
-        return estudianteRepository.findById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Crear un nuevo estudiante
+    @Transactional
     public Estudiante createEstudiante(Estudiante estudiante) {
-        return estudianteRepository.save(estudiante);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar estudiante
+    @Transactional
     public Estudiante updateEstudiante(Long id, Estudiante estudianteDetails) {
-        return estudianteRepository.findById(id).map(estudiante -> {
-            estudiante.setCorreoEstudiantil(estudianteDetails.getCorreoEstudiantil());
-            estudiante.setEstado(estudianteDetails.getEstado());
-            estudiante.setBecas(estudianteDetails.getBecas());
-            estudiante.setPrograma(estudianteDetails.getPrograma());
-            return estudianteRepository.save(estudiante);
-        }).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Eliminar estudiante
+    @Transactional
     public void deleteEstudiante(Long id) {
-        if (!estudianteRepository.existsById(id)) {
-            throw new RuntimeException("Estudiante no encontrado");
-        }
-        estudianteRepository.deleteById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Buscar estudiante por correo institucional
+    // ------------------------- Consultas Específicas -------------------------
+    @Transactional(readOnly = true)
     public Optional<Estudiante> getEstudianteByCorreo(String correo) {
-        return estudianteRepository.findByCorreoEstudiantil(correo);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener estudiantes por estado
+    @Transactional(readOnly = true)
     public List<Estudiante> getEstudiantesByEstado(String estado) {
-        return estudianteRepository.findByEstado(estado);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener estudiantes con becas
+    @Transactional(readOnly = true)
     public List<Estudiante> getEstudiantesConBecas() {
-        return estudianteRepository.findEstudiantesConBecas();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener estudiantes por programa académico
+    @Transactional(readOnly = true)
     public List<Estudiante> getEstudiantesByPrograma(Long programaId) {
-        return estudianteRepository.findByPrograma(programaId);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Buscar estudiantes por nombre
+    @Transactional(readOnly = true)
     public List<Estudiante> searchEstudiantesByNombre(String nombre) {
-        return estudianteRepository.searchByNombre(nombre);
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public boolean matricular() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public short calcularCreditos() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public short calcularSemestre() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void solicitarBeca() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public boolean validarCupo() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public boolean validarHorario() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public boolean validarCreditos() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

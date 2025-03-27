@@ -1,9 +1,11 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Comentario;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Foro;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ForoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -15,62 +17,66 @@ public class ForoService {
     @Autowired
     private ForoRepository foroRepository;
 
-    // Obtener todos los foros
+    // ------------------------- CRUD Básico -------------------------
+    @Transactional(readOnly = true)
     public List<Foro> getAllForos() {
-        return foroRepository.findAll();
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener un foro por ID
+    @Transactional(readOnly = true)
     public Optional<Foro> getForoById(Long id) {
-        return foroRepository.findById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Crear un nuevo foro
+    @Transactional
     public Foro createForo(Foro foro) {
-        return foroRepository.save(foro);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Actualizar foro
+    @Transactional
     public Foro updateForo(Long id, Foro foroDetails) {
-        return foroRepository.findById(id).map(foro -> {
-            foro.setTema(foroDetails.getTema());
-            foro.setDescripcion(foroDetails.getDescripcion());
-            foro.setAutor(foroDetails.getAutor());
-            foro.setFechaCreacion(foroDetails.getFechaCreacion());
-            return foroRepository.save(foro);
-        }).orElseThrow(() -> new RuntimeException("Foro no encontrado"));
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Eliminar foro
+    @Transactional
     public void deleteForo(Long id) {
-        if (!foroRepository.existsById(id)) {
-            throw new RuntimeException("Foro no encontrado");
-        }
-        foroRepository.deleteById(id);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Buscar foros por tema (sin importar mayúsculas/minúsculas)
+    // ------------------------- Consultas Específicas -------------------------
+    @Transactional(readOnly = true)
     public List<Foro> getForosByTema(String tema) {
-        return foroRepository.findByTemaIgnoreCase(tema);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Buscar foros creados por un autor específico
+    @Transactional(readOnly = true)
     public List<Foro> getForosByAutor(Long autorId) {
-        return foroRepository.findByAutorId(autorId);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Obtener foros creados después de una fecha específica
+    @Transactional(readOnly = true)
     public List<Foro> getForosByFechaCreacionAfter(Date fecha) {
-        return foroRepository.findByFechaCreacionAfter(fecha);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Buscar foros por descripción parcial
+    @Transactional(readOnly = true)
     public List<Foro> searchForosByDescripcion(String descripcion) {
-        return foroRepository.searchByDescripcion(descripcion);
+        throw new UnsupportedOperationException("Método no implementado");
     }
 
-    // Contar cuántos foros ha creado un autor
+    @Transactional(readOnly = true)
     public long countForosByAutor(Long autorId) {
-        return foroRepository.countForosByAutor(autorId);
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void agregarComentario(Long foroId, Comentario comentario) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void eliminarComentario(Long foroId, Long comentarioId) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }
