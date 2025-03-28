@@ -16,30 +16,39 @@ public class AdministradorService {
     @Autowired
     private AdministradorRepository administradorRepository;
 
-    // ------------------------- CRUD Básico -------------------------
+    // Obtener todos los administradores
     public List<Administrador> getAllAdministrators() {
         return administradorRepository.findAll();
 
     }
 
+    // Obtener un administrador por ID
     public Optional<Administrador> getAdministratorById(Long id) {
-        // Lógica pendiente
-        throw new UnsupportedOperationException("Método no implementado");
+        return administradorRepository.findById(id);
+
     }
 
+    // Crear un nuevo administrador
     public Administrador createAdministrator(Administrador administrador) {
-        // Lógica pendiente
-        throw new UnsupportedOperationException("Método no implementado");
+        return administradorRepository.save(administrador);
+
     }
 
+    // Actualizar administrador
     public Administrador updateAdministrator(Long id, Administrador administradorDetails) {
-        // Lógica pendiente
-        throw new UnsupportedOperationException("Método no implementado");
+        return administradorRepository.findById(id).map(admin -> {
+            admin.setPersona(administradorDetails.getPersona());
+            admin.setCalendario(administradorDetails.getCalendario());
+            return administradorRepository.save(admin);
+        }).orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
     }
 
+    // Eliminar administrador
     public void deleteAdministrator(Long id) {
-        // Lógica pendiente
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!administradorRepository.existsById(id)) {
+            throw new RuntimeException("Administrador no encontrado");
+        }
+        administradorRepository.deleteById(id);
     }
 
     // ------------------------- Métodos de Negocio -------------------------

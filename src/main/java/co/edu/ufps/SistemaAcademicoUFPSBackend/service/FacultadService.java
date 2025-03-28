@@ -11,57 +11,62 @@ import java.util.Optional;
 
 @Service
 public class FacultadService {
-
     @Autowired
     private FacultadRepository facultadRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todas las facultades
+
     public List<Facultad> getAllFacultades() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return facultadRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener una facultad por ID
     public Optional<Facultad> getFacultadById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return facultadRepository.findById(id);
     }
 
-    @Transactional
+    // Crear una nueva facultad
     public Facultad createFacultad(Facultad facultad) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return facultadRepository.save(facultad);
     }
 
-    @Transactional
+    // Actualizar facultad
     public Facultad updateFacultad(Long id, Facultad facultadDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return facultadRepository.findById(id).map(facultad -> {
+            facultad.setNombre(facultadDetails.getNombre());
+            facultad.setDecano(facultadDetails.getDecano());
+            return facultadRepository.save(facultad);
+        }).orElseThrow(() -> new RuntimeException("Facultad no encontrada"));
     }
 
-    @Transactional
+    // Eliminar facultad
     public void deleteFacultad(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!facultadRepository.existsById(id)) {
+            throw new RuntimeException("Facultad no encontrada");
+        }
+        facultadRepository.deleteById(id);
     }
 
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Buscar facultad por nombre (sin importar mayúsculas/minúsculas)
+
     public Optional<Facultad> getFacultadByNombre(String nombre) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return facultadRepository.findByNombreIgnoreCase(nombre);
     }
 
-    @Transactional(readOnly = true)
+    // Obtener facultades con decano asignado
     public List<Facultad> getFacultadesConDecano() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return facultadRepository.findFacultadesConDecano();
     }
 
-    @Transactional(readOnly = true)
+    // Buscar facultad por ID del decano
     public Optional<Facultad> getFacultadByDecanoId(Long decanoId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return facultadRepository.findByDecanoId(decanoId);
     }
 
-    @Transactional(readOnly = true)
+    // Buscar facultades por nombre con coincidencia parcial
     public List<Facultad> searchFacultadesByNombre(String nombre) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return facultadRepository.searchByNombre(nombre);
     }
-
     // ------------------------- Métodos de Negocio -------------------------
     @Transactional
     public void crearPrograma() {

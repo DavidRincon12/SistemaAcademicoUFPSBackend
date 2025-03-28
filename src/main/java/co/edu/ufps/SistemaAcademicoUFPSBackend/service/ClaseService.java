@@ -15,72 +15,86 @@ import java.util.Optional;
 
 @Service
 public class ClaseService {
-
     @Autowired
     private ClaseRepository claseRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todas las clases
+
     public List<Clase> getAllClases() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener una clase por ID
     public Optional<Clase> getClaseById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.findById(id);
     }
 
-    @Transactional
+    // Crear una nueva clase
     public Clase createClase(Clase clase) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.save(clase);
     }
 
-    @Transactional
+    // Actualizar una clase
     public Clase updateClase(Long id, Clase claseDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.findById(id).map(clase -> {
+            clase.setNombre(claseDetails.getNombre());
+            clase.setAsignatura(claseDetails.getAsignatura());
+            clase.setDocente(claseDetails.getDocente());
+            clase.setSemestre(claseDetails.getSemestre());
+            clase.setFecha(claseDetails.getFecha());
+            clase.setCupoMaximo(claseDetails.getCupoMaximo());
+            return claseRepository.save(clase);
+        }).orElseThrow(() -> new RuntimeException("Clase no encontrada"));
     }
 
-    @Transactional
+    // Eliminar una clase
     public void deleteClase(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!claseRepository.existsById(id)) {
+            throw new RuntimeException("Clase no encontrada");
+        }
+        claseRepository.deleteById(id);
     }
 
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Métodos adicionales requeridos
+
+
+
+
+
+
     public List<Clase> findByAsignatura(Asignatura asignatura) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.findByAsignatura(asignatura);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Clase> findByDocente(Docente docente) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.findByDocente(docente);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Clase> findBySemestre(Semestre semestre) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.findBySemestre(semestre);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Clase> findByFecha(Date fecha) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.findByFecha(fecha);
     }
 
-    @Transactional(readOnly = true)
+
     public Optional<Clase> findByNombre(String nombre) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.findByNombre(nombre);
     }
 
-    @Transactional(readOnly = true)
+
     public int contarAsistenciasPorClase(Long claseId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.contarAsistenciasPorClase(claseId);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Clase> findClasesConCupoDisponible() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return claseRepository.findClasesConCupoDisponible();
     }
-
     // ------------------------- Métodos de Negocio -------------------------
     @Transactional
     public void iniciarClase() {

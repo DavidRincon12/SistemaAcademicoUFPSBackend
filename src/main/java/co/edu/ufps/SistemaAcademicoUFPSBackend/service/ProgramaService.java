@@ -11,19 +11,18 @@ import java.util.Optional;
 
 @Service
 public class ProgramaService {
-
     @Autowired
     private ProgramaRepository programaRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los programas
+
     public List<Programa> getAllProgramas() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return programaRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un programa por ID
     public Optional<Programa> getProgramaById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return programaRepository.findById(id);
     }
 
     @Transactional

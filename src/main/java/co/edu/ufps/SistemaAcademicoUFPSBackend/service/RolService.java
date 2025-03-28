@@ -11,19 +11,18 @@ import java.util.Optional;
 
 @Service
 public class RolService {
-
     @Autowired
     private RolRepository rolRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los roles
+
     public List<Rol> getAllRoles() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return rolRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un rol por ID
     public Optional<Rol> getRolById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return rolRepository.findById(id);
     }
 
     @Transactional

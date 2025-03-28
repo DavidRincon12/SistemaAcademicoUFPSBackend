@@ -11,19 +11,18 @@ import java.util.Optional;
 
 @Service
 public class NotificacionService {
-
     @Autowired
     private NotificacionRepository notificacionRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todas las notificaciones
+
     public List<Notificacion> getAllNotificaciones() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return notificacionRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener una notificación por ID
     public Optional<Notificacion> getNotificacionById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return notificacionRepository.findById(id);
     }
 
     @Transactional

@@ -12,13 +12,11 @@ import java.util.Optional;
 
 @Service
 public class PersonaService {
-
     @Autowired
     private PersonaRepository personaRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-
     // Obtener todas las personas
+
     public List<Persona> getAllPersons() {
         return personaRepository.findAll();
     }
@@ -52,47 +50,49 @@ public class PersonaService {
         personaRepository.deleteById(id);
     }
 
-    // ------------------------- Consultas Específicas -------------------------
+    // Métodos adicionales necesarios
 
     public Optional<Persona> findByNumeroDocumento(String numeroDocumento) {
         return personaRepository.findByNumeroDocumento(numeroDocumento);
     }
 
+
     public Optional<Persona> findByCorreo(String correo) {
         return personaRepository.findByCorreo(correo);
     }
+
 
     public List<Persona> findByNombreContainingIgnoreCase(String nombre) {
         return personaRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
+
     public List<Persona> findByRolNombre(String nombreRol) {
         return personaRepository.findByRol_Nombre(nombreRol);
     }
+
 
     public List<Persona> findByFechaRegistroAfter(Date fecha) {
         return personaRepository.findByFechaRegistroAfter(fecha);
     }
 
+
+
     public Optional<Persona> autenticar(String correo, String contrasena) {
         return personaRepository.autenticar(correo, contrasena);
 
-
+    }
     // ------------------------- Métodos de Negocio -------------------------
 
-    /*public Optional<Persona> autenticar(String correo, String contrasena) {
+    public int calcularEdad(Long personaId) {
         throw new UnsupportedOperationException("Método no implementado");
     }
 
-    public int calcularEdad(Long) {
+    public void solicitarEmpleo(Long personaId) {
         throw new UnsupportedOperationException("Método no implementado");
     }
 
-    public void solicitarEmpleo(Long) {
+    public void iniciarSesion(Long personaId) {
         throw new UnsupportedOperationException("Método no implementado");
     }
-
-    public void iniciarSesion(Long) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }*/
 }

@@ -11,19 +11,18 @@ import java.util.Optional;
 
 @Service
 public class RecursoAcademicoService {
-
     @Autowired
     private RecursoAcademicoRepository recursoAcademicoRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los recursos académicos
+
     public List<RecursoAcademico> getAllRecursos() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return recursoAcademicoRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un recurso académico por ID
     public Optional<RecursoAcademico> getRecursoById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return recursoAcademicoRepository.findById(id);
     }
 
     @Transactional

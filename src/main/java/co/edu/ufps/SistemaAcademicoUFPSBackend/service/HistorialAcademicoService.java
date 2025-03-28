@@ -11,55 +11,63 @@ import java.util.Optional;
 
 @Service
 public class HistorialAcademicoService {
-
     @Autowired
     private HistorialAcademicoRepository historialAcademicoRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los historiales académicos
+
     public List<HistorialAcademico> getAllHistoriales() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return historialAcademicoRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un historial académico por ID
     public Optional<HistorialAcademico> getHistorialById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return historialAcademicoRepository.findById(id);
     }
 
-    @Transactional
-    public HistorialAcademico createHistorial(HistorialAcademico historial) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional
-    public HistorialAcademico updateHistorial(Long id, HistorialAcademico historialDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional
-    public void deleteHistorial(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Obtener historial académico de un estudiante por su ID
     public Optional<HistorialAcademico> getHistorialByEstudianteId(Long estudianteId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return historialAcademicoRepository.findByEstudianteId(estudianteId);
     }
 
-    @Transactional(readOnly = true)
+    // Crear un nuevo historial académico
+    public HistorialAcademico createHistorial(HistorialAcademico historial) {
+        return historialAcademicoRepository.save(historial);
+    }
+
+    // Actualizar un historial académico
+    public HistorialAcademico updateHistorial(Long id, HistorialAcademico historialDetails) {
+        return historialAcademicoRepository.findById(id).map(historial -> {
+            historial.setEstudiante(historialDetails.getEstudiante());
+            historial.setPromedioPonderado(historialDetails.getPromedioPonderado());
+            historial.setMateriasAprobadas(historialDetails.getMateriasAprobadas());
+            historial.setMateriasProceso(historialDetails.getMateriasProceso());
+            return historialAcademicoRepository.save(historial);
+        }).orElseThrow(() -> new RuntimeException("Historial académico no encontrado"));
+    }
+
+    // Eliminar historial académico
+    public void deleteHistorial(Long id) {
+        if (!historialAcademicoRepository.existsById(id)) {
+            throw new RuntimeException("Historial académico no encontrado");
+        }
+        historialAcademicoRepository.deleteById(id);
+    }
+
+    // Obtener el promedio ponderado de un estudiante
+
     public Float getPromedioPonderadoByEstudianteId(Long estudianteId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return historialAcademicoRepository.findPromedioPonderadoByEstudianteId(estudianteId);
     }
 
-    @Transactional(readOnly = true)
+    // Contar cuántas materias ha aprobado un estudiante
     public int countMateriasAprobadasByEstudianteId(Long estudianteId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return historialAcademicoRepository.countMateriasAprobadasByEstudianteId(estudianteId);
     }
 
-    @Transactional(readOnly = true)
+    // Contar cuántas materias está cursando actualmente un estudiante
     public int countMateriasProcesoByEstudianteId(Long estudianteId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return historialAcademicoRepository.countMateriasProcesoByEstudianteId(estudianteId);
     }
 
     // ------------------------- Métodos de Negocio -------------------------

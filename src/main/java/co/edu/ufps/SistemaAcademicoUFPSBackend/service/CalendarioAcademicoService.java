@@ -12,55 +12,62 @@ import java.util.Optional;
 
 @Service
 public class CalendarioAcademicoService {
-
     @Autowired
     private CalendarioAcademicoRepository calendarioAcademicoRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los calendarios académicos
+
     public List<CalendarioAcademico> getAllCalendarios() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return calendarioAcademicoRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un calendario por ID
     public Optional<CalendarioAcademico> getCalendarioById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return calendarioAcademicoRepository.findById(id);
     }
 
-    @Transactional
+    // Crear un nuevo calendario académico
     public CalendarioAcademico createCalendario(CalendarioAcademico calendario) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return calendarioAcademicoRepository.save(calendario);
     }
 
-    @Transactional
+    // Actualizar un calendario académico
     public CalendarioAcademico updateCalendario(Long id, CalendarioAcademico calendarioDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return calendarioAcademicoRepository.findById(id).map(calendario -> {
+            calendario.setNombrePeriodo(calendarioDetails.getNombrePeriodo());
+            calendario.setFechaInicio(calendarioDetails.getFechaInicio());
+            calendario.setFechaFin(calendarioDetails.getFechaFin());
+            return calendarioAcademicoRepository.save(calendario);
+        }).orElseThrow(() -> new RuntimeException("Calendario no encontrado"));
     }
 
-    @Transactional
+    // Eliminar un calendario académico
     public void deleteCalendario(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!calendarioAcademicoRepository.existsById(id)) {
+            throw new RuntimeException("Calendario no encontrado");
+        }
+        calendarioAcademicoRepository.deleteById(id);
     }
 
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Métodos adicionales requeridos
+
     public Optional<CalendarioAcademico> findByNombrePeriodo(String nombrePeriodo) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return calendarioAcademicoRepository.findByNombrePeriodo(nombrePeriodo);
     }
 
-    @Transactional(readOnly = true)
+
     public List<CalendarioAcademico> findByFechaDentroDelPeriodo(Date fecha) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return calendarioAcademicoRepository.findByFechaDentroDelPeriodo(fecha);
     }
 
-    @Transactional(readOnly = true)
+
     public List<CalendarioAcademico> findByPeriodoEntreFechas(Date fechaInicio, Date fechaFin) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return calendarioAcademicoRepository.findByPeriodoEntreFechas(fechaInicio, fechaFin);
     }
 
-    @Transactional(readOnly = true)
+
     public Optional<CalendarioAcademico> findCalendarioActivo() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return calendarioAcademicoRepository.findCalendarioActivo();
     }
 
     // ------------------------- Métodos de Negocio -------------------------

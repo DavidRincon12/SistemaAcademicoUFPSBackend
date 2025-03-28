@@ -11,57 +11,63 @@ import java.util.Optional;
 
 @Service
 public class DocenteService {
-
     @Autowired
     private DocenteRepository docenteRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los docentes
+
     public List<Docente> getAllDocentes() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return docenteRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un docente por ID
     public Optional<Docente> getDocenteById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return docenteRepository.findById(id);
     }
 
-    @Transactional
+    // Crear un nuevo docente
     public Docente createDocente(Docente docente) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return docenteRepository.save(docente);
     }
 
-    @Transactional
+    // Actualizar un docente
     public Docente updateDocente(Long id, Docente docenteDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return docenteRepository.findById(id).map(docente -> {
+            docente.setCorreoInstitucional(docenteDetails.getCorreoInstitucional());
+            docente.setTipo(docenteDetails.getTipo());
+            docente.setHorarioAsesoria(docenteDetails.getHorarioAsesoria());
+            return docenteRepository.save(docente);
+        }).orElseThrow(() -> new RuntimeException("Docente no encontrado"));
     }
 
-    @Transactional
+    // Eliminar un docente
     public void deleteDocente(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!docenteRepository.existsById(id)) {
+            throw new RuntimeException("Docente no encontrado");
+        }
+        docenteRepository.deleteById(id);
     }
 
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Buscar un docente por su correo institucional
+
     public Optional<Docente> getDocenteByCorreo(String correo) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return docenteRepository.findByCorreoInstitucional(correo);
     }
 
-    @Transactional(readOnly = true)
+    // Obtener docentes por tipo
     public List<Docente> getDocentesByTipo(String tipo) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return docenteRepository.findByTipo(tipo);
     }
 
-    @Transactional(readOnly = true)
+    // Obtener docentes con asesorías disponibles
     public List<Docente> getDocentesConAsesoria() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return docenteRepository.findDocentesConAsesoria();
     }
 
-    @Transactional(readOnly = true)
+    // Buscar docentes por nombre
     public List<Docente> searchDocentesByNombre(String nombre) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return docenteRepository.searchByNombre(nombre);
     }
-
     // ------------------------- Métodos de Negocio -------------------------
     @Transactional
     public void asignarTrabajo() {

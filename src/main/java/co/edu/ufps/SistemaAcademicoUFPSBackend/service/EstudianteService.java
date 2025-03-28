@@ -11,60 +11,68 @@ import java.util.Optional;
 
 @Service
 public class EstudianteService {
-
     @Autowired
     private EstudianteRepository estudianteRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los estudiantes
+
     public List<Estudiante> getAllEstudiantes() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return estudianteRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un estudiante por ID
     public Optional<Estudiante> getEstudianteById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return estudianteRepository.findById(id);
     }
 
-    @Transactional
+    // Crear un nuevo estudiante
     public Estudiante createEstudiante(Estudiante estudiante) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return estudianteRepository.save(estudiante);
     }
 
-    @Transactional
+    // Actualizar estudiante
     public Estudiante updateEstudiante(Long id, Estudiante estudianteDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return estudianteRepository.findById(id).map(estudiante -> {
+            estudiante.setCorreoEstudiantil(estudianteDetails.getCorreoEstudiantil());
+            estudiante.setEstado(estudianteDetails.getEstado());
+            estudiante.setBecas(estudianteDetails.getBecas());
+            estudiante.setPrograma(estudianteDetails.getPrograma());
+            return estudianteRepository.save(estudiante);
+        }).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
     }
 
-    @Transactional
+    // Eliminar estudiante
     public void deleteEstudiante(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!estudianteRepository.existsById(id)) {
+            throw new RuntimeException("Estudiante no encontrado");
+        }
+        estudianteRepository.deleteById(id);
     }
 
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Buscar estudiante por correo institucional
+
     public Optional<Estudiante> getEstudianteByCorreo(String correo) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return estudianteRepository.findByCorreoEstudiantil(correo);
     }
 
-    @Transactional(readOnly = true)
+    // Obtener estudiantes por estado
     public List<Estudiante> getEstudiantesByEstado(String estado) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return estudianteRepository.findByEstado(estado);
     }
 
-    @Transactional(readOnly = true)
+    // Obtener estudiantes con becas
     public List<Estudiante> getEstudiantesConBecas() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return estudianteRepository.findEstudiantesConBecas();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener estudiantes por programa académico
     public List<Estudiante> getEstudiantesByPrograma(Long programaId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return estudianteRepository.findByPrograma(programaId);
     }
 
-    @Transactional(readOnly = true)
+    // Buscar estudiantes por nombre
     public List<Estudiante> searchEstudiantesByNombre(String nombre) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return estudianteRepository.searchByNombre(nombre);
     }
 
     // ------------------------- Métodos de Negocio -------------------------

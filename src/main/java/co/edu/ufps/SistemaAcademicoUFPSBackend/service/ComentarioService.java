@@ -13,57 +13,65 @@ import java.util.Optional;
 
 @Service
 public class ComentarioService {
-
     @Autowired
     private ComentarioRepository comentarioRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los comentarios
+
     public List<Comentario> getAllComentarios() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return comentarioRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un comentario por ID
     public Optional<Comentario> getComentarioById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return comentarioRepository.findById(id);
     }
 
-    @Transactional
+    // Crear un nuevo comentario
     public Comentario createComentario(Comentario comentario) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return comentarioRepository.save(comentario);
     }
 
-    @Transactional
+    // Actualizar un comentario
     public Comentario updateComentario(Long id, Comentario comentarioDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return comentarioRepository.findById(id).map(comentario -> {
+            comentario.setContenido(comentarioDetails.getContenido());
+            comentario.setFechaCreacion(comentarioDetails.getFechaCreacion());
+            comentario.setForo(comentarioDetails.getForo());
+            comentario.setEmisor(comentarioDetails.getEmisor());
+            return comentarioRepository.save(comentario);
+        }).orElseThrow(() -> new RuntimeException("Comentario no encontrado"));
     }
 
-    @Transactional
+    // Eliminar un comentario
     public void deleteComentario(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!comentarioRepository.existsById(id)) {
+            throw new RuntimeException("Comentario no encontrado");
+        }
+        comentarioRepository.deleteById(id);
     }
 
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Métodos adicionales requeridos
+
     public List<Comentario> findByForo(Foro foro) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return comentarioRepository.findByForo(foro);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Comentario> findByEmisor(Persona emisor) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return comentarioRepository.findByEmisor(emisor);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Comentario> findRecentCommentsByForo(Foro foro) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return comentarioRepository.findRecentCommentsByForo(foro);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Comentario> searchByContenido(String contenido) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
+        return comentarioRepository.searchByContenido(contenido);
 
+    }
     // ------------------------- Métodos de Negocio -------------------------
     @Transactional
     public void editarComentario(Long comentarioId, String nuevoContenido) {

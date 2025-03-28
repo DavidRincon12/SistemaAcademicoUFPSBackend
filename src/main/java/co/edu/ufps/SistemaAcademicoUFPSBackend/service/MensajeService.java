@@ -11,36 +11,19 @@ import java.util.Optional;
 
 @Service
 public class MensajeService {
-
     @Autowired
     private MensajeRepository mensajeRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los mensajes
+
     public List<Mensaje> getAllMensajes() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return mensajeRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un mensaje por ID
     public Optional<Mensaje> getMensajeById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return mensajeRepository.findById(id);
     }
-
-    @Transactional
-    public Mensaje createMensaje(Mensaje mensaje) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional
-    public Mensaje updateMensaje(Long id, Mensaje mensajeDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional
-    public void deleteMensaje(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
     // ------------------------- Consultas Específicas -------------------------
     @Transactional(readOnly = true)
     public List<Mensaje> getMensajesByChatId(Long chatId) {

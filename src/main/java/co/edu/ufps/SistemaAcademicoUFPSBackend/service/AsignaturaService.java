@@ -11,75 +11,84 @@ import java.util.Optional;
 
 @Service
 public class AsignaturaService {
-
     @Autowired
     private AsignaturaRepository asignaturaRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todas las asignaturas
+
     public List<Asignatura> getAllAsignaturas() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener una asignatura por ID
     public Optional<Asignatura> getAsignaturaById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.findById(id);
     }
 
-    @Transactional
+    // Crear una nueva asignatura
     public Asignatura createAsignatura(Asignatura asignatura) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.save(asignatura);
     }
 
-    @Transactional
+    // Actualizar una asignatura
     public Asignatura updateAsignatura(Long id, Asignatura asignaturaDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.findById(id).map(asignatura -> {
+            asignatura.setNombre(asignaturaDetails.getNombre());
+            asignatura.setDocente(asignaturaDetails.getDocente());
+            asignatura.setMateria(asignaturaDetails.getMateria());
+            asignatura.setEstudiantes(asignaturaDetails.getEstudiantes());
+            asignatura.setHabilitacion(asignaturaDetails.isHabilitacion());
+            asignatura.setVacacional(asignaturaDetails.isVacacional());
+            return asignaturaRepository.save(asignatura);
+        }).orElseThrow(() -> new RuntimeException("Asignatura no encontrada"));
     }
 
-    @Transactional
+    // Eliminar una asignatura
     public void deleteAsignatura(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!asignaturaRepository.existsById(id)) {
+            throw new RuntimeException("Asignatura no encontrada");
+        }
+        asignaturaRepository.deleteById(id);
     }
 
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Métodos adicionales requeridos
+
     public Optional<Asignatura> findByNombre(String nombre) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.findByNombre(nombre);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Asignatura> findByDocenteId(Long docenteId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.findByDocenteId(docenteId);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Asignatura> findByMateriaId(Long materiaId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.findByMateriaId(materiaId);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Asignatura> findByEstudianteId(Long estudianteId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.findByEstudianteId(estudianteId);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Asignatura> findByHabilitacion() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.findByHabilitacionTrue();
     }
 
-    @Transactional(readOnly = true)
+
     public List<Asignatura> findByVacacional() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return asignaturaRepository.findByVacacionalTrue();
     }
 
-    // ------------------------- Métodos de Negocio -------------------------
-    @Transactional
+        // ------------------------- Métodos de Negocio -------------------------
     public boolean calcularDefinitiva(Long asignaturaId) {
         throw new UnsupportedOperationException("Método no implementado");
     }
 
-    @Transactional(readOnly = true)
     public boolean verificarAprobacion(Long asignaturaId) {
         throw new UnsupportedOperationException("Método no implementado");
+        }
+
     }
-}

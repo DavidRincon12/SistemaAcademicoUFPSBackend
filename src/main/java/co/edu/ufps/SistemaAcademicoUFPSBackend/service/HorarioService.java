@@ -11,33 +11,40 @@ import java.util.Optional;
 
 @Service
 public class HorarioService {
-
     @Autowired
     private HorarioRepository horarioRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los horarios
+
     public List<Horario> getAllHorarios() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return horarioRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un horario por ID
     public Optional<Horario> getHorarioById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return horarioRepository.findById(id);
     }
 
-    @Transactional
+    // Crear un nuevo horario
     public Horario createHorario(Horario horario) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return horarioRepository.save(horario);
     }
 
-    @Transactional
+    // Actualizar un horario
     public Horario updateHorario(Long id, Horario horarioDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return horarioRepository.findById(id).map(horario -> {
+            horario.setDia(horarioDetails.getDia());
+            horario.setHoraInicio(horarioDetails.getHoraInicio());
+            horario.setHoraFin(horarioDetails.getHoraFin());
+            return horarioRepository.save(horario);
+        }).orElseThrow(() -> new RuntimeException("Horario no encontrado"));
     }
 
-    @Transactional
+    // Eliminar un horario
     public void deleteHorario(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!horarioRepository.existsById(id)) {
+            throw new RuntimeException("Horario no encontrado");
+        }
+        horarioRepository.deleteById(id);
     }
 }

@@ -12,48 +12,55 @@ import java.util.Optional;
 
 @Service
 public class SemestreService {
-
     @Autowired
     private SemestreRepository semestreRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los semestres
+
     public List<Semestre> getAllSemestres() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return semestreRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un semestre por ID
     public Optional<Semestre> getSemestreById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return semestreRepository.findById(id);
     }
 
-    @Transactional
-    public Semestre createSemestre(Semestre semestre) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional
-    public Semestre updateSemestre(Long id, Semestre semestreDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional
-    public void deleteSemestre(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Obtener un semestre por nombre
     public Optional<Semestre> getSemestreByNombre(String nombre) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return semestreRepository.findByNombre(nombre);
     }
 
-    @Transactional(readOnly = true)
+    // Obtener el semestre actual basado en la fecha actual
     public Optional<Semestre> getSemestreActual() {
-        throw new UnsupportedOperationException("Método no implementado");
+        Date fechaActual = new Date();
+        return semestreRepository.findByFechaInicioBeforeAndFechaFinAfter(fechaActual, fechaActual);
     }
 
-    // ------------------------- Métodos de Negocio -------------------------
+    // Crear un nuevo semestre
+    public Semestre createSemestre(Semestre semestre) {
+        return semestreRepository.save(semestre);
+    }
+
+    // Actualizar un semestre
+    public Semestre updateSemestre(Long id, Semestre semestreDetails) {
+        return semestreRepository.findById(id).map(semestre -> {
+            semestre.setNombre(semestreDetails.getNombre());
+            semestre.setFechaInicio(semestreDetails.getFechaInicio());
+            semestre.setFechaFin(semestreDetails.getFechaFin());
+            return semestreRepository.save(semestre);
+        }).orElseThrow(() -> new RuntimeException("Semestre no encontrado"));
+    }
+
+    // Eliminar un semestre
+    public void deleteSemestre(Long id) {
+        if (!semestreRepository.existsById(id)) {
+            throw new RuntimeException("Semestre no encontrado");
+        }
+        semestreRepository.deleteById(id);
+
+    }
+// ------------------------- Métodos de Negocio -------------------------
     @Transactional(readOnly = true)
     public boolean validarPeriodoActual(Long semestreId) {
         throw new UnsupportedOperationException("Método no implementado");

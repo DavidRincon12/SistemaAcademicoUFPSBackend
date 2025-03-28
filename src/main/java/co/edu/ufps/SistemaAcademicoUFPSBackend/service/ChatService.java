@@ -13,52 +13,59 @@ import java.util.Optional;
 
 @Service
 public class ChatService {
-
     @Autowired
     private ChatRepository chatRepository;
 
-    // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+    // Obtener todos los chats
+
     public List<Chat> getAllChats() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return chatRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener un chat por ID
     public Optional<Chat> getChatById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return chatRepository.findById(id);
     }
 
-    @Transactional
+    // Crear un nuevo chat
     public Chat createChat(Chat chat) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return chatRepository.save(chat);
     }
 
-    @Transactional
+    // Actualizar un chat
     public Chat updateChat(Long id, Chat chatDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return chatRepository.findById(id).map(chat -> {
+            chat.setParticipante1(chatDetails.getParticipante1());
+            chat.setParticipante2(chatDetails.getParticipante2());
+            chat.setFechaCreacion(chatDetails.getFechaCreacion());
+            return chatRepository.save(chat);
+        }).orElseThrow(() -> new RuntimeException("Chat no encontrado"));
     }
 
-    @Transactional
+    // Eliminar un chat
     public void deleteChat(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!chatRepository.existsById(id)) {
+            throw new RuntimeException("Chat no encontrado");
+        }
+        chatRepository.deleteById(id);
     }
 
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+    // Métodos adicionales requeridos
+
     public Optional<Chat> findByParticipantes(Persona participante1, Persona participante2) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return chatRepository.findByParticipantes(participante1, participante2);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Chat> findByPersona(Persona persona) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return chatRepository.findByPersona(persona);
     }
 
-    @Transactional(readOnly = true)
+
     public List<Chat> findByFechaCreacionAfter(Date fecha) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
+        return chatRepository.findByFechaCreacionAfter(fecha);
 
+    }
     // ------------------------- Métodos de Negocio -------------------------
     @Transactional
     public void agregarMensaje() {
