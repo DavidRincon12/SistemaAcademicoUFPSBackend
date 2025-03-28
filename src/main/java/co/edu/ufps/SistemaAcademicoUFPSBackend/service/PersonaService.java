@@ -17,75 +17,82 @@ public class PersonaService {
     private PersonaRepository personaRepository;
 
     // ------------------------- CRUD Básico -------------------------
-    @Transactional(readOnly = true)
+
+    // Obtener todas las personas
     public List<Persona> getAllPersons() {
-        throw new UnsupportedOperationException("Método no implementado");
+        return personaRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    // Obtener una persona por ID
     public Optional<Persona> getPersonById(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return personaRepository.findById(id);
     }
 
-    @Transactional
+    // Crear una nueva persona
     public Persona createPerson(Persona persona) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return personaRepository.save(persona);
     }
 
-    @Transactional
+    // Actualizar persona
     public Persona updatePerson(Long id, Persona personaDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return personaRepository.findById(id).map(persona -> {
+            persona.setNombre(personaDetails.getNombre());
+            persona.setCorreo(personaDetails.getCorreo());
+            persona.setNumeroDocumento(personaDetails.getNumeroDocumento());
+            persona.setFechaRegistro(personaDetails.getFechaRegistro());
+            return personaRepository.save(persona);
+        }).orElseThrow(() -> new RuntimeException("Persona no encontrada"));
     }
 
-    @Transactional
+    // Eliminar persona
     public void deletePerson(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!personaRepository.existsById(id)) {
+            throw new RuntimeException("Persona no encontrada");
+        }
+        personaRepository.deleteById(id);
     }
 
     // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
+
     public Optional<Persona> findByNumeroDocumento(String numeroDocumento) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return personaRepository.findByNumeroDocumento(numeroDocumento);
     }
 
-    @Transactional(readOnly = true)
     public Optional<Persona> findByCorreo(String correo) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return personaRepository.findByCorreo(correo);
     }
 
-    @Transactional(readOnly = true)
     public List<Persona> findByNombreContainingIgnoreCase(String nombre) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return personaRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
-    @Transactional(readOnly = true)
     public List<Persona> findByRolNombre(String nombreRol) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return personaRepository.findByRol_Nombre(nombreRol);
     }
 
-    @Transactional(readOnly = true)
     public List<Persona> findByFechaRegistroAfter(Date fecha) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return personaRepository.findByFechaRegistroAfter(fecha);
     }
+
+    public Optional<Persona> autenticar(String correo, String contrasena) {
+        return personaRepository.autenticar(correo, contrasena);
+
 
     // ------------------------- Métodos de Negocio -------------------------
-    @Transactional(readOnly = true)
-    public Optional<Persona> autenticar(String correo, String contrasena) {
+
+    /*public Optional<Persona> autenticar(String correo, String contrasena) {
         throw new UnsupportedOperationException("Método no implementado");
     }
 
-    @Transactional(readOnly = true)
-    public int calcularEdad(Long personaId) {
+    public int calcularEdad(Long) {
         throw new UnsupportedOperationException("Método no implementado");
     }
 
-    @Transactional
-    public void solicitarEmpleo(Long personaId) {
+    public void solicitarEmpleo(Long) {
         throw new UnsupportedOperationException("Método no implementado");
     }
 
-    @Transactional
-    public void iniciarSesion(Long personaId) {
+    public void iniciarSesion(Long) {
         throw new UnsupportedOperationException("Método no implementado");
-    }
+    }*/
 }

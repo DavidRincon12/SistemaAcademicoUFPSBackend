@@ -18,8 +18,8 @@ public class AdministradorService {
 
     // ------------------------- CRUD Básico -------------------------
     public List<Administrador> getAllAdministrators() {
-        // Lógica pendiente
-        throw new UnsupportedOperationException("Método no implementado");
+        return administradorRepository.findAll();
+
     }
 
     public Optional<Administrador> getAdministratorById(Long id) {
