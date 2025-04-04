@@ -32,19 +32,4 @@ public class Docente implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date horarioAsesoria;
-
-    
-    public void asignarTrabajo() {
-    }
-
-
-    public void calificarPrevio() {
-    }
-
-
-    public void crearExamen() {
-    }
-
-
-
 }

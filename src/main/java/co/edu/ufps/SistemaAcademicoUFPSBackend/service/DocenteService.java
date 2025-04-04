@@ -14,6 +14,18 @@ public class DocenteService {
     @Autowired
     private DocenteRepository docenteRepository;
 
+    public void asignarTrabajo() {
+    }
+
+
+    public void calificarPrevio() {
+    }
+
+
+    public void crearExamen() {
+    }
+
+
     // Obtener todos los docentes
     public List<Docente> getAllDocentes() {
         return docenteRepository.findAll();
