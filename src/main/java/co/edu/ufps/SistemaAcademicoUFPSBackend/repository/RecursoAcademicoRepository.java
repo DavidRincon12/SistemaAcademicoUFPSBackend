@@ -14,7 +14,6 @@ public interface RecursoAcademicoRepository extends JpaRepository<RecursoAcademi
     // Buscar por ubicación
     List<RecursoAcademico> findByUbicacionRecurso(String ubicacion);
 
-    // Buscar por persona responsable
-    List<RecursoAcademico> findByPersonaId(Long personaId);
-
+    // Buscar por persona responsable (CORRECTO)
+    List<RecursoAcademico> findByResponsable_Id(Long personaId); // Usa "Responsable_Id"
 }

@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -11,11 +12,11 @@ import java.util.Optional;
 
 @Service
 public class PersonaService {
-
     @Autowired
     private PersonaRepository personaRepository;
 
     // Obtener todas las personas
+
     public List<Persona> getAllPersons() {
         return personaRepository.findAll();
     }
@@ -55,23 +56,43 @@ public class PersonaService {
         return personaRepository.findByNumeroDocumento(numeroDocumento);
     }
 
+
     public Optional<Persona> findByCorreo(String correo) {
         return personaRepository.findByCorreo(correo);
     }
+
 
     public List<Persona> findByNombreContainingIgnoreCase(String nombre) {
         return personaRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
+
     public List<Persona> findByRolNombre(String nombreRol) {
         return personaRepository.findByRol_Nombre(nombreRol);
     }
+
 
     public List<Persona> findByFechaRegistroAfter(Date fecha) {
         return personaRepository.findByFechaRegistroAfter(fecha);
     }
 
+
+
     public Optional<Persona> autenticar(String correo, String contrasena) {
         return personaRepository.autenticar(correo, contrasena);
+
+    }
+    // ------------------------- Métodos de Negocio -------------------------
+
+    public int calcularEdad(Long personaId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    public void solicitarEmpleo(Long personaId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    public void iniciarSesion(Long personaId) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

@@ -3,18 +3,19 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.HistorialAcademico;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.HistorialAcademicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class HistorialAcademicoService {
-
     @Autowired
     private HistorialAcademicoRepository historialAcademicoRepository;
 
     // Obtener todos los historiales académicos
+
     public List<HistorialAcademico> getAllHistoriales() {
         return historialAcademicoRepository.findAll();
     }
@@ -54,6 +55,7 @@ public class HistorialAcademicoService {
     }
 
     // Obtener el promedio ponderado de un estudiante
+
     public Float getPromedioPonderadoByEstudianteId(Long estudianteId) {
         return historialAcademicoRepository.findPromedioPonderadoByEstudianteId(estudianteId);
     }
@@ -66,5 +68,11 @@ public class HistorialAcademicoService {
     // Contar cuántas materias está cursando actualmente un estudiante
     public int countMateriasProcesoByEstudianteId(Long estudianteId) {
         return historialAcademicoRepository.countMateriasProcesoByEstudianteId(estudianteId);
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void calcularPonderado(Long historialId) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

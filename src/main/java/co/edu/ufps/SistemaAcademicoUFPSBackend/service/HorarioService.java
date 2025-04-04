@@ -4,17 +4,18 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Horario;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.HorarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class HorarioService {
-
     @Autowired
     private HorarioRepository horarioRepository;
 
     // Obtener todos los horarios
+
     public List<Horario> getAllHorarios() {
         return horarioRepository.findAll();
     }

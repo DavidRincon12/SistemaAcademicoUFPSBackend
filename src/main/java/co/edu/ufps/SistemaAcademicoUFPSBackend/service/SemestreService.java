@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Semestre;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.SemestreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -11,11 +12,11 @@ import java.util.Optional;
 
 @Service
 public class SemestreService {
-
     @Autowired
     private SemestreRepository semestreRepository;
 
     // Obtener todos los semestres
+
     public List<Semestre> getAllSemestres() {
         return semestreRepository.findAll();
     }
@@ -57,5 +58,16 @@ public class SemestreService {
             throw new RuntimeException("Semestre no encontrado");
         }
         semestreRepository.deleteById(id);
+
+    }
+// ------------------------- Métodos de Negocio -------------------------
+    @Transactional(readOnly = true)
+    public boolean validarPeriodoActual(Long semestreId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void asignarCalendario(Long semestreId, Long calendarioId) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

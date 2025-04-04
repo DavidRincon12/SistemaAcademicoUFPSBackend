@@ -4,13 +4,13 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Docente;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.DocenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class DocenteService {
-
     @Autowired
     private DocenteRepository docenteRepository;
 
@@ -27,6 +27,7 @@ public class DocenteService {
 
 
     // Obtener todos los docentes
+
     public List<Docente> getAllDocentes() {
         return docenteRepository.findAll();
     }
@@ -60,8 +61,9 @@ public class DocenteService {
     }
 
     // Buscar un docente por su correo institucional
+
     public Optional<Docente> getDocenteByCorreo(String correo) {
-        return docenteRepository.findByCorreoInstucional(correo);
+        return docenteRepository.findByCorreoInstitucional(correo);
     }
 
     // Obtener docentes por tipo
@@ -77,5 +79,20 @@ public class DocenteService {
     // Buscar docentes por nombre
     public List<Docente> searchDocentesByNombre(String nombre) {
         return docenteRepository.searchByNombre(nombre);
+    }
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void asignarTrabajo() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void calificarPrevio() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void crearExamen() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

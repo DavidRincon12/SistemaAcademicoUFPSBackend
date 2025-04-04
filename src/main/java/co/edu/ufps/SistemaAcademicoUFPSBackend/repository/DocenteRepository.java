@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface DocenteRepository extends JpaRepository<Docente, Long> {
 
     // Buscar un docente por su correo institucional
-    Optional<Docente> findByCorreoInstucional(String correoInstitucional);
+    Optional<Docente> findByCorreoInstitucional(String correoInstitucional);
 
     // Obtener docentes por tipo (Ejemplo: planta, catedrático)
     List<Docente> findByTipo(String tipo);

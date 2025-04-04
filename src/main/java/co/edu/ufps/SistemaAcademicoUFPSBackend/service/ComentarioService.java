@@ -6,17 +6,18 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ComentarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ComentarioService {
-
     @Autowired
     private ComentarioRepository comentarioRepository;
 
     // Obtener todos los comentarios
+
     public List<Comentario> getAllComentarios() {
         return comentarioRepository.findAll();
     }
@@ -56,15 +57,29 @@ public class ComentarioService {
         return comentarioRepository.findByForo(foro);
     }
 
+
     public List<Comentario> findByEmisor(Persona emisor) {
         return comentarioRepository.findByEmisor(emisor);
     }
+
 
     public List<Comentario> findRecentCommentsByForo(Foro foro) {
         return comentarioRepository.findRecentCommentsByForo(foro);
     }
 
+
     public List<Comentario> searchByContenido(String contenido) {
         return comentarioRepository.searchByContenido(contenido);
+
+    }
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void editarComentario(Long comentarioId, String nuevoContenido) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void eliminarComentario(Long comentarioId) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

@@ -4,17 +4,18 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Facultad;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.FacultadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class FacultadService {
-
     @Autowired
     private FacultadRepository facultadRepository;
 
     // Obtener todas las facultades
+
     public List<Facultad> getAllFacultades() {
         return facultadRepository.findAll();
     }
@@ -47,6 +48,7 @@ public class FacultadService {
     }
 
     // Buscar facultad por nombre (sin importar mayúsculas/minúsculas)
+
     public Optional<Facultad> getFacultadByNombre(String nombre) {
         return facultadRepository.findByNombreIgnoreCase(nombre);
     }
@@ -64,5 +66,15 @@ public class FacultadService {
     // Buscar facultades por nombre con coincidencia parcial
     public List<Facultad> searchFacultadesByNombre(String nombre) {
         return facultadRepository.searchByNombre(nombre);
+    }
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void crearPrograma() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public boolean eliminarPrograma() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

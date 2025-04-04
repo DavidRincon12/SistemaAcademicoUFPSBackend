@@ -1,19 +1,18 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "Mensaje")  // Define la tabla en la BD
+@Table(name = "Mensaje")
 @Data
-@NoArgsConstructor  // Constructor vacío
+@NoArgsConstructor
 @AllArgsConstructor
-
 public class Mensaje implements Serializable {
 
     @Id
@@ -22,35 +21,21 @@ public class Mensaje implements Serializable {
 
     private String contenido;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "emisor_id", referencedColumnName = "id")
     private Persona emisor;
 
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "destinatario_id", referencedColumnName = "id")
     private Persona destinatario;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEnvio;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "chat_id", referencedColumnName = "id")
     private Chat chat;
 
     private boolean editado;
     private String estado;
-
-
-    public void editarMensaje() {
-    }
-
-
-    public void eliminarMensaje() {
-    }
-
-
-    public void cambiarEstado() {
-    }
-
 }

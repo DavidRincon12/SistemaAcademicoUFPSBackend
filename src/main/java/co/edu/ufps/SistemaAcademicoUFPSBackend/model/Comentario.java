@@ -1,19 +1,18 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "Comentario")  // Define la tabla en la BD
+@Table(name = "Comentario")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Comentario implements Serializable {
 
     @Id
@@ -25,23 +24,11 @@ public class Comentario implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "emisor_id", referencedColumnName = "id")
     private Persona emisor;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "foro_id", referencedColumnName = "id")
     private Foro foro;
-
-
-    public void editarComentario(String nuevoContenido) {
-        this.contenido = nuevoContenido;
-        this.fechaCreacion = new Date(); // Actualizar fecha de modificación
-    }
-    
-    public void eliminarComentario() {
-        this.contenido = "[Comentario eliminado]"; // Marcar como eliminado en lugar de borrarlo de la BD
-    }
-    
-
 }

@@ -4,17 +4,18 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asignatura;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsignaturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AsignaturaService {
-
     @Autowired
     private AsignaturaRepository asignaturaRepository;
 
     // Obtener todas las asignaturas
+
     public List<Asignatura> getAllAsignaturas() {
         return asignaturaRepository.findAll();
     }
@@ -56,23 +57,38 @@ public class AsignaturaService {
         return asignaturaRepository.findByNombre(nombre);
     }
 
+
     public List<Asignatura> findByDocenteId(Long docenteId) {
         return asignaturaRepository.findByDocenteId(docenteId);
     }
+
 
     public List<Asignatura> findByMateriaId(Long materiaId) {
         return asignaturaRepository.findByMateriaId(materiaId);
     }
 
+
     public List<Asignatura> findByEstudianteId(Long estudianteId) {
         return asignaturaRepository.findByEstudianteId(estudianteId);
     }
+
 
     public List<Asignatura> findByHabilitacion() {
         return asignaturaRepository.findByHabilitacionTrue();
     }
 
+
     public List<Asignatura> findByVacacional() {
         return asignaturaRepository.findByVacacionalTrue();
     }
-}
+
+        // ------------------------- Métodos de Negocio -------------------------
+    public boolean calcularDefinitiva(Long asignaturaId) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    public boolean verificarAprobacion(Long asignaturaId) {
+        throw new UnsupportedOperationException("Método no implementado");
+        }
+
+    }

@@ -4,17 +4,18 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.PersonalAdministrativo;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonalAdministrativoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PersonalAdministrativoService {
-
     @Autowired
     private PersonalAdministrativoRepository personalAdministrativoRepository;
 
     // Obtener todos los empleados administrativos
+
     public List<PersonalAdministrativo> getAllPersonalAdministrativo() {
         return personalAdministrativoRepository.findAll();
     }
@@ -42,6 +43,7 @@ public class PersonalAdministrativoService {
     // Obtener administrativo por persona asociada
     public Optional<PersonalAdministrativo> getPersonalAdministrativoByPersonaId(Long personaId) {
         return personalAdministrativoRepository.findByPersonaId(personaId);
+
     }
 
     // Crear un nuevo administrativo

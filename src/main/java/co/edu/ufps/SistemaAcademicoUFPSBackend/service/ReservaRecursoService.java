@@ -4,17 +4,19 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.ReservaRecurso;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ReservaRecursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ReservaRecursoService {
-
     @Autowired
     private ReservaRecursoRepository reservaRecursoRepository;
 
     // Obtener todas las reservas
+
     public List<ReservaRecurso> getAllReservas() {
         return reservaRecursoRepository.findAll();
     }
@@ -42,6 +44,7 @@ public class ReservaRecursoService {
     // Crear una nueva reserva
     public ReservaRecurso createReserva(ReservaRecurso reserva) {
         return reservaRecursoRepository.save(reserva);
+
     }
 
     // Actualizar una reserva
@@ -56,6 +59,12 @@ public class ReservaRecursoService {
     }
 
     // Aprobar una reserva
+
+
+
+
+
+
     public ReservaRecurso aprobarReserva(Long id) {
         return reservaRecursoRepository.findById(id).map(reserva -> {
             reserva.setEstado("Aprobada");
@@ -69,5 +78,12 @@ public class ReservaRecursoService {
             throw new RuntimeException("Reserva no encontrada");
         }
         reservaRecursoRepository.deleteById(id);
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+
+    @Transactional
+    public ReservaRecurso extenderReserva(Long id, Date nuevaFechaFin) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

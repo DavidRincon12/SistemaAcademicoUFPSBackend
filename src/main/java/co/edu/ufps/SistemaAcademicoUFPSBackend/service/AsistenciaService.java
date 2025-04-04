@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsistenciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -11,11 +12,11 @@ import java.util.Optional;
 
 @Service
 public class AsistenciaService {
-
     @Autowired
     private AsistenciaRepository asistenciaRepository;
 
     // Obtener todas las asistencias
+
     public List<Asistencia> getAllAsistencias() {
         return asistenciaRepository.findAll();
     }
@@ -55,23 +56,40 @@ public class AsistenciaService {
         return asistenciaRepository.findByEstudianteId(estudianteId);
     }
 
+
     public List<Asistencia> findByClaseId(Long claseId) {
         return asistenciaRepository.findByClaseId(claseId);
     }
+
 
     public List<Asistencia> findByFecha(Date fecha) {
         return asistenciaRepository.findByFecha(fecha);
     }
 
+
     public List<Asistencia> findByEstudianteIdAndClaseId(Long estudianteId, Long claseId) {
         return asistenciaRepository.findByEstudianteIdAndClaseId(estudianteId, claseId);
     }
+
 
     public List<Asistencia> findByEstudianteIdAndFechaBetween(Long estudianteId, Date fechaInicio, Date fechaFin) {
         return asistenciaRepository.findByEstudianteIdAndFechaBetween(estudianteId, fechaInicio, fechaFin);
     }
 
+
     public Optional<Asistencia> findByEstudianteIdAndClaseIdAndFecha(Long estudianteId, Long claseId, Date fecha) {
         return asistenciaRepository.findByEstudianteIdAndClaseIdAndFecha(estudianteId, claseId, fecha);
+
+
+    }
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void registrarAsistencia() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public void consultarAsistencia() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

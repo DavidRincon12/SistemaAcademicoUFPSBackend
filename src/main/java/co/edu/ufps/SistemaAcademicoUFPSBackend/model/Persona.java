@@ -1,21 +1,18 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
-
+import java.util.Date;
 
 @Entity
-@Table(name = "Persona")  // Define la tabla en la BD
+@Table(name = "Persona")
 @Data
-@NoArgsConstructor  // Constructor vacío
+@NoArgsConstructor
 @AllArgsConstructor
-
-
 public class Persona implements Serializable {
 
     @Id
@@ -27,28 +24,22 @@ public class Persona implements Serializable {
 
     @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
-
     private String tipoDocumento;
     private String numeroDocumento;
     private String direccion;
     private String telefono;
     private String correo;
+
+    @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
+
     private String estadoCivil;
     private String nacionalidad;
     private String datosProfesionales;
     private String genero;
     private String codigo;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "rol_id")
     private Rol rol;
-
-    public void calcularEdad() {
-    }
-    public void solicitarEmpleo() {
-    }
-    public void iniciarSesion() {
-    }
-
 }

@@ -1,9 +1,11 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Comentario;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Foro;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ForoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -11,11 +13,11 @@ import java.util.Optional;
 
 @Service
 public class ForoService {
-
     @Autowired
     private ForoRepository foroRepository;
 
     // Obtener todos los foros
+
     public List<Foro> getAllForos() {
         return foroRepository.findAll();
     }
@@ -50,6 +52,7 @@ public class ForoService {
     }
 
     // Buscar foros por tema (sin importar mayúsculas/minúsculas)
+
     public List<Foro> getForosByTema(String tema) {
         return foroRepository.findByTemaIgnoreCase(tema);
     }
@@ -72,5 +75,15 @@ public class ForoService {
     // Contar cuántos foros ha creado un autor
     public long countForosByAutor(Long autorId) {
         return foroRepository.countForosByAutor(autorId);
+    }
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void agregarComentario(Long foroId, Comentario comentario) {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void eliminarComentario(Long foroId, Long comentarioId) {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

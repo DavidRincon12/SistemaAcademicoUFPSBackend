@@ -1,20 +1,18 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "Notificacion")  // Define la tabla en la BD
+@Table(name = "Notificacion")
 @Data
-@NoArgsConstructor  // Constructor vacío
+@NoArgsConstructor
 @AllArgsConstructor
-
-
 public class Notificacion implements Serializable {
 
     @Id
@@ -24,20 +22,13 @@ public class Notificacion implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEnvio;
     private String contenido;
+    private boolean leida;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "destinatario_id", referencedColumnName = "id")
     private Persona destinatario;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "remitente_id", referencedColumnName = "id")
     private Persona remitente;
-
-    public void marcarComoLeido() {
-    }
-
-
-    public void eliminarNotificacion() {
-    }
-
 }

@@ -5,6 +5,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -12,11 +13,11 @@ import java.util.Optional;
 
 @Service
 public class ChatService {
-
     @Autowired
     private ChatRepository chatRepository;
 
     // Obtener todos los chats
+
     public List<Chat> getAllChats() {
         return chatRepository.findAll();
     }
@@ -55,11 +56,19 @@ public class ChatService {
         return chatRepository.findByParticipantes(participante1, participante2);
     }
 
+
     public List<Chat> findByPersona(Persona persona) {
         return chatRepository.findByPersona(persona);
     }
 
+
     public List<Chat> findByFechaCreacionAfter(Date fecha) {
         return chatRepository.findByFechaCreacionAfter(fecha);
+
+    }
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void agregarMensaje() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

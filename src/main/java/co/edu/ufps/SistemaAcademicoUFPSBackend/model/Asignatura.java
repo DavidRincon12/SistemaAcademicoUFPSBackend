@@ -1,20 +1,18 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "Asignatura")  // Define la tabla en la BD
+@Table(name = "Asignatura")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Asignatura implements Serializable {
 
     @Id
@@ -23,25 +21,21 @@ public class Asignatura implements Serializable {
 
     private String nombre;
 
-    // Asignatura es impartida por un docente
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "docente_id", referencedColumnName = "id")
     private Docente docente;
 
-    // Relación con la materia
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "materia_id", referencedColumnName = "id")
     private Materia materia;
 
-    // Una asignatura puede tener muchos estudiantes inscritos
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "asignatura_estudiante",
             joinColumns = @JoinColumn(name = "asignatura_id"),
             inverseJoinColumns = @JoinColumn(name = "estudiante_id"))
     private List<Estudiante> estudiantes = new ArrayList<>();
 
-    // Horario en el que se imparte
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "horario_id", referencedColumnName = "id")
     private Horario horario;
 
@@ -52,10 +46,4 @@ public class Asignatura implements Serializable {
     private boolean habilitacion;
     private boolean vacacional;
     private float definitiva;
-
-
-    public boolean aprobado() {
-        return false;
-    }
-
 }

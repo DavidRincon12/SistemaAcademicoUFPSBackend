@@ -1,22 +1,19 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
-
+import java.util.Date;
 
 @Entity
-@Table(name = "ReservaRecurso")  // Define la tabla en la BD
+@Table(name = "ReservaRecurso")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReservaRecurso implements Serializable {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,14 +27,4 @@ public class ReservaRecurso implements Serializable {
 
     private String estado;
     private String nombre;
-
-
-    public boolean aprobarReserva() {
-        return false;
-    }
-
-    public boolean extenderReserva() {
-        return false;
-    }
-
 }

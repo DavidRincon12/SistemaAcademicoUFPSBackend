@@ -1,21 +1,18 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
-
+import java.util.Date;
 
 @Entity
-@Table(name = "Docente")  // Define la tabla en la BD
+@Table(name = "Docente")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Docente implements Serializable {
 
     @Id
@@ -25,8 +22,7 @@ public class Docente implements Serializable {
     private String correoInstitucional;
     private String tipo;
 
-    // Datos personales del docente
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
 

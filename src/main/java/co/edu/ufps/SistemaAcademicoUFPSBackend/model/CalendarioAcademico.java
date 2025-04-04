@@ -1,19 +1,18 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "CalendarioAcademico")  // Define la tabla en la BD
+@Table(name = "CalendarioAcademico")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class CalendarioAcademico implements Serializable {
 
     @Id
@@ -27,13 +26,4 @@ public class CalendarioAcademico implements Serializable {
 
     @Temporal(TemporalType.DATE)
     private Date fechaFin;
-
-    
-    public void agregarEvento() {
-    }
-
-
-    public void listarFechasImportantes() {
-    }
-
 }

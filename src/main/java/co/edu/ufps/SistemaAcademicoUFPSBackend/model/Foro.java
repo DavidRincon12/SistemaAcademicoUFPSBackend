@@ -1,40 +1,36 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "Foro")  // Define la tabla en la BD
+@Table(name = "Foro")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Foro implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String tema;
     private String descripcion;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "autor_id", referencedColumnName = "id")
     private Persona autor;
 
-    @OneToMany(mappedBy = "foro", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "foro", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Comentario> comentarios = new ArrayList<>();
-
-    public void agregarComentario(Comentario c) {
-    }
-
-    public void eliminarComentario(Comentario c) {
-    }
-
 }

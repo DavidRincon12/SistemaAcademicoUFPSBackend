@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.CalendarioAcademico;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.CalendarioAcademicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -11,11 +12,11 @@ import java.util.Optional;
 
 @Service
 public class CalendarioAcademicoService {
-
     @Autowired
     private CalendarioAcademicoRepository calendarioAcademicoRepository;
 
     // Obtener todos los calendarios académicos
+
     public List<CalendarioAcademico> getAllCalendarios() {
         return calendarioAcademicoRepository.findAll();
     }
@@ -54,15 +55,29 @@ public class CalendarioAcademicoService {
         return calendarioAcademicoRepository.findByNombrePeriodo(nombrePeriodo);
     }
 
+
     public List<CalendarioAcademico> findByFechaDentroDelPeriodo(Date fecha) {
         return calendarioAcademicoRepository.findByFechaDentroDelPeriodo(fecha);
     }
+
 
     public List<CalendarioAcademico> findByPeriodoEntreFechas(Date fechaInicio, Date fechaFin) {
         return calendarioAcademicoRepository.findByPeriodoEntreFechas(fechaInicio, fechaFin);
     }
 
+
     public Optional<CalendarioAcademico> findCalendarioActivo() {
         return calendarioAcademicoRepository.findCalendarioActivo();
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public void agregarEvento() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public void listarFechasImportantes() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

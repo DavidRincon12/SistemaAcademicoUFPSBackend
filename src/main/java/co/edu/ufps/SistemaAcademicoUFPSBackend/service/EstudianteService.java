@@ -4,17 +4,18 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class EstudianteService {
-
     @Autowired
     private EstudianteRepository estudianteRepository;
 
     // Obtener todos los estudiantes
+
     public List<Estudiante> getAllEstudiantes() {
         return estudianteRepository.findAll();
     }
@@ -49,6 +50,7 @@ public class EstudianteService {
     }
 
     // Buscar estudiante por correo institucional
+
     public Optional<Estudiante> getEstudianteByCorreo(String correo) {
         return estudianteRepository.findByCorreoEstudiantil(correo);
     }
@@ -71,5 +73,41 @@ public class EstudianteService {
     // Buscar estudiantes por nombre
     public List<Estudiante> searchEstudiantesByNombre(String nombre) {
         return estudianteRepository.searchByNombre(nombre);
+    }
+
+    // ------------------------- Métodos de Negocio -------------------------
+    @Transactional
+    public boolean matricular() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public short calcularCreditos() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public short calcularSemestre() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional
+    public void solicitarBeca() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public boolean validarCupo() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public boolean validarHorario() {
+        throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    @Transactional(readOnly = true)
+    public boolean validarCreditos() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
 }

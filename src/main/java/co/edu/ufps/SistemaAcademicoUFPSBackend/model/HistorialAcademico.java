@@ -1,50 +1,40 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "HistorialAcademico")  // Define la tabla en la BD
+@Table(name = "HistorialAcademico")
 @Data
-@NoArgsConstructor  // Constructor vacío
-@AllArgsConstructor // Constructor con parámetros
-
-/**
- * 
- */
+@NoArgsConstructor
+@AllArgsConstructor
 public class HistorialAcademico implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     private Estudiante estudiante;
 
-    // Materias aprobadas
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "historial_materias_aprobadas",
             joinColumns = @JoinColumn(name = "historial_id"),
             inverseJoinColumns = @JoinColumn(name = "asignatura_id"))
     private List<Asignatura> materiasAprobadas = new ArrayList<>();
 
-    // Materias en proceso
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "historial_materias_proceso",
             joinColumns = @JoinColumn(name = "historial_id"),
             inverseJoinColumns = @JoinColumn(name = "asignatura_id"))
     private List<Asignatura> materiasProceso = new ArrayList<>();
 
     private float promedioPonderado;
-
-    public void calcularPonderado() {
-    }
-
-
 }
