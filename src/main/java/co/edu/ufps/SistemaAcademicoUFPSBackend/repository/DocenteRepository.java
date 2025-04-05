@@ -18,10 +18,6 @@ public interface DocenteRepository extends JpaRepository<Docente, Long> {
     // Obtener docentes por tipo (Ejemplo: planta, catedrático)
     List<Docente> findByTipo(String tipo);
 
-    // Buscar docentes con horario de asesoría disponible
-    @Query("SELECT d FROM Docente d WHERE d.horarioAsesoria IS NOT NULL ORDER BY d.horarioAsesoria ASC")
-    List<Docente> findDocentesConAsesoria();
-
     // Buscar docentes con un nombre específico
     @Query("SELECT d FROM Docente d WHERE LOWER(d.persona.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     List<Docente> searchByNombre(@Param("nombre") String nombre);

@@ -5,6 +5,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.service.RolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +33,10 @@ public class RolController {
 
     // Crear un nuevo rol
     @PostMapping
-    public Rol createRol(@RequestBody Rol rol) {
-        return rolService.createRol(rol);
+    public ResponseEntity<Rol> crearRol(@RequestBody @Valid Rol rol) {
+        return ResponseEntity.ok(rolService.createRol(rol));
     }
+    
 
     // Actualizar un rol existente
     @PutMapping("/{id}")

@@ -69,11 +69,6 @@ public class DocenteService {
         return docenteRepository.findByTipo(tipo);
     }
 
-    // Obtener docentes con asesorías disponibles
-    public List<Docente> getDocentesConAsesoria() {
-        return docenteRepository.findDocentesConAsesoria();
-    }
-
     // Buscar docentes por nombre
     public List<Docente> searchDocentesByNombre(String nombre) {
         return docenteRepository.searchByNombre(nombre);

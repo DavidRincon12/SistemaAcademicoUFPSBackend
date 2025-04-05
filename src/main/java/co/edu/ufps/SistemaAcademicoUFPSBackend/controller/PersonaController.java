@@ -5,6 +5,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
@@ -33,9 +34,10 @@ public class PersonaController {
 
     // Crear una nueva persona
     @PostMapping
-    public Persona createPerson(@RequestBody Persona persona) {
-        return personaService.createPerson(persona);
+    public ResponseEntity<Persona> crearPersona(@RequestBody @Valid Persona persona) {
+        return ResponseEntity.ok(personaService.createPerson(persona));
     }
+    
 
     // Actualizar una persona
     @PutMapping("/{id}")

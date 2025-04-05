@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,11 @@ public class HorarioAsesoriaService {
 
     @Autowired
     private final HorarioAsesoriaRepository horarioAsesoriaRepository;
+    
+    // Obtener horarios de asesoría disponibles para un día y hora específicos
+    public List<HorarioAsesoria> getHorariosDisponibles(DayOfWeek diaSemana, LocalTime hora) {
+        return horarioAsesoriaRepository.findByDiaSemanaAndHora(diaSemana, hora);
+    }
 
     // Obtener todos los horarios de asesoría
     public List<HorarioAsesoria> getAllHorariosAsesoria() {

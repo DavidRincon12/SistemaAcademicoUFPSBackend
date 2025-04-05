@@ -7,10 +7,14 @@ import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.ArrayList;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "Docente")
+@Table(name = "docente")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,14 +24,19 @@ public class Docente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "El correo institucional es obligatorio")
     private String correoInstitucional;
+
+    @NotBlank(message = "El tipo de docente es obligatorio")
     private String tipo;
 
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "persona_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "persona_id", nullable = false)
+    @NotNull(message = "Debe asociarse una persona al docente")
     private Persona persona;
 
     @OneToMany(mappedBy = "docente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HorarioAsesoria> horariosAsesoria = new ArrayList<>();
+    @JsonManagedReference
+    private List<HorarioAsesoria> horariosAsesoria;
 
 }

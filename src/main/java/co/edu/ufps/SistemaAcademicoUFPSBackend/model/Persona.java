@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import java.time.LocalDate;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
-@Table(name = "Persona")
+@Table(name = "persona")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,27 +21,51 @@ public class Persona implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String nombre;
+
+    @NotBlank
     private String contrasena;
 
-    @Temporal(TemporalType.DATE)
-    private Date fechaRegistro;
+    @NotNull
+    private LocalDate fechaRegistro;
+
+    @NotBlank
     private String tipoDocumento;
+
+    @NotBlank
     private String numeroDocumento;
+
+    @NotBlank
     private String direccion;
+
+    @NotBlank
     private String telefono;
+
+    @NotBlank
+    @Email
     private String correo;
 
-    @Temporal(TemporalType.DATE)
-    private Date fechaNacimiento;
+    @NotNull
+    private LocalDate fechaNacimiento;
 
+    @NotBlank
     private String estadoCivil;
+
+    @NotBlank
     private String nacionalidad;
+
+    @NotBlank
     private String datosProfesionales;
+
+    @NotBlank
     private String genero;
+
+    @NotBlank
     private String codigo;
 
     @ManyToOne
-    @JoinColumn(name = "rol_id")
+    @JoinColumn(name = "rol_id", nullable = false)
+    @NotNull(message = "Debe especificarse un rol")
     private Rol rol;
 }
