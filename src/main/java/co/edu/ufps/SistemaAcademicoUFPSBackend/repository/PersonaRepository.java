@@ -21,8 +21,8 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
     // Buscar por nombre (pueden existir varias personas con el mismo nombre)
     List<Persona> findByNombreContainingIgnoreCase(String nombre);
 
-    // Buscar por rol (Ej: Administrador, Estudiante, Docente, etc.)
-    List<Persona> findByRol_Nombre(String nombreRol);
+    // Buscar por rol (asumiendo que hay una relación entre Persona y Rol)
+    List<Persona> findByRolId(Long id);
 
     // Buscar por fecha de registro después de una fecha dada
     List<Persona> findByFechaRegistroAfter(Date fecha);

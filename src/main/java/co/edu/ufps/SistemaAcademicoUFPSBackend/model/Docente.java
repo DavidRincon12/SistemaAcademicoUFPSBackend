@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "Docente")
@@ -22,10 +23,11 @@ public class Docente implements Serializable {
     private String correoInstitucional;
     private String tipo;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date horarioAsesoria;
+    @OneToMany(mappedBy = "docente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HorarioAsesoria> horariosAsesoria = new ArrayList<>();
+
 }

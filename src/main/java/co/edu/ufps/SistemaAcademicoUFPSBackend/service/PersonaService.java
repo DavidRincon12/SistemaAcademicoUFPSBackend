@@ -1,7 +1,9 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Rol;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,9 @@ import java.util.Optional;
 public class PersonaService {
     @Autowired
     private PersonaRepository personaRepository;
+
+    @Autowired
+    private RolRepository rolRepository;
 
     // Obtener todas las personas
 
@@ -28,6 +33,11 @@ public class PersonaService {
 
     // Crear una nueva persona
     public Persona createPerson(Persona persona) {
+        if (persona.getRol() != null && persona.getRol().getId() != null) {
+            Rol rol = rolRepository.findById(persona.getRol().getId())
+                    .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+            persona.setRol(rol); // asignas el rol gestionado por Hibernate
+        }
         return personaRepository.save(persona);
     }
 
@@ -56,27 +66,21 @@ public class PersonaService {
         return personaRepository.findByNumeroDocumento(numeroDocumento);
     }
 
-
     public Optional<Persona> findByCorreo(String correo) {
         return personaRepository.findByCorreo(correo);
     }
-
 
     public List<Persona> findByNombreContainingIgnoreCase(String nombre) {
         return personaRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
-
-    public List<Persona> findByRolNombre(String nombreRol) {
-        return personaRepository.findByRol_Nombre(nombreRol);
+    public List<Persona> findByRolId(Long id) {
+        return personaRepository.findByRolId(id);
     }
-
 
     public List<Persona> findByFechaRegistroAfter(Date fecha) {
         return personaRepository.findByFechaRegistroAfter(fecha);
     }
-
-
 
     public Optional<Persona> autenticar(String correo, String contrasena) {
         return personaRepository.autenticar(correo, contrasena);

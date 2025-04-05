@@ -39,7 +39,7 @@ public class Persona implements Serializable {
     private String genero;
     private String codigo;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "rol_id")
     private Rol rol;
 }

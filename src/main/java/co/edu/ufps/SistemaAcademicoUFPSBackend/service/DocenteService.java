@@ -1,7 +1,10 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Docente;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.DocenteRepository;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,18 +16,8 @@ import java.util.Optional;
 public class DocenteService {
     @Autowired
     private DocenteRepository docenteRepository;
-
-    public void asignarTrabajo() {
-    }
-
-
-    public void calificarPrevio() {
-    }
-
-
-    public void crearExamen() {
-    }
-
+    @Autowired
+    private PersonaRepository personaRepository;
 
     // Obtener todos los docentes
 
@@ -39,6 +32,12 @@ public class DocenteService {
 
     // Crear un nuevo docente
     public Docente createDocente(Docente docente) {
+        if (docente.getPersona() != null && docente.getPersona().getId() != null) {
+            Persona persona = personaRepository.findById(docente.getPersona().getId())
+                    .orElseThrow(() -> new RuntimeException(
+                            "Persona no encontrada con id: " + docente.getPersona().getId()));
+            docente.setPersona(persona);
+        }
         return docenteRepository.save(docente);
     }
 
@@ -47,7 +46,6 @@ public class DocenteService {
         return docenteRepository.findById(id).map(docente -> {
             docente.setCorreoInstitucional(docenteDetails.getCorreoInstitucional());
             docente.setTipo(docenteDetails.getTipo());
-            docente.setHorarioAsesoria(docenteDetails.getHorarioAsesoria());
             return docenteRepository.save(docente);
         }).orElseThrow(() -> new RuntimeException("Docente no encontrado"));
     }
@@ -80,6 +78,7 @@ public class DocenteService {
     public List<Docente> searchDocentesByNombre(String nombre) {
         return docenteRepository.searchByNombre(nombre);
     }
+
     // ------------------------- Métodos de Negocio -------------------------
     @Transactional
     public void asignarTrabajo() {

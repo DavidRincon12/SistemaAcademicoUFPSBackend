@@ -2,20 +2,21 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Rol;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.RolRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class RolService {
+
     @Autowired
-    private RolRepository rolRepository;
+    private final RolRepository rolRepository;
 
     // Obtener todos los roles
-
     public List<Rol> getAllRoles() {
         return rolRepository.findAll();
     }
@@ -25,50 +26,25 @@ public class RolService {
         return rolRepository.findById(id);
     }
 
-    @Transactional
+    // Crear un nuevo rol
     public Rol createRol(Rol rol) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return rolRepository.save(rol);
     }
 
-    @Transactional
+    // Actualizar un rol existente
     public Rol updateRol(Long id, Rol rolDetails) {
-        throw new UnsupportedOperationException("Método no implementado");
+        return rolRepository.findById(id).map(rol -> {
+            rol.setNombre(rolDetails.getNombre());
+            rol.setPermisos(rolDetails.getPermisos());
+            return rolRepository.save(rol);
+        }).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
     }
 
-    @Transactional
+    // Eliminar un rol
     public void deleteRol(Long id) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
-    public List<Rol> getRolesByNombre(String nombre) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional(readOnly = true)
-    public List<Rol> getRolesByPersonaId(Long personaId) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    // ------------------------- Métodos de Negocio -------------------------
-    @Transactional
-    public void agregarPermiso(Long rolId, String permiso) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional
-    public void revocarPermiso(Long rolId, String permiso) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional
-    public void asignarRolAPersona(Long rolId, Long personaId) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional
-    public void removerRolDePersona(Long rolId, Long personaId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!rolRepository.existsById(id)) {
+            throw new RuntimeException("Rol no encontrado");
+        }
+        rolRepository.deleteById(id);
     }
 }

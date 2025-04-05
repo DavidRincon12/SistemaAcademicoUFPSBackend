@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,16 +31,18 @@ public class EstudianteService {
         return estudianteRepository.save(estudiante);
     }
 
-    // Actualizar estudiante
-    public Estudiante updateEstudiante(Long id, Estudiante estudianteDetails) {
-        return estudianteRepository.findById(id).map(estudiante -> {
-            estudiante.setCorreoEstudiantil(estudianteDetails.getCorreoEstudiantil());
-            estudiante.setEstado(estudianteDetails.getEstado());
-            estudiante.setBecas(estudianteDetails.getBecas());
-            estudiante.setPrograma(estudianteDetails.getPrograma());
-            return estudianteRepository.save(estudiante);
-        }).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-    }
+// Actualizar estudiante
+public Estudiante updateEstudiante(Long id, LocalDate fechaInscripcion, String estado, String becas,
+        String correoEstudiantil, short creditosAprobados) {
+    return estudianteRepository.findById(id).map(estudiante -> {
+        estudiante.setFechaInscripcion(fechaInscripcion);
+        estudiante.setEstado(estado);
+        estudiante.setBecas(becas);
+        estudiante.setCorreoEstudiantil(correoEstudiantil);
+        estudiante.setCreditosAprobados(creditosAprobados);
+        return estudianteRepository.save(estudiante);
+    }).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+}
 
     // Eliminar estudiante
     public void deleteEstudiante(Long id) {

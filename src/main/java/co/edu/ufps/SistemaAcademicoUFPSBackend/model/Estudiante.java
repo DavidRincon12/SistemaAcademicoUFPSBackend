@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Estudiante")
@@ -20,7 +20,7 @@ public class Estudiante implements Serializable {
     private Long id;
 
     @Temporal(TemporalType.DATE)
-    private Date fechaInscripcion;
+    private LocalDate fechaInscripcion;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "programa_id", referencedColumnName = "id")
