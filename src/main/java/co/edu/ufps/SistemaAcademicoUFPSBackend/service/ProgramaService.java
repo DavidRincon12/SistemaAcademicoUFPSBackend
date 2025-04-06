@@ -18,7 +18,9 @@ import java.util.Optional;
 public class ProgramaService {
     @Autowired
     private ProgramaRepository programaRepository;
+    @Autowired
     private FacultadRepository facultadRepository;
+    @Autowired
     private DocenteRepository docenteRepository;
 
     // Obtener todos los programas

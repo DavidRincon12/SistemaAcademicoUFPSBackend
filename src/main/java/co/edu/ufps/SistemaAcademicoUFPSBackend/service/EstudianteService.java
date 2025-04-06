@@ -1,6 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Docente;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Programa;
@@ -19,7 +18,9 @@ import java.util.Optional;
 public class EstudianteService {
     @Autowired
     private EstudianteRepository estudianteRepository;
+    @Autowired
     private ProgramaRepository programaRepository;
+    @Autowired
     private PersonaRepository personaRepository;
 
     // Obtener todos los estudiantes

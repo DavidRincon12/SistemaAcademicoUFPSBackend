@@ -15,6 +15,26 @@ INSERT INTO persona (
     (SELECT id FROM rol WHERE nombre = 'Estudiante')
 );
 
+-- Persona: Laura
+INSERT INTO persona (
+    nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
+    direccion, telefono, correo, fecha_nacimiento, estado_civil,
+    nacionalidad, datos_profesionales, genero, codigo, rol_id
+) VALUES (
+    'Laura', '45678', '2024-03-28', 'CC', '1002003005', 'Calle 8 #20-30', '3109876543', 'laura@example.com',
+    '1982-03-22', 'Casada', 'Colombiana', 'Especialista en Telecomunicaciones', 'Femenino', 'P005',
+    (SELECT id FROM rol WHERE nombre = 'Docente')
+);
+
+-- Docente: Laura
+INSERT INTO docente (
+    correo_institucional, tipo, persona_id
+) VALUES (
+    'laura.prof@ufps.edu.co', 'Tiempo Completo',
+    (SELECT id FROM persona WHERE nombre = 'Laura')
+);
+
+
 INSERT INTO persona (
     nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
     direccion, telefono, correo, fecha_nacimiento, estado_civil,
@@ -24,6 +44,26 @@ INSERT INTO persona (
     '1990-05-12', 'Soltero', 'Colombiano', 'Profesor', 'Masculino', 'P002',
     (SELECT id FROM rol WHERE nombre = 'Docente')
 );
+
+-- Persona: Andrés
+INSERT INTO persona (
+    nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
+    direccion, telefono, correo, fecha_nacimiento, estado_civil,
+    nacionalidad, datos_profesionales, genero, codigo, rol_id
+) VALUES (
+    'Andres', '67890', '2024-03-27', 'CC', '1002003006', 'Diagonal 11 #33', '3115556677', 'andres@example.com',
+    '1980-08-10', 'Soltero', 'Colombiano', 'Ingeniero de Software', 'Masculino', 'P006',
+    (SELECT id FROM rol WHERE nombre = 'Docente')
+);
+
+-- Docente: Andrés
+INSERT INTO docente (
+    correo_institucional, tipo, persona_id
+) VALUES (
+    'andres.prof@ufps.edu.co', 'Catedrático',
+    (SELECT id FROM persona WHERE nombre = 'Andres')
+);
+
 
 -- Insertar docentes (relacionados con personas previamente creadas o nuevas)
 
@@ -88,3 +128,35 @@ INSERT INTO HORARIOASESORIA (dia_semana, hora_inicio, hora_fin, docente_id)
 VALUES 
 ('THURSDAY', '10:00:00', '12:00:00', 3),
 ('MONDAY', '15:00:00', '17:00:00', 3);
+
+-- Facultad de Ingeniería (decano: Carlos, docente_id = 1)
+INSERT INTO facultad (nombre, decano_id)
+VALUES ('Facultad de Ingeniería', 1);
+
+-- Facultad de Educación (decano: María, docente_id = 2)
+INSERT INTO facultad (nombre, decano_id)
+VALUES ('Facultad de Educación', 2);
+
+-- Facultad de Ciencias (decano: Juan, docente_id = 3)
+INSERT INTO facultad (nombre, decano_id)
+VALUES ('Facultad de Ciencias', 3);
+
+-- Programa 1
+INSERT INTO programa (nombre, codigo, duracion, registro_snies, director_id, facultad_id)
+VALUES ('Ingeniería de Sistemas', 'IS123', '10 semestres', 'SNIES45678', 1, 1);
+
+-- Programa 2
+INSERT INTO programa (nombre, codigo, duracion, registro_snies, director_id, facultad_id)
+VALUES ('Licenciatura en Educación Infantil', 'LEI456', '9 semestres', 'SNIES78901', 2, 2);
+
+-- Programa 3
+INSERT INTO programa (nombre, codigo, duracion, registro_snies, director_id, facultad_id)
+VALUES ('Ciencias Naturales', 'CN789', '8 semestres', 'SNIES23456', 3, 3);
+
+-- Programa 4
+INSERT INTO programa (nombre, codigo, duracion, registro_snies, director_id, facultad_id)
+VALUES ('Ingeniería Electrónica', 'IE987', '10 semestres', 'SNIES11223', 4, 1);
+
+-- Programa 5
+INSERT INTO programa (nombre, codigo, duracion, registro_snies, director_id, facultad_id)
+VALUES ('Educación Física', 'EF321', '8 semestres', 'SNIES44556', 5, 2);
