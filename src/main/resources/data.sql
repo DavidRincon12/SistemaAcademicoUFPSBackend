@@ -160,3 +160,59 @@ VALUES ('Ingeniería Electrónica', 'IE987', '10 semestres', 'SNIES11223', 4, 1)
 -- Programa 5
 INSERT INTO programa (nombre, codigo, duracion, registro_snies, director_id, facultad_id)
 VALUES ('Educación Física', 'EF321', '8 semestres', 'SNIES44556', 5, 2);
+
+
+-- Persona: Laura
+INSERT INTO persona (
+    nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
+    direccion, telefono, correo, fecha_nacimiento, estado_civil,
+    nacionalidad, datos_profesionales, genero, codigo, rol_id
+) VALUES (
+    'Laura', '11111', '2024-03-26', 'CC', '1002003007', 'Calle 50 #20-10', '3101234567', 'laura@example.com',
+    '1987-03-21', 'Casada', 'Colombiana', 'Magister en Informática', 'Femenino', 'P007',
+    (SELECT id FROM rol WHERE nombre = 'Estudiante')
+);
+
+-- Persona: Pedro
+INSERT INTO persona (
+    nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
+    direccion, telefono, correo, fecha_nacimiento, estado_civil,
+    nacionalidad, datos_profesionales, genero, codigo, rol_id
+) VALUES (
+    'Pedro', '22222', '2024-03-25', 'CC', '1002003008', 'Av. Norte #99', '3201112233', 'pedro@example.com',
+    '1982-07-05', 'Casado', 'Colombiano', 'Doctor en Electrónica', 'Masculino', 'P008',
+    (SELECT id FROM rol WHERE nombre = 'Estudiante')
+);
+
+-- Persona: Daniela
+INSERT INTO persona (
+    nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
+    direccion, telefono, correo, fecha_nacimiento, estado_civil,
+    nacionalidad, datos_profesionales, genero, codigo, rol_id
+) VALUES (
+    'Daniela', '33333', '2024-03-24', 'CC', '1002003009', 'Cra 8 #12', '3009988776', 'daniela@example.com',
+    '1992-11-11', 'Soltera', 'Colombiana', 'Especialista en Educación', 'Femenino', 'P009',
+    (SELECT id FROM rol WHERE nombre = 'Estudiante')
+);
+
+-- Persona: Felipe
+INSERT INTO persona (
+    nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
+    direccion, telefono, correo, fecha_nacimiento, estado_civil,
+    nacionalidad, datos_profesionales, genero, codigo, rol_id
+) VALUES (
+    'Felipe', '44444', '2024-03-23', 'CC', '1002003010', 'Calle 100 #10', '3116677889', 'felipe@example.com',
+    '1988-02-28', 'Soltero', 'Colombiano', 'Estudiante Universitario', 'Masculino', 'P010',
+    (SELECT id FROM rol WHERE nombre = 'Estudiante')
+);
+
+-- Persona: Andrea
+INSERT INTO persona (
+    nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
+    direccion, telefono, correo, fecha_nacimiento, estado_civil,
+    nacionalidad, datos_profesionales, genero, codigo, rol_id
+) VALUES (
+    'Andrea', '55555', '2024-03-22', 'CC', '1002003011', 'Transv 3 #55', '3123344556', 'andrea@example.com',
+    '1990-09-17', 'Soltera', 'Colombiana', 'Ingeniera Industrial', 'Femenino', 'P011',
+    (SELECT id FROM rol WHERE nombre = 'Estudiante')
+);
