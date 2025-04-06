@@ -8,7 +8,6 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.FacultadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseBody;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.DocenteRepository;
 
 import java.util.List;
@@ -23,7 +22,6 @@ public class ProgramaService {
     @Autowired
     private DocenteRepository docenteRepository;
 
-    // Obtener todos los programas
     // Obtener todos los programas
     public List<Programa> getAllProgramas() {
         return programaRepository.findAll();
