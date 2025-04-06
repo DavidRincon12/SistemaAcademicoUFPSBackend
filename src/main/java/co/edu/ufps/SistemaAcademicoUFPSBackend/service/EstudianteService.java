@@ -1,7 +1,12 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Docente;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Programa;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.EstudianteRepository;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ProgramaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +19,8 @@ import java.util.Optional;
 public class EstudianteService {
     @Autowired
     private EstudianteRepository estudianteRepository;
+    private ProgramaRepository programaRepository;
+    private PersonaRepository personaRepository;
 
     // Obtener todos los estudiantes
 
@@ -28,21 +35,42 @@ public class EstudianteService {
 
     // Crear un nuevo estudiante
     public Estudiante createEstudiante(Estudiante estudiante) {
+        // Verificar que la persona asociada exista
+        if (estudiante.getPersona() != null && estudiante.getPersona().getId() != null) {
+            Persona persona = personaRepository.findById(estudiante.getPersona().getId())
+                    .orElseThrow(() -> new RuntimeException(
+                            "Persona no encontrada con id: " + estudiante.getPersona().getId()));
+            estudiante.setPersona(persona);
+        } else {
+            throw new RuntimeException("La persona asociada al estudiante es obligatoria");
+        }
+
+        // Verificar que el programa asociado exista
+        if (estudiante.getPrograma() != null && estudiante.getPrograma().getId() != null) {
+            Programa programa = programaRepository.findById(estudiante.getPrograma().getId())
+                    .orElseThrow(() -> new RuntimeException(
+                            "Programa no encontrado con id: " + estudiante.getPrograma().getId()));
+            estudiante.setPrograma(programa);
+        } else {
+            throw new RuntimeException("El programa asociado al estudiante es obligatorio");
+        }
+
+        // Guardar el estudiante
         return estudianteRepository.save(estudiante);
     }
 
-// Actualizar estudiante
-public Estudiante updateEstudiante(Long id, LocalDate fechaInscripcion, String estado, String becas,
-        String correoEstudiantil, short creditosAprobados) {
-    return estudianteRepository.findById(id).map(estudiante -> {
-        estudiante.setFechaInscripcion(fechaInscripcion);
-        estudiante.setEstado(estado);
-        estudiante.setBecas(becas);
-        estudiante.setCorreoEstudiantil(correoEstudiantil);
-        estudiante.setCreditosAprobados(creditosAprobados);
-        return estudianteRepository.save(estudiante);
-    }).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-}
+    // Actualizar estudiante
+    public Estudiante updateEstudiante(Long id, LocalDate fechaInscripcion, String estado, String becas,
+            String correoEstudiantil, short creditosAprobados) {
+        return estudianteRepository.findById(id).map(estudiante -> {
+            estudiante.setFechaInscripcion(fechaInscripcion);
+            estudiante.setEstado(estado);
+            estudiante.setBecas(becas);
+            estudiante.setCorreoEstudiantil(correoEstudiantil);
+            estudiante.setCreditosAprobados(creditosAprobados);
+            return estudianteRepository.save(estudiante);
+        }).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+    }
 
     // Eliminar estudiante
     public void deleteEstudiante(Long id) {

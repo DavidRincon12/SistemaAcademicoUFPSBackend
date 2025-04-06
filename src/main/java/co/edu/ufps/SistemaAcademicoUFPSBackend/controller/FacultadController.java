@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/facultades")
 public class FacultadController {
@@ -32,8 +34,8 @@ public class FacultadController {
 
     // Crear una nueva facultad
     @PostMapping
-    public Facultad createFacultad(@RequestBody Facultad facultad) {
-        return facultadService.createFacultad(facultad);
+    public ResponseEntity<Facultad> createFacultad(@RequestBody @Valid Facultad facultad) {
+        return ResponseEntity.ok(facultadService.createFacultad(facultad));
     }
 
     // Actualizar una facultad existente

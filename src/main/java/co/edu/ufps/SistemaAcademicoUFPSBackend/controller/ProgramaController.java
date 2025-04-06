@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/programas")
 public class ProgramaController {
@@ -32,8 +34,8 @@ public class ProgramaController {
 
     // Crear un nuevo programa
     @PostMapping
-    public Programa createPrograma(@RequestBody Programa programa) {
-        return programaService.createPrograma(programa);
+    public ResponseEntity<Programa> createPrograma(@RequestBody @Valid Programa programa) {
+        return ResponseEntity.ok(programaService.createPrograma(programa));
     }
 
     // Actualizar un programa existente

@@ -2,6 +2,8 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.EstudianteService;
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +35,8 @@ public class EstudianteController {
 
     // Crear un nuevo estudiante
     @PostMapping
-    public Estudiante createEstudiante(@RequestBody Estudiante estudiante) {
-        return estudianteService.createEstudiante(estudiante);
+    public ResponseEntity<Estudiante> createEstudiante(@RequestBody @Valid Estudiante estudiante) {
+        return ResponseEntity.ok(estudianteService.createEstudiante(estudiante));
     }
 
     // Actualizar un estudiante

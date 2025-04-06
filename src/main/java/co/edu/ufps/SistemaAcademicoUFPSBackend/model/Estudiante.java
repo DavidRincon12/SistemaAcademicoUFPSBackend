@@ -1,6 +1,8 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -19,18 +21,27 @@ public class Estudiante implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.DATE)
+    @NotNull(message = "La fecha de inscripción no puede ser nula")
     private LocalDate fechaInscripcion;
 
+    @NotNull(message = "El programa no puede ser nulo")
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "programa_id", referencedColumnName = "id")
     private Programa programa;
 
+    @NotBlank(message = "El estado no puede estar vacío")
     private String estado;
+
+    @NotBlank(message = "El campo becas no puede estar vacío")
     private String becas;
+
+    @NotBlank(message = "El correo estudiantil no puede estar vacío")
     private String correoEstudiantil;
+
+    @NotNull(message = "Los créditos aprobados no pueden ser nulos")
     private Short creditosAprobados;
 
+    @NotNull(message = "La persona no puede ser nula")
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
