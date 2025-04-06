@@ -1,68 +1,73 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.PersonalAdministrativo;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonalAdministrativoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PersonalAdministrativoService {
+
     @Autowired
     private PersonalAdministrativoRepository personalAdministrativoRepository;
+    @Autowired
+    private PersonaRepository personaRepository;
 
-    // Obtener todos los empleados administrativos
-
-    public List<PersonalAdministrativo> getAllPersonalAdministrativo() {
+    public List<PersonalAdministrativo> obtenerTodos() {
         return personalAdministrativoRepository.findAll();
     }
 
-    // Obtener un administrativo por ID
-    public Optional<PersonalAdministrativo> getPersonalAdministrativoById(Long id) {
+    public Optional<PersonalAdministrativo> obtenerPorId(Long id) {
         return personalAdministrativoRepository.findById(id);
     }
 
-    // Obtener administrativos por cargo
-    public List<PersonalAdministrativo> getPersonalAdministrativoByCargo(String cargo) {
+    public List<PersonalAdministrativo> obtenerPorCargo(String cargo) {
         return personalAdministrativoRepository.findByCargo(cargo);
     }
 
-    // Obtener administrativos por departamento
-    public List<PersonalAdministrativo> getPersonalAdministrativoByDepartamento(String departamento) {
+    public List<PersonalAdministrativo> obtenerPorDepartamento(String departamento) {
         return personalAdministrativoRepository.findByDepartamento(departamento);
     }
 
-    // Obtener administrativos por área de trabajo
-    public List<PersonalAdministrativo> getPersonalAdministrativoByAreaTrabajo(String areaTrabajo) {
+    public List<PersonalAdministrativo> obtenerPorAreaTrabajo(String areaTrabajo) {
         return personalAdministrativoRepository.findByAreaTrabajo(areaTrabajo);
     }
 
-    // Obtener administrativo por persona asociada
-    public Optional<PersonalAdministrativo> getPersonalAdministrativoByPersonaId(Long personaId) {
+    public Optional<PersonalAdministrativo> obtenerPorPersonaId(Long personaId) {
         return personalAdministrativoRepository.findByPersonaId(personaId);
-
     }
 
-    // Crear un nuevo administrativo
-    public PersonalAdministrativo createPersonalAdministrativo(PersonalAdministrativo personalAdministrativo) {
-        return personalAdministrativoRepository.save(personalAdministrativo);
+public PersonalAdministrativo createPersonalAdministrativo(PersonalAdministrativo personalAdministrativo) {
+    if (personalAdministrativo.getPersona() != null && personalAdministrativo.getPersona().getId() != null) {
+        Persona persona = personaRepository.findById(personalAdministrativo.getPersona().getId())
+                .orElseThrow(() -> new RuntimeException(
+                        "Persona no encontrada con id: " + personalAdministrativo.getPersona().getId()));
+        personalAdministrativo.setPersona(persona);
+    }
+    return personalAdministrativoRepository.save(personalAdministrativo);
+}
+
+    
+
+    public PersonalAdministrativo actualizar(Long id, PersonalAdministrativo actualizado) {
+        return personalAdministrativoRepository.findById(id).map(pa -> {
+            pa.setCargo(actualizado.getCargo());
+            pa.setDepartamento(actualizado.getDepartamento());
+            pa.setAreaTrabajo(actualizado.getAreaTrabajo());
+            pa.setFechaContratacion(actualizado.getFechaContratacion());
+            pa.setPersona(actualizado.getPersona());
+            return personalAdministrativoRepository.save(pa);
+        }).orElseThrow(() -> new RuntimeException("Personal administrativo no encontrado"));
     }
 
-    // Actualizar un administrativo
-    public PersonalAdministrativo updatePersonalAdministrativo(Long id, PersonalAdministrativo personalAdministrativoDetails) {
-        return personalAdministrativoRepository.findById(id).map(personalAdministrativo -> {
-            personalAdministrativo.setCargo(personalAdministrativoDetails.getCargo());
-            return personalAdministrativoRepository.save(personalAdministrativo);
-        }).orElseThrow(() -> new RuntimeException("Personal Administrativo no encontrado"));
-    }
-
-    // Eliminar un administrativo
-    public void deletePersonalAdministrativo(Long id) {
+    public void eliminar(Long id) {
         if (!personalAdministrativoRepository.existsById(id)) {
-            throw new RuntimeException("Personal Administrativo no encontrado");
+            throw new RuntimeException("Personal administrativo no encontrado");
         }
         personalAdministrativoRepository.deleteById(id);
     }

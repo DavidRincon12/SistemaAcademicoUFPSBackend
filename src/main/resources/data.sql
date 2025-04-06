@@ -1,5 +1,5 @@
 -- Insertar roles
-INSERT INTO rol (nombre, permisos) VALUES ('Administrador', 'ALL');
+INSERT INTO rol (nombre, permisos) VALUES ('Administrativo', 'ALL');
 INSERT INTO rol (nombre, permisos) VALUES ('Docente', 'READ_WRITE');
 INSERT INTO rol (nombre, permisos) VALUES ('Estudiante', 'READ');
 INSERT INTO rol (nombre, permisos) VALUES ('Invitado', 'LIMITED');
@@ -216,3 +216,58 @@ INSERT INTO persona (
     '1990-09-17', 'Soltera', 'Colombiana', 'Ingeniera Industrial', 'Femenino', 'P011',
     (SELECT id FROM rol WHERE nombre = 'Estudiante')
 );
+
+-- Estudiante 1 - Persona ID 7
+INSERT INTO estudiante (
+    fecha_inscripcion, programa_id, estado, becas, correo_estudiantil, creditos_aprobados, persona_id
+) VALUES (
+    '2024-04-05', 1, 'Activo', 'Beca excelencia académica', 'andres.est@ufps.edu.co', 1, 7
+);
+
+-- Estudiante 2 - Persona ID 8
+INSERT INTO estudiante (
+    fecha_inscripcion, programa_id, estado, becas, correo_estudiantil, creditos_aprobados, persona_id
+) VALUES (
+    '2024-04-05', 1, 'Activo', 'Sin beca', 'beatriz.est@ufps.edu.co', 2, 8
+);
+
+-- Estudiante 3 - Persona ID 9
+INSERT INTO estudiante (
+    fecha_inscripcion, programa_id, estado, becas, correo_estudiantil, creditos_aprobados, persona_id
+) VALUES (
+    '2024-04-05', 1, 'Inactivo', 'Beca deportiva', 'carlos.est@ufps.edu.co', 3, 9
+);
+
+-- Estudiante 4 - Persona ID 10
+INSERT INTO estudiante (
+    fecha_inscripcion, programa_id, estado, becas, correo_estudiantil, creditos_aprobados, persona_id
+) VALUES (
+    '2024-04-05', 1, 'Activo', 'Beca cultural', 'diana.est@ufps.edu.co', 4, 10
+);
+
+-- Estudiante 5 - Persona ID 11
+INSERT INTO estudiante (
+    fecha_inscripcion, programa_id, estado, becas, correo_estudiantil, creditos_aprobados, persona_id
+) VALUES (
+    '2024-04-05', 1, 'Activo', 'Beca académica', 'eduardo.est@ufps.edu.co', 5, 11
+);
+
+INSERT INTO persona (
+    nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
+    direccion, telefono, correo, fecha_nacimiento, estado_civil,
+    nacionalidad, datos_profesionales, genero, codigo, rol_id
+) VALUES 
+('Carlos', 'pwd123', '2024-04-01', 'CC', '1003004001', 'Calle 1 #10', '3111002001', 'carlos@ufps.edu.co', '1985-02-10', 'Soltero', 'Colombiano', 'Administrador de empresas', 'Masculino', 'P010', (SELECT id FROM rol WHERE nombre = 'Administrativo')),
+('Diana', 'pwd456', '2024-04-02', 'CC', '1003004002', 'Calle 2 #20', '3111002002', 'diana@ufps.edu.co', '1988-03-12', 'Casada', 'Colombiana', 'Contadora pública', 'Femenino', 'P011', (SELECT id FROM rol WHERE nombre = 'Administrativo')),
+('Luis', 'pwd789', '2024-04-03', 'CC', '1003004003', 'Calle 3 #30', '3111002003', 'luis@ufps.edu.co', '1982-07-01', 'Soltero', 'Colombiano', 'Coordinador académico', 'Masculino', 'P012', (SELECT id FROM rol WHERE nombre = 'Administrativo')),
+('Marta', 'pwd101', '2024-04-04', 'CC', '1003004004', 'Calle 4 #40', '3111002004', 'marta@ufps.edu.co', '1990-06-21', 'Casada', 'Colombiana', 'Asistente de dirección', 'Femenino', 'P013', (SELECT id FROM rol WHERE nombre = 'Administrativo')),
+('Jorge', 'pwd202', '2024-04-05', 'CC', '1003004005', 'Calle 5 #50', '3111002005', 'jorge@ufps.edu.co', '1980-11-30', 'Divorciado', 'Colombiano', 'Técnico administrativo', 'Masculino', 'P014', (SELECT id FROM rol WHERE nombre = 'Administrativo'));
+
+INSERT INTO personal_administrativo (
+    cargo, departamento, area_trabajo, fecha_contratacion, persona_id
+) VALUES 
+('Secretario Académico', 'Académico', 'Gestión Académica', '2021-01-10', 12),
+('Jefe de Contabilidad', 'Financiero', 'Contabilidad', '2020-03-15', 13),
+('Coordinador de Admisiones', 'Registro', 'Admisiones', '2019-05-20', 14),
+('Asistente de Rectoría', 'Administrativo', 'Dirección General', '2022-08-01', 15),
+('Encargado de Logística', 'Infraestructura', 'Servicios Generales', '2018-11-05', 16);
