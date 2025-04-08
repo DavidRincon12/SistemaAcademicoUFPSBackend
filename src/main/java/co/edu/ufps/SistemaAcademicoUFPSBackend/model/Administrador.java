@@ -22,6 +22,7 @@ public class Administrador implements Serializable {
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
 
+    //quitar
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "calendario_id", referencedColumnName = "id")
     private CalendarioAcademico calendario;
