@@ -47,6 +47,7 @@ public class Persona implements Serializable {
     private String correo;
 
     @NotNull
+    //etiqueta de fecha
     private LocalDate fechaNacimiento;
 
     @NotBlank

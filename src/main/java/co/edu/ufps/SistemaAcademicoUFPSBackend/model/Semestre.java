@@ -27,6 +27,8 @@ public class Semestre implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaFin;
 
+    //relacion con materia
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "calendario_academico_id", referencedColumnName = "id")
     private CalendarioAcademico calendarioAcademico;
