@@ -26,4 +26,10 @@ public class Horario implements Serializable {
 
     @Temporal(TemporalType.TIME)
     private Date horaFin;
+
+    @ManyToOne
+    @JoinColumn(name = "asignatura_id", nullable = false)
+    private Asignatura asignatura;
+
+
 }

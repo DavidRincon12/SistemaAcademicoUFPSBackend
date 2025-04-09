@@ -27,4 +27,7 @@ public class ReservaRecurso implements Serializable {
 
     private String estado;
     private String nombre;
+    @ManyToOne
+    @JoinColumn(name = "recurso_academico_id")
+    private RecursoAcademico recursoAcademico;
 }

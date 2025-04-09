@@ -60,11 +60,6 @@ public class ReservaRecursoService {
 
     // Aprobar una reserva
 
-
-
-
-
-
     public ReservaRecurso aprobarReserva(Long id) {
         return reservaRecursoRepository.findById(id).map(reserva -> {
             reserva.setEstado("Aprobada");

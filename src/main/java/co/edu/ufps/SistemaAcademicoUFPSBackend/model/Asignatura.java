@@ -1,4 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Asignatura implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "materia_id", referencedColumnName = "id")
+    @JsonBackReference
     private Materia materia;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -34,10 +36,6 @@ public class Asignatura implements Serializable {
             joinColumns = @JoinColumn(name = "asignatura_id"),
             inverseJoinColumns = @JoinColumn(name = "estudiante_id"))
     private List<Estudiante> estudiantes = new ArrayList<>();
-
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "horario_id", referencedColumnName = "id")
-    private Horario horario;
 
     private float primerPrevio;
     private float segundoPrevio;

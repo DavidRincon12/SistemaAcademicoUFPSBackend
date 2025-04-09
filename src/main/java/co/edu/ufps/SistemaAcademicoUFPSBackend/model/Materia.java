@@ -1,11 +1,14 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Materia")
@@ -30,6 +33,10 @@ public class Materia implements Serializable {
     private Programa programa;
 
     private boolean electiva;
+
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Asignatura> asignaturas = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "prerrequisito_id", referencedColumnName = "id")
