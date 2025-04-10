@@ -3,7 +3,7 @@ INSERT INTO rol (nombre, permisos) VALUES ('Administrativo', 'ALL');
 INSERT INTO rol (nombre, permisos) VALUES ('Docente', 'READ_WRITE');
 INSERT INTO rol (nombre, permisos) VALUES ('Estudiante', 'READ');
 INSERT INTO rol (nombre, permisos) VALUES ('Invitado', 'LIMITED');
-
+INSERT INTO rol (nombre, permisos) VALUES ('Administrador', 'LIMITED');
 -- Insertar personas
 INSERT INTO persona (
     nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
@@ -271,3 +271,16 @@ INSERT INTO personal_administrativo (
 ('Coordinador de Admisiones', 'Registro', 'Admisiones', '2019-05-20', 14),
 ('Asistente de Rectoría', 'Administrativo', 'Dirección General', '2022-08-01', 15),
 ('Encargado de Logística', 'Infraestructura', 'Servicios Generales', '2018-11-05', 16);
+
+
+-- Persona: Administrador (por ejemplo, Pablo)
+INSERT INTO persona (
+    nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
+    direccion, telefono, correo, fecha_nacimiento, estado_civil,
+    nacionalidad, datos_profesionales, genero, codigo, rol_id
+) VALUES (
+             'Pablo', 'admin123', '2024-04-10', 'CC', '1002003012', 'Calle 80 #30', '3101231234', 'pablo.admin@ufps.edu.co',
+             '1985-01-01', 'Soltero', 'Colombiano', 'Administrador de sistemas', 'Masculino', 'P012',
+             (SELECT id FROM rol WHERE nombre = 'Administrador')
+         );
+
