@@ -38,7 +38,6 @@ public class AdministradorService {
     public Administrador updateAdministrator(Long id, Administrador administradorDetails) {
         return administradorRepository.findById(id).map(admin -> {
             admin.setPersona(administradorDetails.getPersona());
-            admin.setCalendario(administradorDetails.getCalendario());
             return administradorRepository.save(admin);
         }).orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
     }
@@ -87,8 +86,4 @@ public class AdministradorService {
         throw new UnsupportedOperationException("Método no implementado");
     }
 
-    public Optional<Administrador> findByCalendarioId(Long calendarioId) {
-        // Lógica pendiente
-        throw new UnsupportedOperationException("Método no implementado");
-    }
 }

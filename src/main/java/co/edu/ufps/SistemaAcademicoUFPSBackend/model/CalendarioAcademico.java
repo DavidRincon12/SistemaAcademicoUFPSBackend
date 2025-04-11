@@ -26,4 +26,8 @@ public class CalendarioAcademico implements Serializable {
 
     @Temporal(TemporalType.DATE)
     private Date fechaFin;
+
+    @ManyToOne
+    @JoinColumn(name = "administrador_id")
+    private Administrador administrador;
 }

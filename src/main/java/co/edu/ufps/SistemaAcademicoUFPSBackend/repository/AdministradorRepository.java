@@ -16,8 +16,4 @@ public interface AdministradorRepository extends JpaRepository<Administrador, Lo
 
     // Buscar un administrador por su ID de persona
     Optional<Administrador> findByPersona_Id(Long personaId);
-
-    // Buscar un administrador por su ID de calendario académico
-    Optional<Administrador> findByCalendario_Id(Long calendarioId);
-
 }

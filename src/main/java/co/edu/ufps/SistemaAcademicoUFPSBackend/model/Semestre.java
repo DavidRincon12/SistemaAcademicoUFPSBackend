@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Semestre")
@@ -27,9 +28,7 @@ public class Semestre implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaFin;
 
-    //relacion con materia
+    @OneToMany(mappedBy = "semestre", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Materia> materias;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "calendario_academico_id", referencedColumnName = "id")
-    private CalendarioAcademico calendarioAcademico;
 }
