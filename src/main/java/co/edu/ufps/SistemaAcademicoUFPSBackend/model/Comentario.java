@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,6 @@ public class Comentario implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "foro_id", referencedColumnName = "id")
+    @JsonBackReference("foro-comentarios")
     private Foro foro;
 }

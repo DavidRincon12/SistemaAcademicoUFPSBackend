@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,5 +33,6 @@ public class Foro implements Serializable {
     private Persona autor;
 
     @OneToMany(mappedBy = "foro", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonManagedReference("foro-comentarios")
     private List<Comentario> comentarios = new ArrayList<>();
 }
