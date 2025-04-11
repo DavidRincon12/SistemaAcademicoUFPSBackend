@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,10 +27,12 @@ public class Materia implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "semestre_id", referencedColumnName = "id")
+    @JsonBackReference("materia-semestre")
     private Semestre semestre;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "programa_id", referencedColumnName = "id")
+    @JsonBackReference("materia-programa")
     private Programa programa;
 
     private boolean electiva;
