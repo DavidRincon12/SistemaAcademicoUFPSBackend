@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Semestre implements Serializable {
     private Date fechaFin;
 
     @OneToMany(mappedBy = "semestre", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonManagedReference("materia-semestre")
     private List<Materia> materias;
 
 }
