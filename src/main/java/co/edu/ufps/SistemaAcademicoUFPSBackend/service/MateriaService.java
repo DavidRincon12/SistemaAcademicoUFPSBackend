@@ -24,7 +24,7 @@ public class MateriaService {
     public Optional<Materia> getMateriaById(Long id) {
         return materiaRepository.findById(id);
     }
-    // ------------------------- Métodos de Negocio -------------------------
+    
     @Transactional
     public void añadirAsignatura() {
         throw new UnsupportedOperationException("Método no implementado");

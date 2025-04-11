@@ -11,7 +11,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("personal-administrativo")
+@RequestMapping("personaladministrativo")
 public class PersonalAdministrativoController {
 
     @Autowired

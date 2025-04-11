@@ -1,9 +1,10 @@
 -- Insertar roles
-INSERT INTO rol (nombre, permisos) VALUES ('Administrativo', 'ALL');
-INSERT INTO rol (nombre, permisos) VALUES ('Docente', 'READ_WRITE');
-INSERT INTO rol (nombre, permisos) VALUES ('Estudiante', 'READ');
-INSERT INTO rol (nombre, permisos) VALUES ('Invitado', 'LIMITED');
-INSERT INTO rol (nombre, permisos) VALUES ('Administrador', 'LIMITED');
+INSERT INTO rol(nombre, permisos) VALUES
+('Administrador', 'ALL'),
+('Docente', 'READ_WRITE'),
+('Estudiante', 'READ'),
+('Administrador', 'LIMITED');
+
 -- Insertar personas
 INSERT INTO persona (
     nombre, contrasena, fecha_registro, tipo_documento, numero_documento,
