@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "HORARIOASESORIA")
+@Table(name = "horarioasesoria")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
