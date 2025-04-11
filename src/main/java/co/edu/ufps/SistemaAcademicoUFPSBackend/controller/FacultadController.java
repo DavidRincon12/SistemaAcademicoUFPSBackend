@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.FacultadDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Facultad;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.FacultadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,18 @@ public class FacultadController {
 
     // Obtener todas las facultades
     @GetMapping
-    public List<Facultad> getAllFacultades() {
-        return facultadService.getAllFacultades();
+    public List<FacultadDTO> getAllFacultades() {
+        return facultadService.getAllFacultades()
+                .stream()
+                .map(FacultadDTO::new)
+                .toList();
     }
 
     // Obtener una facultad por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Facultad> getFacultadById(@PathVariable Long id) {
+    public ResponseEntity<FacultadDTO> getFacultadById(@PathVariable Long id) {
         Optional<Facultad> facultad = facultadService.getFacultadById(id);
-        return facultad.map(ResponseEntity::ok)
+        return facultad.map(f -> ResponseEntity.ok(new FacultadDTO(f)))
                 .orElse(ResponseEntity.notFound().build());
     }
 

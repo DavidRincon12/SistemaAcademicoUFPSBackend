@@ -34,7 +34,6 @@ public class Materia implements Serializable {
     @JoinColumn(name = "programa_id", referencedColumnName = "id")
     @JsonBackReference("materia-programa")
     private Programa programa;
-
     private boolean electiva;
 
     @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
