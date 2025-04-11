@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Time;
 
 @Entity
-@Table(name = "Horario")
+@Table(name = "horario")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,17 +19,16 @@ public class Horario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String dia;
 
-    @Temporal(TemporalType.TIME)
-    private Date horaInicio;
+    @Column(name = "hora_inicio", nullable = false)
+    private Time horaInicio;
 
-    @Temporal(TemporalType.TIME)
-    private Date horaFin;
+    @Column(name = "hora_fin", nullable = false)
+    private Time horaFin;
 
     @ManyToOne
     @JoinColumn(name = "asignatura_id", nullable = false)
     private Asignatura asignatura;
-
-
 }

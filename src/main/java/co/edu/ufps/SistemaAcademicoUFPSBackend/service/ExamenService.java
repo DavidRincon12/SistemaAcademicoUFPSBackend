@@ -8,6 +8,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ExamenRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.RecursoAcademicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,7 @@ public class ExamenService {
         return examenRepository.findById(id);
     }
 
+    @Transactional
     public Examen createExamen(Examen examen) {
         Asignatura asignatura = asignaturaRepository.findById(examen.getAsignatura().getId())
                 .orElseThrow(() -> new RuntimeException("Asignatura no encontrada"));
@@ -42,6 +44,20 @@ public class ExamenService {
             RecursoAcademico recurso = recursoAcademicoRepository.findById(examen.getRecurso().getId())
                     .orElseThrow(() -> new RuntimeException("Recurso no encontrado"));
             examen.setRecurso(recurso);
+
+            // Validar solapamiento con otros exámenes en el mismo recurso
+            List<Examen> solapadosRecurso = examenRepository.findSolapamientosRecurso(
+                    recurso.getId(), examen.getFecha(), examen.getHoraInicio(), examen.getHoraFin());
+            if (!solapadosRecurso.isEmpty()) {
+                throw new RuntimeException("El recurso académico ya está reservado en ese horario.");
+            }
+        }
+
+        // Validar solapamiento con otros exámenes de la misma asignatura
+        List<Examen> solapadosAsignatura = examenRepository.findSolapamientosAsignatura(
+                asignatura.getId(), examen.getFecha(), examen.getHoraInicio(), examen.getHoraFin());
+        if (!solapadosAsignatura.isEmpty()) {
+            throw new RuntimeException("Ya hay otro examen programado para esta asignatura en ese horario.");
         }
 
         return examenRepository.save(examen);
