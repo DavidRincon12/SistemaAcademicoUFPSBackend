@@ -2,6 +2,8 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Comentario;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Foro;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ComentarioRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ForoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +15,17 @@ import java.util.Optional;
 
 @Service
 public class ForoService {
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
+
     @Autowired
     private ForoRepository foroRepository;
 
-    // Obtener todos los foros
+    @Autowired
+    private PersonaService personaService;
 
+    // Obtener todos los foros
     public List<Foro> getAllForos() {
         return foroRepository.findAll();
     }
@@ -27,8 +35,16 @@ public class ForoService {
         return foroRepository.findById(id);
     }
 
-    // Crear un nuevo foro
+    // Crear un nuevo foro (con autor gestionado)
     public Foro createForo(Foro foro) {
+        Long autorId = foro.getAutor().getId();
+
+        // Buscar y asociar el autor como entidad gestionada
+        Persona autor = personaService.getPersonById(autorId)
+                .orElseThrow(() -> new RuntimeException("Autor no encontrado con ID: " + autorId));
+
+        foro.setAutor(autor);
+
         return foroRepository.save(foro);
     }
 
@@ -37,8 +53,14 @@ public class ForoService {
         return foroRepository.findById(id).map(foro -> {
             foro.setTema(foroDetails.getTema());
             foro.setDescripcion(foroDetails.getDescripcion());
-            foro.setAutor(foroDetails.getAutor());
             foro.setFechaCreacion(foroDetails.getFechaCreacion());
+
+            // Asociar el autor correctamente
+            Long autorId = foroDetails.getAutor().getId();
+            Persona autor = personaService.getPersonById(autorId)
+                    .orElseThrow(() -> new RuntimeException("Autor no encontrado con ID: " + autorId));
+            foro.setAutor(autor);
+
             return foroRepository.save(foro);
         }).orElseThrow(() -> new RuntimeException("Foro no encontrado"));
     }
@@ -51,36 +73,43 @@ public class ForoService {
         foroRepository.deleteById(id);
     }
 
-    // Buscar foros por tema (sin importar mayúsculas/minúsculas)
-
     public List<Foro> getForosByTema(String tema) {
         return foroRepository.findByTemaIgnoreCase(tema);
     }
 
-    // Buscar foros creados por un autor específico
     public List<Foro> getForosByAutor(Long autorId) {
         return foroRepository.findByAutorId(autorId);
     }
 
-    // Obtener foros creados después de una fecha específica
     public List<Foro> getForosByFechaCreacionAfter(Date fecha) {
         return foroRepository.findByFechaCreacionAfter(fecha);
     }
 
-    // Buscar foros por descripción parcial
     public List<Foro> searchForosByDescripcion(String descripcion) {
         return foroRepository.searchByDescripcion(descripcion);
     }
 
-    // Contar cuántos foros ha creado un autor
     public long countForosByAutor(Long autorId) {
         return foroRepository.countForosByAutor(autorId);
     }
+
     // ------------------------- Métodos de Negocio -------------------------
     @Transactional
     public void agregarComentario(Long foroId, Comentario comentario) {
-        throw new UnsupportedOperationException("Método no implementado");
+        Foro foro = foroRepository.findById(foroId)
+                .orElseThrow(() -> new RuntimeException("Foro no encontrado con ID: " + foroId));
+
+        Long emisorId = comentario.getEmisor().getId();
+        Persona emisor = personaService.getPersonById(emisorId)
+                .orElseThrow(() -> new RuntimeException("Emisor no encontrado con ID: " + emisorId));
+
+        comentario.setForo(foro);
+        comentario.setEmisor(emisor);
+        comentario.setFechaCreacion(new Date());
+
+        comentarioRepository.save(comentario);
     }
+
 
     @Transactional
     public void eliminarComentario(Long foroId, Long comentarioId) {

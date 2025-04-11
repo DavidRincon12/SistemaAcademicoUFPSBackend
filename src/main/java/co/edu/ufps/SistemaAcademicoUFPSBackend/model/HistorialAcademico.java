@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class HistorialAcademico implements Serializable {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

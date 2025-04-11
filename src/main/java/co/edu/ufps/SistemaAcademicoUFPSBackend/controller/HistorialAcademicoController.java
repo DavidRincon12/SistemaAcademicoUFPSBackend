@@ -5,99 +5,77 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.service.HistorialAcademicoService
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/historiales")
+@RequestMapping("/api/historiales")
+@CrossOrigin(origins = "*")
 public class HistorialAcademicoController {
 
     @Autowired
-    private HistorialAcademicoService historialAcademicoService;
+    private HistorialAcademicoService historialService;
 
     // Obtener todos los historiales académicos
     @GetMapping
-    public List<HistorialAcademico> getAllHistoriales() {
-        return historialAcademicoService.getAllHistoriales();
+    public ResponseEntity<List<HistorialAcademico>> getAllHistoriales() {
+        List<HistorialAcademico> historiales = historialService.findAll();
+        return ResponseEntity.ok(historiales);
     }
 
-    // Obtener un historial académico por su ID
+    // Obtener un historial académico por ID
     @GetMapping("/{id}")
     public ResponseEntity<HistorialAcademico> getHistorialById(@PathVariable Long id) {
-        Optional<HistorialAcademico> historial = historialAcademicoService.getHistorialById(id);
-        return historial.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // Obtener el historial académico de un estudiante por su ID
-    @GetMapping("/estudiante/{estudianteId}")
-    public ResponseEntity<HistorialAcademico> getHistorialByEstudianteId(@PathVariable Long estudianteId) {
-        Optional<HistorialAcademico> historial = historialAcademicoService.getHistorialByEstudianteId(estudianteId);
-        return historial.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        HistorialAcademico historial = historialService.findById(id);
+        if (historial == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(historial);
     }
 
     // Crear un nuevo historial académico
     @PostMapping
-    public ResponseEntity<HistorialAcademico> createHistorial(@RequestBody @Valid HistorialAcademico historial) {
-        HistorialAcademico nuevoHistorial = historialAcademicoService.createHistorial(historial);
-        return ResponseEntity.ok(nuevoHistorial);
+    public ResponseEntity<HistorialAcademico> createHistorial(@RequestBody HistorialAcademico historial) {
+        HistorialAcademico nuevo = historialService.save(historial);
+        return ResponseEntity.ok(nuevo);
     }
 
-    // Actualizar un historial académico
+    // Actualizar un historial académico existente
     @PutMapping("/{id}")
-    public ResponseEntity<HistorialAcademico> updateHistorial(@PathVariable Long id,
-                                                              @RequestBody HistorialAcademico historialDetails) {
-        try {
-            HistorialAcademico actualizado = historialAcademicoService.updateHistorial(id, historialDetails);
-            return ResponseEntity.ok(actualizado);
-        } catch (RuntimeException e) {
+    public ResponseEntity<HistorialAcademico> updateHistorial(@PathVariable Long id, @RequestBody HistorialAcademico actualizado) {
+        HistorialAcademico historialActualizado = historialService.update(id, actualizado);
+        if (historialActualizado == null) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(historialActualizado);
     }
 
     // Eliminar un historial académico
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHistorial(@PathVariable Long id) {
+        historialService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Agregar una asignatura aprobada
+    @PostMapping("/{historialId}/aprobadas/{asignaturaId}")
+    public ResponseEntity<HistorialAcademico> agregarAsignaturaAprobada(@PathVariable Long historialId, @PathVariable Long asignaturaId) {
         try {
-            historialAcademicoService.deleteHistorial(id);
-            return ResponseEntity.noContent().build();
+            HistorialAcademico actualizado = historialService.agregarAsignaturaAprobada(historialId, asignaturaId);
+            return ResponseEntity.ok(actualizado);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
-    // Endpoint para obtener el promedio ponderado de un estudiante
-    @GetMapping("/estudiante/{estudianteId}/promedio")
-    public ResponseEntity<Float> getPromedioPonderadoByEstudiante(@PathVariable Long estudianteId) {
-        Float promedio = historialAcademicoService.getPromedioPonderadoByEstudianteId(estudianteId);
-        return ResponseEntity.ok(promedio);
-    }
-
-    // Endpoint para contar cuántas materias ha aprobado un estudiante
-    @GetMapping("/estudiante/{estudianteId}/aprobadas")
-    public ResponseEntity<Integer> countMateriasAprobadas(@PathVariable Long estudianteId) {
-        int cantidad = historialAcademicoService.countMateriasAprobadasByEstudianteId(estudianteId);
-        return ResponseEntity.ok(cantidad);
-    }
-
-    // Endpoint para contar cuántas materias está cursando actualmente un estudiante
-    @GetMapping("/estudiante/{estudianteId}/proceso")
-    public ResponseEntity<Integer> countMateriasProceso(@PathVariable Long estudianteId) {
-        int cantidad = historialAcademicoService.countMateriasProcesoByEstudianteId(estudianteId);
-        return ResponseEntity.ok(cantidad);
-    }
-
-    // Endpoint para ejecutar la lógica de negocio pendiente: Calcular el promedio ponderado
-    @PostMapping("/{id}/calcular")
-    public ResponseEntity<Void> calcularPonderado(@PathVariable Long id) {
+    // Agregar una asignatura en proceso
+    @PostMapping("/{historialId}/proceso/{asignaturaId}")
+    public ResponseEntity<HistorialAcademico> agregarAsignaturaEnProceso(@PathVariable Long historialId, @PathVariable Long asignaturaId) {
         try {
-            historialAcademicoService.calcularPonderado(id);
-            return ResponseEntity.ok().build();
-        } catch (UnsupportedOperationException e) {
-            return ResponseEntity.status(501).build(); // 501 Not Implemented
+            HistorialAcademico actualizado = historialService.agregarAsignaturaEnProceso(historialId, asignaturaId);
+            return ResponseEntity.ok(actualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }

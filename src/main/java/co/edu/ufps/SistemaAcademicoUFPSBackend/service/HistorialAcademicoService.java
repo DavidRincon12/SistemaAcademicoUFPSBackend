@@ -1,78 +1,111 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asignatura;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.HistorialAcademico;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsignaturaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.HistorialAcademicoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class HistorialAcademicoService {
+
+    @Autowired
+    private AsignaturaRepository asignaturaRepository;
+
+    @Autowired
+    private EstudianteService estudianteService;
+
     @Autowired
     private HistorialAcademicoRepository historialAcademicoRepository;
 
-    // Obtener todos los historiales académicos
-
-    public List<HistorialAcademico> getAllHistoriales() {
+    public List<HistorialAcademico> findAll() {
         return historialAcademicoRepository.findAll();
     }
 
-    // Obtener un historial académico por ID
-    public Optional<HistorialAcademico> getHistorialById(Long id) {
-        return historialAcademicoRepository.findById(id);
+    public HistorialAcademico findById(Long id) {
+        return historialAcademicoRepository.findById(id).orElse(null);
     }
 
-    // Obtener historial académico de un estudiante por su ID
-    public Optional<HistorialAcademico> getHistorialByEstudianteId(Long estudianteId) {
-        return historialAcademicoRepository.findByEstudianteId(estudianteId);
-    }
+    public HistorialAcademico save(HistorialAcademico historialAcademico) {
+        Long estudianteId = historialAcademico.getEstudiante().getId();
+        if (estudianteId != null) {
+            var estudianteExistente = estudianteService.getEstudianteById(estudianteId)
+                    .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con id: " + estudianteId));
 
-    // Crear un nuevo historial académico
-    public HistorialAcademico createHistorial(HistorialAcademico historial) {
-        return historialAcademicoRepository.save(historial);
-    }
-
-    // Actualizar un historial académico
-    public HistorialAcademico updateHistorial(Long id, HistorialAcademico historialDetails) {
-        return historialAcademicoRepository.findById(id).map(historial -> {
-            historial.setEstudiante(historialDetails.getEstudiante());
-            historial.setPromedioPonderado(historialDetails.getPromedioPonderado());
-            historial.setMateriasAprobadas(historialDetails.getMateriasAprobadas());
-            historial.setMateriasProceso(historialDetails.getMateriasProceso());
-            return historialAcademicoRepository.save(historial);
-        }).orElseThrow(() -> new RuntimeException("Historial académico no encontrado"));
-    }
-
-    // Eliminar historial académico
-    public void deleteHistorial(Long id) {
-        if (!historialAcademicoRepository.existsById(id)) {
-            throw new RuntimeException("Historial académico no encontrado");
+            historialAcademico.setEstudiante(estudianteExistente);
         }
+
+        if (historialAcademico.getMateriasAprobadas() == null) {
+            historialAcademico.setMateriasAprobadas(new ArrayList<>());
+        }
+
+        if (historialAcademico.getMateriasProceso() == null) {
+            historialAcademico.setMateriasProceso(new ArrayList<>());
+        }
+
+        return historialAcademicoRepository.save(historialAcademico);
+    }
+
+    public void deleteById(Long id) {
         historialAcademicoRepository.deleteById(id);
     }
 
-    // Obtener el promedio ponderado de un estudiante
+    public HistorialAcademico update(Long id, HistorialAcademico historialAcademico) {
+        Optional<HistorialAcademico> optional = historialAcademicoRepository.findById(id);
+        if (optional.isPresent()) {
+            HistorialAcademico existente = optional.get();
 
-    public Float getPromedioPonderadoByEstudianteId(Long estudianteId) {
-        return historialAcademicoRepository.findPromedioPonderadoByEstudianteId(estudianteId);
+            if (historialAcademico.getMateriasAprobadas() == null) {
+                historialAcademico.setMateriasAprobadas(new ArrayList<>());
+            }
+
+            if (historialAcademico.getMateriasProceso() == null) {
+                historialAcademico.setMateriasProceso(new ArrayList<>());
+            }
+
+            existente.setEstudiante(historialAcademico.getEstudiante());
+            existente.setMateriasAprobadas(historialAcademico.getMateriasAprobadas());
+            existente.setMateriasProceso(historialAcademico.getMateriasProceso());
+
+            return historialAcademicoRepository.save(existente);
+        }
+        return null;
     }
 
-    // Contar cuántas materias ha aprobado un estudiante
-    public int countMateriasAprobadasByEstudianteId(Long estudianteId) {
-        return historialAcademicoRepository.countMateriasAprobadasByEstudianteId(estudianteId);
-    }
-
-    // Contar cuántas materias está cursando actualmente un estudiante
-    public int countMateriasProcesoByEstudianteId(Long estudianteId) {
-        return historialAcademicoRepository.countMateriasProcesoByEstudianteId(estudianteId);
-    }
-
-    // ------------------------- Métodos de Negocio -------------------------
     @Transactional
-    public void calcularPonderado(Long historialId) {
-        throw new UnsupportedOperationException("Método no implementado");
+    public HistorialAcademico agregarAsignaturaAprobada(Long historialId, Long asignaturaId) {
+        HistorialAcademico historial = historialAcademicoRepository.findById(historialId)
+                .orElseThrow(() -> new RuntimeException("Historial no encontrado"));
+
+        Asignatura asignatura = asignaturaRepository.findById(asignaturaId)
+                .orElseThrow(() -> new RuntimeException("Asignatura no encontrada"));
+
+        if (!historial.getMateriasAprobadas().contains(asignatura)) {
+            historial.getMateriasAprobadas().add(asignatura);
+        }
+
+        return historialAcademicoRepository.save(historial);
     }
+
+    @Transactional
+    public HistorialAcademico agregarAsignaturaEnProceso(Long historialId, Long asignaturaId) {
+        HistorialAcademico historial = historialAcademicoRepository.findById(historialId)
+                .orElseThrow(() -> new RuntimeException("Historial no encontrado"));
+
+        Asignatura asignatura = asignaturaRepository.findById(asignaturaId)
+                .orElseThrow(() -> new RuntimeException("Asignatura no encontrada"));
+
+        if (!historial.getMateriasProceso().contains(asignatura)) {
+            historial.getMateriasProceso().add(asignatura);
+        }
+
+        return historialAcademicoRepository.save(historial);
+    }
+
 }
