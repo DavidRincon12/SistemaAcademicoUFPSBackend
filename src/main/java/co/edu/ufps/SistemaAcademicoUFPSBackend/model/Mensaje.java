@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,19 +22,20 @@ public class Mensaje implements Serializable {
 
     private String contenido;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "emisor_id", referencedColumnName = "id")
     private Persona emisor;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "destinatario_id", referencedColumnName = "id")
     private Persona destinatario;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEnvio;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "chat_id", referencedColumnName = "id")
+    @JsonBackReference // evita recursión infinita
     private Chat chat;
 
     private boolean editado;

@@ -1,73 +1,82 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Chat;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Mensaje;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ChatRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.MensajeRepository;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class MensajeService {
+
     @Autowired
     private MensajeRepository mensajeRepository;
 
-    // Obtener todos los mensajes
+    @Autowired
+    private PersonaRepository personaRepository;
+
+    @Autowired
+    private ChatRepository chatRepository;
 
     public List<Mensaje> getAllMensajes() {
         return mensajeRepository.findAll();
     }
 
-    // Obtener un mensaje por ID
     public Optional<Mensaje> getMensajeById(Long id) {
         return mensajeRepository.findById(id);
     }
-    // ------------------------- Consultas Específicas -------------------------
-    @Transactional(readOnly = true)
-    public List<Mensaje> getMensajesByChatId(Long chatId) {
-        throw new UnsupportedOperationException("Método no implementado");
+
+    @Transactional
+    public Mensaje createMensaje(Mensaje mensaje) {
+        Persona emisor = personaRepository.findById(mensaje.getEmisor().getId())
+                .orElseThrow(() -> new RuntimeException("Emisor no encontrado"));
+
+        Persona destinatario = personaRepository.findById(mensaje.getDestinatario().getId())
+                .orElseThrow(() -> new RuntimeException("Destinatario no encontrado"));
+
+        Chat chat = chatRepository.findById(mensaje.getChat().getId())
+                .orElseThrow(() -> new RuntimeException("Chat no encontrado"));
+
+        mensaje.setEmisor(emisor);
+        mensaje.setDestinatario(destinatario);
+        mensaje.setChat(chat);
+        mensaje.setFechaEnvio(new Date());
+        mensaje.setEstado("ENVIADO");
+        mensaje.setEditado(false);
+
+        return mensajeRepository.save(mensaje);
     }
 
-    @Transactional(readOnly = true)
-    public List<Mensaje> getMensajesByEmisorId(Long emisorId) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional(readOnly = true)
-    public List<Mensaje> getMensajesByDestinatarioId(Long destinatarioId) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional(readOnly = true)
-    public List<Mensaje> getMensajesEntreUsuariosEnChat(Long chatId, Long usuario1, Long usuario2) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional(readOnly = true)
-    public List<Mensaje> getMensajesNoLeidos(Long chatId, Long destinatarioId) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    @Transactional(readOnly = true)
-    public long countMensajesNoLeidos(Long chatId, Long destinatarioId) {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
-
-    // ------------------------- Métodos de Negocio -------------------------
     @Transactional
     public void editarMensaje(Long mensajeId, String nuevoContenido) {
-        throw new UnsupportedOperationException("Método no implementado");
+        Mensaje mensaje = mensajeRepository.findById(mensajeId)
+                .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        mensaje.setContenido(nuevoContenido);
+        mensaje.setEditado(true);
+        mensajeRepository.save(mensaje);
     }
 
     @Transactional
     public void eliminarMensaje(Long mensajeId) {
-        throw new UnsupportedOperationException("Método no implementado");
+        if (!mensajeRepository.existsById(mensajeId)) {
+            throw new RuntimeException("Mensaje no encontrado");
+        }
+        mensajeRepository.deleteById(mensajeId);
     }
 
     @Transactional
     public void cambiarEstado(Long mensajeId, String nuevoEstado) {
-        throw new UnsupportedOperationException("Método no implementado");
+        Mensaje mensaje = mensajeRepository.findById(mensajeId)
+                .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        mensaje.setEstado(nuevoEstado);
+        mensajeRepository.save(mensaje);
     }
 }
