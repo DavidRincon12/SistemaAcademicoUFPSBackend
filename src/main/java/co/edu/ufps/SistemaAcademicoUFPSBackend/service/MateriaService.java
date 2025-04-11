@@ -37,20 +37,30 @@ public class MateriaService {
 
     @Transactional
     public Materia createMateria(Materia materia) {
-        // Obtener el Programa y el Semestre existentes desde la BD
-        Programa programa = programaRepository.findById(materia.getPrograma().getId())
-                .orElseThrow(() -> new RuntimeException("Programa no encontrado"));
-
+        // Obtener las entidades desde la base de datos para asegurarte de que están gestionadas
         Semestre semestre = semestreRepository.findById(materia.getSemestre().getId())
                 .orElseThrow(() -> new RuntimeException("Semestre no encontrado"));
 
-        // Asignar las entidades gestionadas a la materia
-        materia.setPrograma(programa);
+        Programa programa = programaRepository.findById(materia.getPrograma().getId())
+                .orElseThrow(() -> new RuntimeException("Programa no encontrado"));
+
+        Materia prerrequisito = null;
+        if (materia.getPrerrequisito() != null && materia.getPrerrequisito().getId() != null) {
+            prerrequisito = materiaRepository.findById(materia.getPrerrequisito().getId())
+                    .orElseThrow(() -> new RuntimeException("Prerrequisito no encontrado"));
+        }
+
+        // Asignar entidades correctamente manejadas por JPA
         materia.setSemestre(semestre);
+        materia.setPrograma(programa);
+        materia.setPrerrequisito(prerrequisito);
 
         // Guardar la materia
         return materiaRepository.save(materia);
     }
+
+
+
 
     // Actualizar una materia
     public Materia updateMateria(Long id, Materia materiaDetails) {
