@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.EstudianteDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.EstudianteService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/estudiantes")
@@ -21,40 +23,41 @@ public class EstudianteController {
 
     // Obtener todos los estudiantes
     @GetMapping
-    public List<Estudiante> getAllEstudiantes() {
-        return estudianteService.getAllEstudiantes();
+    public List<EstudianteDTO> getAllEstudiantes() {
+        return estudianteService.getAllEstudiantes()
+                .stream()
+                .map(EstudianteDTO::new)
+                .collect(Collectors.toList());
     }
 
     // Obtener un estudiante por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Estudiante> getEstudianteById(@PathVariable Long id) {
+    public ResponseEntity<EstudianteDTO> getEstudianteById(@PathVariable Long id) {
         Optional<Estudiante> estudiante = estudianteService.getEstudianteById(id);
-        return estudiante.map(ResponseEntity::ok)
+        return estudiante.map(e -> ResponseEntity.ok(new EstudianteDTO(e)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // Crear un nuevo estudiante
     @PostMapping
-    public ResponseEntity<Estudiante> createEstudiante(@RequestBody @Valid Estudiante estudiante) {
-        return ResponseEntity.ok(estudianteService.createEstudiante(estudiante));
+    public ResponseEntity<EstudianteDTO> createEstudiante(@RequestBody @Valid Estudiante estudiante) {
+        Estudiante creado = estudianteService.createEstudiante(estudiante);
+        return ResponseEntity.ok(new EstudianteDTO(creado));
     }
 
     // Actualizar un estudiante
     @PutMapping("/{id}")
-    public ResponseEntity<Estudiante> updateEstudiante(
+    public ResponseEntity<EstudianteDTO> updateEstudiante(
             @PathVariable Long id,
-            @RequestParam LocalDate fechaInscripcion,
-            @RequestParam String estado,
-            @RequestParam String becas,
-            @RequestParam String correoEstudiantil,
-            @RequestParam short creditosAprobados) {
+            @RequestBody @Valid Estudiante estudiante) {
         try {
-            Estudiante estudiante = estudianteService.updateEstudiante(id, fechaInscripcion, estado, becas, correoEstudiantil, creditosAprobados);
-            return ResponseEntity.ok(estudiante);
+            Estudiante actualizado = estudianteService.updateEstudiante(id, estudiante);
+            return ResponseEntity.ok(new EstudianteDTO(actualizado));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     // Eliminar un estudiante
     @DeleteMapping("/{id}")
@@ -69,33 +72,45 @@ public class EstudianteController {
 
     // Buscar estudiante por correo institucional
     @GetMapping("/correo")
-    public ResponseEntity<Estudiante> getEstudianteByCorreo(@RequestParam String correo) {
+    public ResponseEntity<EstudianteDTO> getEstudianteByCorreo(@RequestParam String correo) {
         Optional<Estudiante> estudiante = estudianteService.getEstudianteByCorreo(correo);
-        return estudiante.map(ResponseEntity::ok)
+        return estudiante.map(e -> ResponseEntity.ok(new EstudianteDTO(e)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // Obtener estudiantes por estado
     @GetMapping("/estado")
-    public List<Estudiante> getEstudiantesByEstado(@RequestParam String estado) {
-        return estudianteService.getEstudiantesByEstado(estado);
+    public List<EstudianteDTO> getEstudiantesByEstado(@RequestParam String estado) {
+        return estudianteService.getEstudiantesByEstado(estado)
+                .stream()
+                .map(EstudianteDTO::new)
+                .collect(Collectors.toList());
     }
 
     // Obtener estudiantes con becas
     @GetMapping("/becas")
-    public List<Estudiante> getEstudiantesConBecas() {
-        return estudianteService.getEstudiantesConBecas();
+    public List<EstudianteDTO> getEstudiantesConBecas() {
+        return estudianteService.getEstudiantesConBecas()
+                .stream()
+                .map(EstudianteDTO::new)
+                .collect(Collectors.toList());
     }
 
     // Obtener estudiantes por programa académico
     @GetMapping("/programa/{programaId}")
-    public List<Estudiante> getEstudiantesByPrograma(@PathVariable Long programaId) {
-        return estudianteService.getEstudiantesByPrograma(programaId);
+    public List<EstudianteDTO> getEstudiantesByPrograma(@PathVariable Long programaId) {
+        return estudianteService.getEstudiantesByPrograma(programaId)
+                .stream()
+                .map(EstudianteDTO::new)
+                .collect(Collectors.toList());
     }
 
     // Buscar estudiantes por nombre
     @GetMapping("/buscar")
-    public List<Estudiante> searchEstudiantesByNombre(@RequestParam String nombre) {
-        return estudianteService.searchEstudiantesByNombre(nombre);
+    public List<EstudianteDTO> searchEstudiantesByNombre(@RequestParam String nombre) {
+        return estudianteService.searchEstudiantesByNombre(nombre)
+                .stream()
+                .map(EstudianteDTO::new)
+                .collect(Collectors.toList());
     }
 }

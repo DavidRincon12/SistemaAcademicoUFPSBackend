@@ -41,6 +41,13 @@ public class EstudianteService {
             Persona persona = personaRepository.findById(estudiante.getPersona().getId())
                     .orElseThrow(() -> new RuntimeException(
                             "Persona no encontrada con id: " + estudiante.getPersona().getId()));
+
+            // Verificar si ya existe un estudiante con esta persona
+            Optional<Estudiante> existente = estudianteRepository.findByPersonaId(persona.getId());
+            if (existente.isPresent()) {
+                throw new RuntimeException("Ya existe un estudiante asociado a esta persona.");
+            }
+
             estudiante.setPersona(persona);
         } else {
             throw new RuntimeException("La persona asociada al estudiante es obligatoria");
@@ -61,17 +68,40 @@ public class EstudianteService {
     }
 
     // Actualizar estudiante
-    public Estudiante updateEstudiante(Long id, LocalDate fechaInscripcion, String estado, String becas,
-            String correoEstudiantil, short creditosAprobados) {
+    public Estudiante updateEstudiante(Long id, Estudiante estudianteActualizado) {
         return estudianteRepository.findById(id).map(estudiante -> {
-            estudiante.setFechaInscripcion(fechaInscripcion);
-            estudiante.setEstado(estado);
-            estudiante.setBecas(becas);
-            estudiante.setCorreoEstudiantil(correoEstudiantil);
-            estudiante.setCreditosAprobados(creditosAprobados);
+            estudiante.setFechaInscripcion(estudianteActualizado.getFechaInscripcion());
+            estudiante.setEstado(estudianteActualizado.getEstado());
+            estudiante.setBecas(estudianteActualizado.getBecas());
+            estudiante.setCorreoEstudiantil(estudianteActualizado.getCorreoEstudiantil());
+            estudiante.setCreditosAprobados(estudianteActualizado.getCreditosAprobados());
+
+            // Validar persona antes de asignar
+            if (estudianteActualizado.getPersona() != null && estudianteActualizado.getPersona().getId() != null) {
+                Persona persona = personaRepository.findById(estudianteActualizado.getPersona().getId())
+                        .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
+
+                Optional<Estudiante> estudianteConMismaPersona = estudianteRepository.findByPersonaId(persona.getId());
+
+                if (estudianteConMismaPersona.isPresent() &&
+                        !estudianteConMismaPersona.get().getId().equals(estudiante.getId())) {
+                    throw new RuntimeException("La persona ya está asociada a otro estudiante.");
+                }
+
+                estudiante.setPersona(persona);
+            }
+
+            if (estudianteActualizado.getPrograma() != null && estudianteActualizado.getPrograma().getId() != null) {
+                Programa programa = programaRepository.findById(estudianteActualizado.getPrograma().getId())
+                        .orElseThrow(() -> new RuntimeException("Programa no encontrado"));
+                estudiante.setPrograma(programa);
+            }
+
             return estudianteRepository.save(estudiante);
         }).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
     }
+
+
 
     // Eliminar estudiante
     public void deleteEstudiante(Long id) {
