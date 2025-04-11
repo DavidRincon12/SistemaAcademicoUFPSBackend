@@ -1,7 +1,10 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.RecursoAcademico;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.RecursoAcademicoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,9 @@ public class RecursoAcademicoController {
 
     @Autowired
     private RecursoAcademicoService recursoAcademicoService;
+
+    @Autowired
+    private PersonaRepository personaRepository;
 
     // Obtener todos los recursos académicos
     @GetMapping
@@ -31,6 +37,12 @@ public class RecursoAcademicoController {
     // Crear un recurso académico
     @PostMapping
     public RecursoAcademico createRecurso(@RequestBody RecursoAcademico recurso) {
+        if (recurso.getResponsable() != null && recurso.getResponsable().getId() != null) {
+            Persona responsable = personaRepository.findById(recurso.getResponsable().getId())
+                    .orElseThrow(() -> new RuntimeException("Responsable no encontrado con ID: " + recurso.getResponsable().getId()));
+            recurso.setResponsable(responsable);
+        }
+
         return recursoAcademicoService.createRecurso(recurso);
     }
 
