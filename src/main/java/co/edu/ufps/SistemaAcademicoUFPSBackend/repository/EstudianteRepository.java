@@ -29,4 +29,8 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
     // Buscar estudiantes por nombre sin importar mayúsculas/minúsculas
     @Query("SELECT e FROM Estudiante e WHERE LOWER(e.persona.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     List<Estudiante> searchByNombre(@Param("nombre") String nombre);
+
+    // Buscar un estudiante por el ID de la persona asociada
+    Optional<Estudiante> findByPersonaId(Long personaId);
+
 }

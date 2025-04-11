@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.AsignaturaDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asignatura;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.AsignaturaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/asignaturas")
@@ -19,28 +21,34 @@ public class AsignaturaController {
 
     // Obtener todas las asignaturas
     @GetMapping
-    public ResponseEntity<List<Asignatura>> getAllAsignaturas() {
-        return ResponseEntity.ok(asignaturaService.getAllAsignaturas());
+    public ResponseEntity<List<AsignaturaDTO>> getAllAsignaturas() {
+        List<AsignaturaDTO> dtos = asignaturaService.getAllAsignaturas()
+                .stream()
+                .map(AsignaturaDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     // Obtener asignatura por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Asignatura> getAsignaturaById(@PathVariable Long id) {
+    public ResponseEntity<AsignaturaDTO> getAsignaturaById(@PathVariable Long id) {
         Optional<Asignatura> asignatura = asignaturaService.getAsignaturaById(id);
-        return asignatura.map(ResponseEntity::ok)
+        return asignatura.map(a -> ResponseEntity.ok(new AsignaturaDTO(a)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Crear nueva asignatura
     @PostMapping
-    public ResponseEntity<Asignatura> createAsignatura(@RequestBody Asignatura asignatura) {
-        return ResponseEntity.ok(asignaturaService.createAsignatura(asignatura));
+    public ResponseEntity<AsignaturaDTO> createAsignatura(@RequestBody Asignatura asignatura) {
+        Asignatura creada = asignaturaService.createAsignatura(asignatura);
+        return ResponseEntity.ok(new AsignaturaDTO(creada));
     }
 
     // Actualizar asignatura
     @PutMapping("/{id}")
-    public ResponseEntity<Asignatura> updateAsignatura(@PathVariable Long id, @RequestBody Asignatura asignatura) {
-        return ResponseEntity.ok(asignaturaService.updateAsignatura(id, asignatura));
+    public ResponseEntity<AsignaturaDTO> updateAsignatura(@PathVariable Long id, @RequestBody Asignatura asignatura) {
+        Asignatura actualizada = asignaturaService.updateAsignatura(id, asignatura);
+        return ResponseEntity.ok(new AsignaturaDTO(actualizada));
     }
 
     // Eliminar asignatura
@@ -52,38 +60,59 @@ public class AsignaturaController {
 
     // Buscar por nombre
     @GetMapping("/nombre/{nombre}")
-    public ResponseEntity<Asignatura> findByNombre(@PathVariable String nombre) {
+    public ResponseEntity<AsignaturaDTO> findByNombre(@PathVariable String nombre) {
         Optional<Asignatura> asignatura = asignaturaService.findByNombre(nombre);
-        return asignatura.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return asignatura.map(a -> ResponseEntity.ok(new AsignaturaDTO(a)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // Buscar por Docente
     @GetMapping("/docente/{docenteId}")
-    public ResponseEntity<List<Asignatura>> findByDocenteId(@PathVariable Long docenteId) {
-        return ResponseEntity.ok(asignaturaService.findByDocenteId(docenteId));
+    public ResponseEntity<List<AsignaturaDTO>> findByDocenteId(@PathVariable Long docenteId) {
+        List<AsignaturaDTO> dtos = asignaturaService.findByDocenteId(docenteId)
+                .stream()
+                .map(AsignaturaDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     // Buscar por Materia
     @GetMapping("/materia/{materiaId}")
-    public ResponseEntity<List<Asignatura>> findByMateriaId(@PathVariable Long materiaId) {
-        return ResponseEntity.ok(asignaturaService.findByMateriaId(materiaId));
+    public ResponseEntity<List<AsignaturaDTO>> findByMateriaId(@PathVariable Long materiaId) {
+        List<AsignaturaDTO> dtos = asignaturaService.findByMateriaId(materiaId)
+                .stream()
+                .map(AsignaturaDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     // Buscar por Estudiante
     @GetMapping("/estudiante/{estudianteId}")
-    public ResponseEntity<List<Asignatura>> findByEstudianteId(@PathVariable Long estudianteId) {
-        return ResponseEntity.ok(asignaturaService.findByEstudianteId(estudianteId));
+    public ResponseEntity<List<AsignaturaDTO>> findByEstudianteId(@PathVariable Long estudianteId) {
+        List<AsignaturaDTO> dtos = asignaturaService.findByEstudianteId(estudianteId)
+                .stream()
+                .map(AsignaturaDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     // Buscar habilitadas
     @GetMapping("/habilitacion")
-    public ResponseEntity<List<Asignatura>> findByHabilitacion() {
-        return ResponseEntity.ok(asignaturaService.findByHabilitacion());
+    public ResponseEntity<List<AsignaturaDTO>> findByHabilitacion() {
+        List<AsignaturaDTO> dtos = asignaturaService.findByHabilitacion()
+                .stream()
+                .map(AsignaturaDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     // Buscar vacacionales
     @GetMapping("/vacacional")
-    public ResponseEntity<List<Asignatura>> findByVacacional() {
-        return ResponseEntity.ok(asignaturaService.findByVacacional());
+    public ResponseEntity<List<AsignaturaDTO>> findByVacacional() {
+        List<AsignaturaDTO> dtos = asignaturaService.findByVacacional()
+                .stream()
+                .map(AsignaturaDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 }
