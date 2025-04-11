@@ -3,6 +3,7 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.AsistenciaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -75,7 +76,8 @@ public class AsistenciaController {
 
     // Buscar asistencias por fecha específica
     @GetMapping("/fecha")
-    public List<Asistencia> getAsistenciasByFecha(@RequestParam Date fecha) {
+    public List<Asistencia> getAsistenciasByFecha(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
         return asistenciaService.findByFecha(fecha);
     }
 
@@ -88,17 +90,19 @@ public class AsistenciaController {
 
     // Buscar asistencias de un estudiante en un rango de fechas
     @GetMapping("/estudiante/{estudianteId}/rango")
-    public List<Asistencia> getAsistenciasByEstudianteAndFechaBetween(@PathVariable Long estudianteId,
-                                                                      @RequestParam Date fechaInicio,
-                                                                      @RequestParam Date fechaFin) {
+    public List<Asistencia> getAsistenciasByEstudianteAndFechaBetween(
+            @PathVariable Long estudianteId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
         return asistenciaService.findByEstudianteIdAndFechaBetween(estudianteId, fechaInicio, fechaFin);
     }
 
     // Buscar si un estudiante asistió a una clase en una fecha específica
     @GetMapping("/estudiante/{estudianteId}/clase/{claseId}/fecha")
-    public ResponseEntity<Asistencia> getAsistenciaByEstudianteAndClaseAndFecha(@PathVariable Long estudianteId,
-                                                                                @RequestParam Long claseId,
-                                                                                @RequestParam Date fecha) {
+    public ResponseEntity<Asistencia> getAsistenciaByEstudianteAndClaseAndFecha(
+            @PathVariable Long estudianteId,
+            @RequestParam Long claseId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
         Optional<Asistencia> asistencia = asistenciaService.findByEstudianteIdAndClaseIdAndFecha(estudianteId, claseId, fecha);
         return asistencia.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
