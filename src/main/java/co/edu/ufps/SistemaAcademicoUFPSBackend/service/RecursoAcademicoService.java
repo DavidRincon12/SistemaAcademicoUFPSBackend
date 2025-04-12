@@ -3,7 +3,6 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.RecursoAcademico;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.RecursoAcademicoRepository;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +15,6 @@ public class RecursoAcademicoService {
 
     @Autowired
     private RecursoAcademicoRepository recursoAcademicoRepository;
-
-    @Autowired
-    private PersonaRepository personaRepository;
 
     // Obtener todos los recursos académicos
     public List<RecursoAcademico> getAllRecursos() {
