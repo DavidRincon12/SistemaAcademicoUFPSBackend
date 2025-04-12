@@ -1,57 +1,57 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.AsistenciaDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.AsistenciaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/asistencias")
+@CrossOrigin(origins = "*")
 public class AsistenciaController {
 
     @Autowired
     private AsistenciaService asistenciaService;
 
-    // Obtener todas las asistencias
     @GetMapping
-    public List<Asistencia> getAllAsistencias() {
-        return asistenciaService.getAllAsistencias();
+    public List<AsistenciaDTO> getAllAsistencias() {
+        return asistenciaService.getAllAsistencias().stream()
+                .map(AsistenciaDTO::new)
+                .collect(Collectors.toList());
     }
 
-    // Obtener una asistencia por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Asistencia> getAsistenciaById(@PathVariable Long id) {
+    public ResponseEntity<AsistenciaDTO> getAsistenciaById(@PathVariable Long id) {
         Optional<Asistencia> asistencia = asistenciaService.getAsistenciaById(id);
-        return asistencia.map(ResponseEntity::ok)
+        return asistencia.map(a -> ResponseEntity.ok(new AsistenciaDTO(a)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear una nueva asistencia
     @PostMapping
-    public ResponseEntity<Asistencia> createAsistencia(@RequestBody @Valid Asistencia asistencia) {
-        Asistencia nuevaAsistencia = asistenciaService.createAsistencia(asistencia);
-        return ResponseEntity.ok(nuevaAsistencia);
+    public ResponseEntity<AsistenciaDTO> createAsistencia(@RequestBody @Valid Asistencia asistencia) {
+        Asistencia nueva = asistenciaService.createAsistencia(asistencia);
+        return ResponseEntity.ok(new AsistenciaDTO(nueva));
     }
 
-    // Actualizar una asistencia
     @PutMapping("/{id}")
-    public ResponseEntity<Asistencia> updateAsistencia(@PathVariable Long id, @RequestBody Asistencia asistenciaDetails) {
+    public ResponseEntity<AsistenciaDTO> updateAsistencia(@PathVariable Long id, @RequestBody Asistencia asistenciaDetails) {
         try {
-            Asistencia updatedAsistencia = asistenciaService.updateAsistencia(id, asistenciaDetails);
-            return ResponseEntity.ok(updatedAsistencia);
+            Asistencia actualizada = asistenciaService.updateAsistencia(id, asistenciaDetails);
+            return ResponseEntity.ok(new AsistenciaDTO(actualizada));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    // Eliminar una asistencia
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAsistencia(@PathVariable Long id) {
         try {
@@ -62,60 +62,58 @@ public class AsistenciaController {
         }
     }
 
-    // Buscar asistencias por ID de estudiante
     @GetMapping("/estudiante/{estudianteId}")
-    public List<Asistencia> getAsistenciasByEstudiante(@PathVariable Long estudianteId) {
-        return asistenciaService.findByEstudianteId(estudianteId);
+    public List<AsistenciaDTO> getAsistenciasByEstudiante(@PathVariable Long estudianteId) {
+        return asistenciaService.findByEstudianteId(estudianteId).stream()
+                .map(AsistenciaDTO::new).collect(Collectors.toList());
     }
 
-    // Buscar asistencias por ID de clase
     @GetMapping("/clase/{claseId}")
-    public List<Asistencia> getAsistenciasByClase(@PathVariable Long claseId) {
-        return asistenciaService.findByClaseId(claseId);
+    public List<AsistenciaDTO> getAsistenciasByClase(@PathVariable Long claseId) {
+        return asistenciaService.findByClaseId(claseId).stream()
+                .map(AsistenciaDTO::new).collect(Collectors.toList());
     }
 
-    // Buscar asistencias por fecha específica
     @GetMapping("/fecha")
-    public List<Asistencia> getAsistenciasByFecha(
+    public List<AsistenciaDTO> getAsistenciasByFecha(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
-        return asistenciaService.findByFecha(fecha);
+        return asistenciaService.findByFecha(fecha).stream()
+                .map(AsistenciaDTO::new).collect(Collectors.toList());
     }
 
-    // Buscar asistencias de un estudiante en una clase específica
     @GetMapping("/estudiante/{estudianteId}/clase/{claseId}")
-    public List<Asistencia> getAsistenciasByEstudianteAndClase(@PathVariable Long estudianteId,
-                                                               @PathVariable Long claseId) {
-        return asistenciaService.findByEstudianteIdAndClaseId(estudianteId, claseId);
+    public List<AsistenciaDTO> getAsistenciasByEstudianteAndClase(@PathVariable Long estudianteId,
+                                                                  @PathVariable Long claseId) {
+        return asistenciaService.findByEstudianteIdAndClaseId(estudianteId, claseId).stream()
+                .map(AsistenciaDTO::new).collect(Collectors.toList());
     }
 
-    // Buscar asistencias de un estudiante en un rango de fechas
     @GetMapping("/estudiante/{estudianteId}/rango")
-    public List<Asistencia> getAsistenciasByEstudianteAndFechaBetween(
+    public List<AsistenciaDTO> getAsistenciasByEstudianteAndFechaBetween(
             @PathVariable Long estudianteId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
-        return asistenciaService.findByEstudianteIdAndFechaBetween(estudianteId, fechaInicio, fechaFin);
+        return asistenciaService.findByEstudianteIdAndFechaBetween(estudianteId, fechaInicio, fechaFin).stream()
+                .map(AsistenciaDTO::new).collect(Collectors.toList());
     }
 
-    // Buscar si un estudiante asistió a una clase en una fecha específica
     @GetMapping("/estudiante/{estudianteId}/clase/{claseId}/fecha")
-    public ResponseEntity<Asistencia> getAsistenciaByEstudianteAndClaseAndFecha(
+    public ResponseEntity<AsistenciaDTO> getAsistenciaByEstudianteAndClaseAndFecha(
             @PathVariable Long estudianteId,
             @RequestParam Long claseId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
         Optional<Asistencia> asistencia = asistenciaService.findByEstudianteIdAndClaseIdAndFecha(estudianteId, claseId, fecha);
-        return asistencia.map(ResponseEntity::ok)
+        return asistencia.map(a -> ResponseEntity.ok(new AsistenciaDTO(a)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Métodos de negocio pendientes
     @PostMapping("/registrar")
     public ResponseEntity<Void> registrarAsistencia() {
         try {
             asistenciaService.registrarAsistencia();
             return ResponseEntity.ok().build();
         } catch (UnsupportedOperationException e) {
-            return ResponseEntity.status(501).build(); // Not Implemented
+            return ResponseEntity.status(501).build();
         }
     }
 
@@ -125,7 +123,7 @@ public class AsistenciaController {
             asistenciaService.consultarAsistencia();
             return ResponseEntity.ok().build();
         } catch (UnsupportedOperationException e) {
-            return ResponseEntity.status(501).build(); // Not Implemented
+            return ResponseEntity.status(501).build();
         }
     }
 }

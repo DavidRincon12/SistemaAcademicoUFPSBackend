@@ -1,14 +1,16 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.MensajeDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Mensaje;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.MensajeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/mensajes")
@@ -19,20 +21,23 @@ public class MensajeController {
     private MensajeService mensajeService;
 
     @GetMapping
-    public List<Mensaje> getAllMensajes() {
-        return mensajeService.getAllMensajes();
+    public List<MensajeDTO> getAllMensajes() {
+        return mensajeService.getAllMensajes()
+                .stream().map(MensajeDTO::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Mensaje> getMensajeById(@PathVariable Long id) {
+    public ResponseEntity<MensajeDTO> getMensajeById(@PathVariable Long id) {
         Optional<Mensaje> mensaje = mensajeService.getMensajeById(id);
-        return mensaje.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return mensaje.map(m -> ResponseEntity.ok(new MensajeDTO(m)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Mensaje> createMensaje(@RequestBody @Valid Mensaje mensaje) {
+    public ResponseEntity<MensajeDTO> createMensaje(@RequestBody @Valid Mensaje mensaje) {
         Mensaje nuevo = mensajeService.createMensaje(mensaje);
-        return ResponseEntity.ok(nuevo);
+        return ResponseEntity.ok(new MensajeDTO(nuevo));
     }
 
     @PutMapping("/{id}/editar")

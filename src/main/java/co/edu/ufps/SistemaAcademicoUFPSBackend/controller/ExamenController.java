@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.ExamenDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Examen;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.ExamenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/examenes")
@@ -18,31 +20,52 @@ public class ExamenController {
     private ExamenService examenService;
 
     @GetMapping
-    public List<Examen> getAllExamenes() {
-        return examenService.getAllExamenes();
+    public List<ExamenDTO> getAllExamenes() {
+        return examenService.getAllExamenes().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Examen> getExamenById(@PathVariable Long id) {
+    public ResponseEntity<ExamenDTO> getExamenById(@PathVariable Long id) {
         Optional<Examen> examen = examenService.getExamenById(id);
-        return examen.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return examen.map(e -> ResponseEntity.ok(convertToDTO(e))).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Examen> createExamen(@RequestBody @Valid Examen examen) {
+    public ResponseEntity<ExamenDTO> createExamen(@RequestBody @Valid Examen examen) {
         Examen nuevo = examenService.createExamen(examen);
-        return ResponseEntity.ok(nuevo);
+        return ResponseEntity.ok(convertToDTO(nuevo));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Examen> updateExamen(@PathVariable Long id, @RequestBody @Valid Examen examenDetails) {
+    public ResponseEntity<ExamenDTO> updateExamen(@PathVariable Long id, @RequestBody @Valid Examen examenDetails) {
         Examen actualizado = examenService.updateExamen(id, examenDetails);
-        return ResponseEntity.ok(actualizado);
+        return ResponseEntity.ok(convertToDTO(actualizado));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExamen(@PathVariable Long id) {
         examenService.deleteExamen(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private ExamenDTO convertToDTO(Examen examen) {
+        ExamenDTO dto = new ExamenDTO();
+        dto.setId(examen.getId());
+        dto.setTipo(examen.getTipo());
+        dto.setFecha(examen.getFecha());
+        dto.setHoraInicio(examen.getHoraInicio());
+        dto.setHoraFin(examen.getHoraFin());
+
+        if (examen.getAsignatura() != null) {
+            dto.setAsignaturaId(examen.getAsignatura().getId());
+            dto.setAsignaturaNombre(examen.getAsignatura().getNombre());
+        }
+
+        if (examen.getRecurso() != null) {
+            dto.setRecursoId(examen.getRecurso().getId());
+            dto.setRecursoNombre(examen.getRecurso().getNombre());
+        }
+
+        return dto;
     }
 }

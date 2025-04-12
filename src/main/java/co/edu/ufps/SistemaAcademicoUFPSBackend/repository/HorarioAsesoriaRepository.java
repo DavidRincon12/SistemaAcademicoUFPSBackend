@@ -14,4 +14,6 @@ public interface HorarioAsesoriaRepository extends JpaRepository<HorarioAsesoria
 
     @Query("SELECT h FROM HorarioAsesoria h WHERE h.diaSemana = :diaSemana AND h.horaInicio <= :hora AND h.horaFin >= :hora")
     List<HorarioAsesoria> findByDiaSemanaAndHora(@Param("diaSemana") DayOfWeek diaSemana, @Param("hora") LocalTime hora);
+    List<HorarioAsesoria> findByDiaSemana(java.time.DayOfWeek diaSemana);
+
 }
