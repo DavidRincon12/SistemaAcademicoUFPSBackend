@@ -30,6 +30,8 @@ public class Docente implements Serializable {
     @NotBlank(message = "El tipo de docente es obligatorio")
     private String tipo;
 
+    private short cargaHoraria;
+
     @ManyToOne
     @JoinColumn(name = "persona_id", nullable = false)
     @NotNull(message = "Debe asociarse una persona al docente")
@@ -39,4 +41,5 @@ public class Docente implements Serializable {
     @JsonManagedReference
     private List<HorarioAsesoria> horariosAsesoria;
 
+    private final short cargaHorariaMaxima = 40; // Carga horaria máxima permitida para un docente 
 }

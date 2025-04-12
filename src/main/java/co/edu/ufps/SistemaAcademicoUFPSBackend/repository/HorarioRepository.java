@@ -22,6 +22,10 @@ public interface HorarioRepository extends JpaRepository<Horario, Long> {
             @Param("horaFin") String horaFin
     );
 
+    @Query("SELECT h FROM Horario h WHERE h.asignatura.docente.id = :docenteId")
+List<Horario> findByDocenteId(@Param("docenteId") Long docenteId);
+
+
     // Buscar horarios de un día específico dentro de un rango de horas (corregido)
     @Query("SELECT h FROM Horario h WHERE h.dia = :diaSemana AND h.horaInicio >= :horaInicio AND h.horaFin <= :horaFin")
     List<Horario> findByDiaSemanaAndHoraInicioAndHoraFin(

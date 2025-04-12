@@ -7,9 +7,9 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.HorarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalTime;
 
 @Service
 public class HorarioService {
@@ -76,7 +76,7 @@ public class HorarioService {
         horarioRepository.deleteById(id);
     }
 
-    private boolean seSolapan(Date inicio1, Date fin1, Date inicio2, Date fin2) {
-        return inicio1.before(fin2) && fin1.after(inicio2);
+    private boolean seSolapan(LocalTime inicio1, LocalTime fin1, LocalTime inicio2, LocalTime fin2) {
+        return inicio1.isBefore(fin2) && fin1.isAfter(inicio2);
     }
 }

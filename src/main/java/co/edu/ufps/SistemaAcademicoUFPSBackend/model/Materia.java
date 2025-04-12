@@ -49,4 +49,5 @@ public class Materia implements Serializable {
     private String competencias;
     private short cupoMaximo;
     private short creditos;
+    private short horas;
 }

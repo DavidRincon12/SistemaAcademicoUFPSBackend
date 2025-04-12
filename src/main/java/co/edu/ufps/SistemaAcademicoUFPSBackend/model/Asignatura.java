@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "Asignatura")
@@ -29,4 +30,8 @@ public class Asignatura implements Serializable {
     @JsonBackReference
     private Materia materia;
 
+    @OneToMany(mappedBy = "asignatura", cascade = CascadeType.ALL)
+    private List<Horario> horarios; 
+    
+    private short horasSemanales;
 }

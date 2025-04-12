@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Time;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "horario")
@@ -23,10 +23,10 @@ public class Horario implements Serializable {
     private String dia;
 
     @Column(name = "hora_inicio", nullable = false)
-    private Time horaInicio;
+    private LocalTime horaInicio;
 
     @Column(name = "hora_fin", nullable = false)
-    private Time horaFin;
+    private LocalTime horaFin;
 
     @ManyToOne
     @JoinColumn(name = "asignatura_id", nullable = false)
