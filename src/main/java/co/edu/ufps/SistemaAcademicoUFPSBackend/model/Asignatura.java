@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "Asignatura")
@@ -31,17 +29,4 @@ public class Asignatura implements Serializable {
     @JsonBackReference
     private Materia materia;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "asignatura_estudiante",
-            joinColumns = @JoinColumn(name = "asignatura_id"),
-            inverseJoinColumns = @JoinColumn(name = "estudiante_id"))
-    private List<Estudiante> estudiantes = new ArrayList<>();
-
-    private float primerPrevio;
-    private float segundoPrevio;
-    private float tercerPrevio;
-    private float examenFinal;
-    private boolean habilitacion;
-    private boolean vacacional;
-    private float definitiva;
 }

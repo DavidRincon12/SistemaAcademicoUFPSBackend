@@ -21,14 +21,4 @@ public interface AsignaturaRepository extends JpaRepository<Asignatura, Long> {
     // Buscar todas las asignaturas de una materia específica
     @Query("SELECT a FROM Asignatura a WHERE a.materia.id = ?1")
     List<Asignatura> findByMateriaId(Long materiaId);
-
-    // Buscar todas las asignaturas de un estudiante específico
-    @Query("SELECT a FROM Asignatura a JOIN a.estudiantes e WHERE e.id = ?1")
-    List<Asignatura> findByEstudianteId(Long estudianteId);
-
-    // Buscar asignaturas con habilitación
-    List<Asignatura> findByHabilitacionTrue();
-
-    // Buscar asignaturas vacacionales
-    List<Asignatura> findByVacacionalTrue();
 }

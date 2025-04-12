@@ -85,34 +85,4 @@ public class AsignaturaController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
-
-    // Buscar por Estudiante
-    @GetMapping("/estudiante/{estudianteId}")
-    public ResponseEntity<List<AsignaturaDTO>> findByEstudianteId(@PathVariable Long estudianteId) {
-        List<AsignaturaDTO> dtos = asignaturaService.findByEstudianteId(estudianteId)
-                .stream()
-                .map(AsignaturaDTO::new)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(dtos);
-    }
-
-    // Buscar habilitadas
-    @GetMapping("/habilitacion")
-    public ResponseEntity<List<AsignaturaDTO>> findByHabilitacion() {
-        List<AsignaturaDTO> dtos = asignaturaService.findByHabilitacion()
-                .stream()
-                .map(AsignaturaDTO::new)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(dtos);
-    }
-
-    // Buscar vacacionales
-    @GetMapping("/vacacional")
-    public ResponseEntity<List<AsignaturaDTO>> findByVacacional() {
-        List<AsignaturaDTO> dtos = asignaturaService.findByVacacional()
-                .stream()
-                .map(AsignaturaDTO::new)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(dtos);
-    }
 }
