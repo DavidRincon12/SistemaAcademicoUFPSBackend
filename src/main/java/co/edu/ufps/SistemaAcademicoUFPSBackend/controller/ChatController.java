@@ -1,57 +1,56 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.ChatDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Chat;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.ChatService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/chats")
+@CrossOrigin(origins = "*")
 public class ChatController {
 
     @Autowired
     private ChatService chatService;
 
-    // Obtener todos los chats
     @GetMapping
-    public List<Chat> getAllChats() {
-        return chatService.getAllChats();
+    public List<ChatDTO> getAllChats() {
+        return chatService.getAllChats()
+                .stream().map(ChatDTO::new).collect(Collectors.toList());
     }
 
-    // Obtener un chat por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Chat> getChatById(@PathVariable Long id) {
+    public ResponseEntity<ChatDTO> getChatById(@PathVariable Long id) {
         Optional<Chat> chat = chatService.getChatById(id);
-        return chat.map(ResponseEntity::ok)
+        return chat.map(c -> ResponseEntity.ok(new ChatDTO(c)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear un nuevo chat
     @PostMapping
-    public ResponseEntity<Chat> createChat(@RequestBody @Valid Chat chat) {
-        Chat nuevoChat = chatService.createChat(chat);
-        return ResponseEntity.ok(nuevoChat);
+    public ResponseEntity<ChatDTO> createChat(@RequestBody @Valid Chat chat) {
+        Chat nuevo = chatService.createChat(chat);
+        return ResponseEntity.ok(new ChatDTO(nuevo));
     }
 
-    // Actualizar un chat
     @PutMapping("/{id}")
-    public ResponseEntity<Chat> updateChat(@PathVariable Long id, @RequestBody Chat chatDetails) {
+    public ResponseEntity<ChatDTO> updateChat(@PathVariable Long id, @RequestBody Chat chatDetails) {
         try {
             Chat actualizado = chatService.updateChat(id, chatDetails);
-            return ResponseEntity.ok(actualizado);
+            return ResponseEntity.ok(new ChatDTO(actualizado));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    // Eliminar un chat
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteChat(@PathVariable Long id) {
         try {
@@ -62,43 +61,37 @@ public class ChatController {
         }
     }
 
-    // Buscar un chat entre dos participantes
-    // Se espera recibir en el body o parámetro los datos mínimos de las personas
     @GetMapping("/participantes")
-    public ResponseEntity<Chat> getChatByParticipantes(@RequestParam Long participante1Id,
-                                                       @RequestParam Long participante2Id) {
-        // Se construyen objetos Persona mínimos para la búsqueda
-        Persona participante1 = new Persona();
-        participante1.setId(participante1Id);
-        Persona participante2 = new Persona();
-        participante2.setId(participante2Id);
-        Optional<Chat> chat = chatService.findByParticipantes(participante1, participante2);
-        return chat.map(ResponseEntity::ok)
+    public ResponseEntity<ChatDTO> getChatByParticipantes(@RequestParam Long participante1Id,
+                                                          @RequestParam Long participante2Id) {
+        Persona p1 = new Persona(); p1.setId(participante1Id);
+        Persona p2 = new Persona(); p2.setId(participante2Id);
+        Optional<Chat> chat = chatService.findByParticipantes(p1, p2);
+        return chat.map(c -> ResponseEntity.ok(new ChatDTO(c)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Listar chats en los que una persona está involucrada
     @GetMapping("/persona/{personaId}")
-    public List<Chat> getChatsByPersona(@PathVariable Long personaId) {
+    public List<ChatDTO> getChatsByPersona(@PathVariable Long personaId) {
         Persona persona = new Persona();
         persona.setId(personaId);
-        return chatService.findByPersona(persona);
+        return chatService.findByPersona(persona)
+                .stream().map(ChatDTO::new).collect(Collectors.toList());
     }
 
-    // Buscar chats creados después de una fecha específica
     @GetMapping("/fecha")
-    public List<Chat> getChatsByFechaCreacionAfter(@RequestParam Date fecha) {
-        return chatService.findByFechaCreacionAfter(fecha);
+    public List<ChatDTO> getChatsByFechaCreacionAfter(@RequestParam Date fecha) {
+        return chatService.findByFechaCreacionAfter(fecha)
+                .stream().map(ChatDTO::new).collect(Collectors.toList());
     }
 
-    // Método de negocio pendiente: Agregar mensaje a un chat
     @PostMapping("/{chatId}/mensajes")
     public ResponseEntity<Void> agregarMensaje(@PathVariable Long chatId) {
         try {
             chatService.agregarMensaje();
             return ResponseEntity.ok().build();
         } catch (UnsupportedOperationException e) {
-            return ResponseEntity.status(501).build(); // 501 Not Implemented
+            return ResponseEntity.status(501).build();
         }
     }
 }

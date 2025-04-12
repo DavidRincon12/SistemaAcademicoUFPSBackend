@@ -1,29 +1,21 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.DTO;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Materia;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class MateriaDTO {
 
     private Long id;
     private String nombre;
     private String estado;
-
-    private Long semestreId;
-    private Long programaId;
+    private String nombreSemestre;
+    private String nombrePrograma;
     private boolean electiva;
-
-    private Long prerrequisitoId;
-
+    private String prerrequisito;
     private String contenido;
     private String objetivos;
     private String competencias;
-
     private short cupoMaximo;
     private short creditos;
 
@@ -31,10 +23,10 @@ public class MateriaDTO {
         this.id = materia.getId();
         this.nombre = materia.getNombre();
         this.estado = materia.getEstado();
-        this.semestreId = materia.getSemestre() != null ? materia.getSemestre().getId() : null;
-        this.programaId = materia.getPrograma() != null ? materia.getPrograma().getId() : null;
+        this.nombreSemestre = materia.getSemestre() != null ? materia.getSemestre().getNombre() : null;
+        this.nombrePrograma = materia.getPrograma() != null ? materia.getPrograma().getNombre() : null;
         this.electiva = materia.isElectiva();
-        this.prerrequisitoId = materia.getPrerrequisito() != null ? materia.getPrerrequisito().getId() : null;
+        this.prerrequisito = materia.getPrerrequisito() != null ? materia.getPrerrequisito().getNombre() : null;
         this.contenido = materia.getContenido();
         this.objetivos = materia.getObjetivos();
         this.competencias = materia.getCompetencias();

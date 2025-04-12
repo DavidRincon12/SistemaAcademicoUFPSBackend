@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.ComentarioDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Comentario;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Foro;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/comentarios")
@@ -19,42 +21,36 @@ public class ComentarioController {
     @Autowired
     private ComentarioService comentarioService;
 
-    // ---------------------- Endpoints CRUD Básicos ----------------------
-
-    // Obtener todos los comentarios
     @GetMapping
-    public List<Comentario> getAllComentarios() {
-        return comentarioService.getAllComentarios();
+    public List<ComentarioDTO> getAllComentarios() {
+        return comentarioService.getAllComentarios()
+                .stream().map(ComentarioDTO::new).collect(Collectors.toList());
     }
 
-    // Obtener un comentario por su ID
     @GetMapping("/{id}")
-    public ResponseEntity<Comentario> getComentarioById(@PathVariable Long id) {
+    public ResponseEntity<ComentarioDTO> getComentarioById(@PathVariable Long id) {
         Optional<Comentario> comentario = comentarioService.getComentarioById(id);
-        return comentario.map(ResponseEntity::ok)
+        return comentario.map(c -> ResponseEntity.ok(new ComentarioDTO(c)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear un nuevo comentario
     @PostMapping
-    public ResponseEntity<Comentario> createComentario(@RequestBody @Valid Comentario comentario) {
+    public ResponseEntity<ComentarioDTO> createComentario(@RequestBody @Valid Comentario comentario) {
         Comentario nuevoComentario = comentarioService.createComentario(comentario);
-        return ResponseEntity.ok(nuevoComentario);
+        return ResponseEntity.ok(new ComentarioDTO(nuevoComentario));
     }
 
-    // Actualizar un comentario existente
     @PutMapping("/{id}")
-    public ResponseEntity<Comentario> updateComentario(@PathVariable Long id,
-                                                       @RequestBody Comentario comentarioDetails) {
+    public ResponseEntity<ComentarioDTO> updateComentario(@PathVariable Long id,
+                                                          @RequestBody Comentario comentarioDetails) {
         try {
             Comentario actualizado = comentarioService.updateComentario(id, comentarioDetails);
-            return ResponseEntity.ok(actualizado);
+            return ResponseEntity.ok(new ComentarioDTO(actualizado));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    // Eliminar un comentario (eliminación CRUD)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComentario(@PathVariable Long id) {
         try {
@@ -65,47 +61,40 @@ public class ComentarioController {
         }
     }
 
-    // ---------------------- Endpoints para Consultas Adicionales ----------------------
-
-    // Buscar comentarios por foro
-    // Se espera recibir el ID del foro vía parámetro
     @GetMapping("/foro")
-    public ResponseEntity<List<Comentario>> getComentariosByForo(@RequestParam Long foroId) {
+    public ResponseEntity<List<ComentarioDTO>> getComentariosByForo(@RequestParam Long foroId) {
         Foro foro = new Foro();
         foro.setId(foroId);
-        List<Comentario> comentarios = comentarioService.findByForo(foro);
+        List<ComentarioDTO> comentarios = comentarioService.findByForo(foro)
+                .stream().map(ComentarioDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok(comentarios);
     }
 
-    // Buscar comentarios por emisor
     @GetMapping("/emisor")
-    public ResponseEntity<List<Comentario>> getComentariosByEmisor(@RequestParam Long emisorId) {
+    public ResponseEntity<List<ComentarioDTO>> getComentariosByEmisor(@RequestParam Long emisorId) {
         Persona emisor = new Persona();
         emisor.setId(emisorId);
-        List<Comentario> comentarios = comentarioService.findByEmisor(emisor);
+        List<ComentarioDTO> comentarios = comentarioService.findByEmisor(emisor)
+                .stream().map(ComentarioDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok(comentarios);
     }
 
-    // Obtener comentarios recientes de un foro
     @GetMapping("/foro/{foroId}/recientes")
-    public ResponseEntity<List<Comentario>> getRecentCommentsByForo(@PathVariable Long foroId) {
+    public ResponseEntity<List<ComentarioDTO>> getRecentCommentsByForo(@PathVariable Long foroId) {
         Foro foro = new Foro();
         foro.setId(foroId);
-        List<Comentario> comentarios = comentarioService.findRecentCommentsByForo(foro);
+        List<ComentarioDTO> comentarios = comentarioService.findRecentCommentsByForo(foro)
+                .stream().map(ComentarioDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok(comentarios);
     }
 
-    // Buscar comentarios por contenido (búsqueda parcial ignorando mayúsculas/minúsculas)
     @GetMapping("/buscar")
-    public ResponseEntity<List<Comentario>> searchComentariosByContenido(@RequestParam String contenido) {
-        List<Comentario> comentarios = comentarioService.searchByContenido(contenido);
+    public ResponseEntity<List<ComentarioDTO>> searchComentariosByContenido(@RequestParam String contenido) {
+        List<ComentarioDTO> comentarios = comentarioService.searchByContenido(contenido)
+                .stream().map(ComentarioDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok(comentarios);
     }
 
-    // ---------------------- Endpoints para Métodos de Negocio (Pendientes) ----------------------
-
-    // Endpoint para editar el contenido de un comentario mediante lógica de negocio
-    // Se pasa el nuevo contenido vía parámetro
     @PutMapping("/{id}/editar")
     public ResponseEntity<Void> editarComentario(@PathVariable Long id,
                                                  @RequestParam String nuevoContenido) {
@@ -113,11 +102,10 @@ public class ComentarioController {
             comentarioService.editarComentario(id, nuevoContenido);
             return ResponseEntity.ok().build();
         } catch (UnsupportedOperationException e) {
-            return ResponseEntity.status(501).build();  // 501 Not Implemented
+            return ResponseEntity.status(501).build();
         }
     }
 
-    // Endpoint para eliminar un comentario mediante lógica de negocio
     @DeleteMapping("/{id}/eliminar-negocio")
     public ResponseEntity<Void> eliminarComentarioNegocio(@PathVariable Long id) {
         try {

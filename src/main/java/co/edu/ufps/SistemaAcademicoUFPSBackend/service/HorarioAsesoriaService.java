@@ -1,37 +1,24 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Docente;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.HorarioAsesoria;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Horario;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Examen;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ExamenRepository;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.HorarioRepository;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.DocenteRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.HorarioAsesoriaRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class HorarioAsesoriaService {
 
     @Autowired
-    private final HorarioAsesoriaRepository horarioAsesoriaRepository;
+    private HorarioAsesoriaRepository horarioAsesoriaRepository;
 
     @Autowired
-    private final HorarioRepository horarioRepository;
-
-    @Autowired
-    private final ExamenRepository examenRepository;
-
-    public List<HorarioAsesoria> getHorariosDisponibles(DayOfWeek diaSemana, LocalTime hora) {
-        return horarioAsesoriaRepository.findByDiaSemanaAndHora(diaSemana, hora);
-    }
+    private DocenteRepository docenteRepository;
 
     public List<HorarioAsesoria> getAllHorariosAsesoria() {
         return horarioAsesoriaRepository.findAll();
@@ -42,37 +29,45 @@ public class HorarioAsesoriaService {
     }
 
     public HorarioAsesoria createHorarioAsesoria(HorarioAsesoria horarioAsesoria) {
-        // Validación de solapamiento con clases
-        List<Horario> clasesSolapadas = horarioRepository.findByDiaSemanaAndHoraInicioAndHoraFin(
-                horarioAsesoria.getDiaSemana().name(),
-                java.sql.Time.valueOf(horarioAsesoria.getHoraInicio()),
-                java.sql.Time.valueOf(horarioAsesoria.getHoraFin()));
+        Docente docente = docenteRepository.findById(horarioAsesoria.getDocente().getId())
+                .orElseThrow(() -> new RuntimeException("Docente no encontrado"));
 
-        if (!clasesSolapadas.isEmpty()) {
-            throw new RuntimeException("El docente tiene clases en ese horario.");
-        }
-
-        // Validación de solapamiento con exámenes
-        List<Examen> examenes = examenRepository.findByFecha(new Date());
-        for (Examen e : examenes) {
-            if (e.getAsignatura().getDocente().getId().equals(horarioAsesoria.getDocente().getId()) &&
-                    e.getHoraInicio().toInstant().isBefore(java.sql.Time.valueOf(horarioAsesoria.getHoraFin()).toInstant()) &&
-                    e.getHoraFin().toInstant().isAfter(java.sql.Time.valueOf(horarioAsesoria.getHoraInicio()).toInstant())) {
-                throw new RuntimeException("El docente tiene exámenes en ese horario.");
+        List<HorarioAsesoria> existentes = horarioAsesoriaRepository.findByDiaSemana(horarioAsesoria.getDiaSemana());
+        for (HorarioAsesoria existente : existentes) {
+            if (existente.getDocente().getId().equals(docente.getId()) &&
+                    seSolapan(horarioAsesoria.getHoraInicio(), horarioAsesoria.getHoraFin(),
+                            existente.getHoraInicio(), existente.getHoraFin())) {
+                throw new RuntimeException("Conflicto con otro horario de asesoría del docente.");
             }
         }
 
+        horarioAsesoria.setDocente(docente);
         return horarioAsesoriaRepository.save(horarioAsesoria);
     }
 
-    public HorarioAsesoria updateHorarioAsesoria(Long id, HorarioAsesoria horarioAsesoriaDetails) {
-        return horarioAsesoriaRepository.findById(id).map(horarioAsesoria -> {
-            horarioAsesoria.setDiaSemana(horarioAsesoriaDetails.getDiaSemana());
-            horarioAsesoria.setHoraInicio(horarioAsesoriaDetails.getHoraInicio());
-            horarioAsesoria.setHoraFin(horarioAsesoriaDetails.getHoraFin());
-            horarioAsesoria.setDocente(horarioAsesoriaDetails.getDocente());
-            return horarioAsesoriaRepository.save(horarioAsesoria);
-        }).orElseThrow(() -> new RuntimeException("Horario de asesoría no encontrado"));
+    public HorarioAsesoria updateHorarioAsesoria(Long id, HorarioAsesoria actualizado) {
+        HorarioAsesoria horario = horarioAsesoriaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Horario no encontrado"));
+
+        Docente docente = docenteRepository.findById(actualizado.getDocente().getId())
+                .orElseThrow(() -> new RuntimeException("Docente no encontrado"));
+
+        List<HorarioAsesoria> existentes = horarioAsesoriaRepository.findByDiaSemana(actualizado.getDiaSemana());
+        for (HorarioAsesoria existente : existentes) {
+            if (!existente.getId().equals(id) &&
+                    existente.getDocente().getId().equals(docente.getId()) &&
+                    seSolapan(actualizado.getHoraInicio(), actualizado.getHoraFin(),
+                            existente.getHoraInicio(), existente.getHoraFin())) {
+                throw new RuntimeException("Conflicto al actualizar: ya existe una asesoría para el docente en ese horario.");
+            }
+        }
+
+        horario.setDiaSemana(actualizado.getDiaSemana());
+        horario.setHoraInicio(actualizado.getHoraInicio());
+        horario.setHoraFin(actualizado.getHoraFin());
+        horario.setDocente(docente);
+
+        return horarioAsesoriaRepository.save(horario);
     }
 
     public void deleteHorarioAsesoria(Long id) {
@@ -80,5 +75,9 @@ public class HorarioAsesoriaService {
             throw new RuntimeException("Horario de asesoría no encontrado");
         }
         horarioAsesoriaRepository.deleteById(id);
+    }
+
+    private boolean seSolapan(LocalTime inicio1, LocalTime fin1, LocalTime inicio2, LocalTime fin2) {
+        return inicio1.isBefore(fin2) && fin1.isAfter(inicio2);
     }
 }

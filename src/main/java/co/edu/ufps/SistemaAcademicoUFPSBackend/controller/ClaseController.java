@@ -1,7 +1,8 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Clase;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.ClaseDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asignatura;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Clase;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Docente;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Semestre;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.ClaseService;
@@ -13,9 +14,11 @@ import jakarta.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clases")
+@CrossOrigin(origins = "*")
 public class ClaseController {
 
     @Autowired
@@ -23,31 +26,34 @@ public class ClaseController {
 
     // Obtener todas las clases
     @GetMapping
-    public List<Clase> getAllClases() {
-        return claseService.getAllClases();
+    public List<ClaseDTO> getAllClases() {
+        return claseService.getAllClases()
+                .stream()
+                .map(ClaseDTO::new)
+                .collect(Collectors.toList());
     }
 
     // Obtener una clase por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Clase> getClaseById(@PathVariable Long id) {
+    public ResponseEntity<ClaseDTO> getClaseById(@PathVariable Long id) {
         Optional<Clase> clase = claseService.getClaseById(id);
-        return clase.map(ResponseEntity::ok)
+        return clase.map(c -> ResponseEntity.ok(new ClaseDTO(c)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // Crear una nueva clase
     @PostMapping
-    public ResponseEntity<Clase> createClase(@RequestBody @Valid Clase clase) {
+    public ResponseEntity<ClaseDTO> createClase(@RequestBody @Valid Clase clase) {
         Clase nuevaClase = claseService.createClase(clase);
-        return ResponseEntity.ok(nuevaClase);
+        return ResponseEntity.ok(new ClaseDTO(nuevaClase));
     }
 
     // Actualizar una clase
     @PutMapping("/{id}")
-    public ResponseEntity<Clase> updateClase(@PathVariable Long id, @RequestBody Clase claseDetails) {
+    public ResponseEntity<ClaseDTO> updateClase(@PathVariable Long id, @RequestBody Clase claseDetails) {
         try {
             Clase updatedClase = claseService.updateClase(id, claseDetails);
-            return ResponseEntity.ok(updatedClase);
+            return ResponseEntity.ok(new ClaseDTO(updatedClase));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
@@ -65,41 +71,44 @@ public class ClaseController {
     }
 
     // Buscar clases por asignatura
-    // Se envía el id de la asignatura y se construye el objeto Asignatura de forma básica.
     @GetMapping("/asignatura/{asignaturaId}")
-    public List<Clase> getClasesByAsignatura(@PathVariable Long asignaturaId) {
+    public List<ClaseDTO> getClasesByAsignatura(@PathVariable Long asignaturaId) {
         Asignatura asignatura = new Asignatura();
         asignatura.setId(asignaturaId);
-        return claseService.findByAsignatura(asignatura);
+        return claseService.findByAsignatura(asignatura)
+                .stream().map(ClaseDTO::new).collect(Collectors.toList());
     }
 
     // Buscar clases por docente
     @GetMapping("/docente/{docenteId}")
-    public List<Clase> getClasesByDocente(@PathVariable Long docenteId) {
+    public List<ClaseDTO> getClasesByDocente(@PathVariable Long docenteId) {
         Docente docente = new Docente();
         docente.setId(docenteId);
-        return claseService.findByDocente(docente);
+        return claseService.findByDocente(docente)
+                .stream().map(ClaseDTO::new).collect(Collectors.toList());
     }
 
     // Buscar clases por semestre
     @GetMapping("/semestre/{semestreId}")
-    public List<Clase> getClasesBySemestre(@PathVariable Long semestreId) {
+    public List<ClaseDTO> getClasesBySemestre(@PathVariable Long semestreId) {
         Semestre semestre = new Semestre();
         semestre.setId(semestreId);
-        return claseService.findBySemestre(semestre);
+        return claseService.findBySemestre(semestre)
+                .stream().map(ClaseDTO::new).collect(Collectors.toList());
     }
 
     // Buscar clases por fecha
     @GetMapping("/fecha")
-    public List<Clase> getClasesByFecha(@RequestParam Date fecha) {
-        return claseService.findByFecha(fecha);
+    public List<ClaseDTO> getClasesByFecha(@RequestParam Date fecha) {
+        return claseService.findByFecha(fecha)
+                .stream().map(ClaseDTO::new).collect(Collectors.toList());
     }
 
     // Buscar una clase por nombre
     @GetMapping("/nombre")
-    public ResponseEntity<Clase> getClaseByNombre(@RequestParam String nombre) {
+    public ResponseEntity<ClaseDTO> getClaseByNombre(@RequestParam String nombre) {
         Optional<Clase> clase = claseService.findByNombre(nombre);
-        return clase.map(ResponseEntity::ok)
+        return clase.map(c -> ResponseEntity.ok(new ClaseDTO(c)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -112,12 +121,12 @@ public class ClaseController {
 
     // Obtener clases con cupo disponible
     @GetMapping("/cupoDisponible")
-    public List<Clase> getClasesConCupoDisponible() {
-        return claseService.findClasesConCupoDisponible();
+    public List<ClaseDTO> getClasesConCupoDisponible() {
+        return claseService.findClasesConCupoDisponible()
+                .stream().map(ClaseDTO::new).collect(Collectors.toList());
     }
 
-    // Métodos de negocio adicionales (iniciar, finalizar, obtener reporte, etc.)
-    // Se pueden exponer endpoints que activen la lógica respectiva
+    // Métodos adicionales de negocio (aún no implementados)
 
     @PostMapping("/{id}/iniciar")
     public ResponseEntity<Void> iniciarClase(@PathVariable Long id) {
