@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/asignaturas")
+@RequestMapping("/asignaturas")
 @CrossOrigin(origins = "*") // Habilita peticiones desde el frontend (si es necesario)
 public class AsignaturaController {
 
