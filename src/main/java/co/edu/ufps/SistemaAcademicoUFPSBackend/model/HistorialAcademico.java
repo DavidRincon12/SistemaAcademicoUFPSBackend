@@ -24,13 +24,13 @@ public class HistorialAcademico implements Serializable {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     private Estudiante estudiante;
-
+//quitar
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "historial_materias_aprobadas",
             joinColumns = @JoinColumn(name = "historial_id"),
             inverseJoinColumns = @JoinColumn(name = "asignatura_id"))
     private List<Asignatura> materiasAprobadas = new ArrayList<>();
-
+//quitar
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "historial_materias_proceso",
             joinColumns = @JoinColumn(name = "historial_id"),

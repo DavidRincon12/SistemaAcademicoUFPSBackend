@@ -62,7 +62,7 @@ public class InscripcionService {
         Inscripcion guardada = inscripcionRepository.save(inscripcion);
         return mapToDTO(guardada);
     }
-
+//sirve
     public void cancelarInscripcion(Long estudianteId, Long claseId) {
         Estudiante estudiante = estudianteRepository.findById(estudianteId)
                 .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
@@ -76,6 +76,7 @@ public class InscripcionService {
         inscripcionRepository.save(inscripcion);
     }
 
+    //sirve
     public List<InscripcionDTO> listarInscripcionesDeEstudiante(Long estudianteId) {
         Estudiante estudiante = estudianteRepository.findById(estudianteId)
                 .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
@@ -83,7 +84,7 @@ public class InscripcionService {
 
         return inscripciones.stream().map(this::mapToDTO).toList();
     }
-
+//sirve
     private InscripcionDTO mapToDTO(Inscripcion i) {
         InscripcionDTO dto = new InscripcionDTO();
         dto.setId(i.getId());
