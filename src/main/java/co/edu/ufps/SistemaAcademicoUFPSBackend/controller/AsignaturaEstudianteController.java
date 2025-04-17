@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,6 @@ public class AsignaturaEstudianteController {
     @Autowired
     private AsignaturaEstudianteService asignaturaEstudianteService;
 
-    // Obtener todas las relaciones
     @GetMapping
     public List<AsignaturaEstudianteDTO> getAll() {
         return asignaturaEstudianteService.getAllAsignaturasEstudiantes()
@@ -29,7 +29,6 @@ public class AsignaturaEstudianteController {
                 .collect(Collectors.toList());
     }
 
-    // Obtener una relación por ID
     @GetMapping("/{id}")
     public ResponseEntity<AsignaturaEstudianteDTO> getById(@PathVariable Long id) {
         Optional<AsignaturaEstudiante> ae = asignaturaEstudianteService.getById(id);
@@ -37,7 +36,6 @@ public class AsignaturaEstudianteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear una nueva relación
     @PostMapping
     public ResponseEntity<AsignaturaEstudianteDTO> create(@RequestBody @Valid AsignaturaEstudiante asignaturaEstudiante) {
         try {
@@ -48,7 +46,6 @@ public class AsignaturaEstudianteController {
         }
     }
 
-    // Actualizar una relación existente
     @PutMapping("/{id}")
     public ResponseEntity<AsignaturaEstudianteDTO> update(@PathVariable Long id,
                                                           @RequestBody @Valid AsignaturaEstudiante detalles) {
@@ -60,7 +57,6 @@ public class AsignaturaEstudianteController {
         }
     }
 
-    // Eliminar una relación
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
@@ -71,7 +67,6 @@ public class AsignaturaEstudianteController {
         }
     }
 
-    // Obtener todas las relaciones por asignatura
     @GetMapping("/asignatura/{asignaturaId}")
     public List<AsignaturaEstudianteDTO> getByAsignatura(@PathVariable Long asignaturaId) {
         return asignaturaEstudianteService.getByAsignaturaId(asignaturaId)
@@ -80,7 +75,6 @@ public class AsignaturaEstudianteController {
                 .collect(Collectors.toList());
     }
 
-    // Obtener todas las relaciones por estudiante
     @GetMapping("/estudiante/{estudianteId}")
     public List<AsignaturaEstudianteDTO> getByEstudiante(@PathVariable Long estudianteId) {
         return asignaturaEstudianteService.getByEstudianteId(estudianteId)
@@ -88,4 +82,15 @@ public class AsignaturaEstudianteController {
                 .map(AsignaturaEstudianteDTO::new)
                 .collect(Collectors.toList());
     }
+
+    @DeleteMapping("/cancelar")
+    public ResponseEntity<String> cancelarAsignatura(@RequestParam Long estudianteId, @RequestParam Long asignaturaId) {
+        try {
+            String mensaje = asignaturaEstudianteService.cancelarAsignatura(estudianteId, asignaturaId);
+            return ResponseEntity.ok(mensaje);
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+        }
+    }
+
 }

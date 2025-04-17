@@ -7,7 +7,9 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsignaturaEstudianteRe
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsignaturaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +67,7 @@ public class AsignaturaEstudianteService {
         }).orElseThrow(() -> new RuntimeException("AsignaturaEstudiante no encontrada"));
     }
 
-    // Eliminar
+    // Eliminar por ID
     public void delete(Long id) {
         if (!asignaturaEstudianteRepository.existsById(id)) {
             throw new RuntimeException("Registro no encontrado");
@@ -73,12 +75,28 @@ public class AsignaturaEstudianteService {
         asignaturaEstudianteRepository.deleteById(id);
     }
 
-    // Consultas adicionales si se requieren
+    // Consultar por estudiante
     public List<AsignaturaEstudiante> getByEstudianteId(Long estudianteId) {
         return asignaturaEstudianteRepository.findByEstudianteId(estudianteId);
     }
 
+    // Consultar por asignatura
     public List<AsignaturaEstudiante> getByAsignaturaId(Long asignaturaId) {
         return asignaturaEstudianteRepository.findByAsignaturaId(asignaturaId);
+    }
+
+    // ✅ Cancelar asignatura por estudiante y asignatura
+    public String cancelarAsignatura(Long estudianteId, Long asignaturaId) {
+        List<AsignaturaEstudiante> registros = asignaturaEstudianteRepository.findByEstudianteId(estudianteId)
+                .stream()
+                .filter(ae -> ae.getAsignatura().getId().equals(asignaturaId))
+                .toList();
+
+        if (registros.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró una relación entre el estudiante y la asignatura.");
+        }
+
+        asignaturaEstudianteRepository.deleteAll(registros);
+        return "Asignatura cancelada correctamente para el estudiante.";
     }
 }
