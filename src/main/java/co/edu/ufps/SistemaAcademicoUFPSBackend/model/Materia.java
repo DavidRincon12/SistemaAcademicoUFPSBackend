@@ -40,7 +40,11 @@ public class Materia implements Serializable {
     @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Asignatura> asignaturas = new ArrayList<>();
-    
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "prerrequisito_id", referencedColumnName = "id")
+    private Materia prerrequisito;
+
 
     private String contenido;
     private String objetivos;
