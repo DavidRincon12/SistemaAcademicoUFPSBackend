@@ -1,4 +1,5 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.model;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -6,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "Asistencia")
@@ -28,7 +28,5 @@ public class Asistencia implements Serializable {
     @JsonBackReference
     private Clase clase;
 
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
     private String estado;
 }
