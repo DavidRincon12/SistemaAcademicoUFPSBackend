@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +54,6 @@ public class AsistenciaService {
 
             asistencia.setEstudiante(estudiante);
             asistencia.setClase(clase);
-            asistencia.setFecha(asistenciaDetails.getFecha());
             asistencia.setEstado(asistenciaDetails.getEstado());
             return asistenciaRepository.save(asistencia);
         }).orElseThrow(() -> new RuntimeException("Asistencia no encontrada"));
@@ -76,23 +74,10 @@ public class AsistenciaService {
         return asistenciaRepository.findByClaseId(claseId);
     }
 
-    public List<Asistencia> findByFecha(Date fecha) {
-        return asistenciaRepository.findByFecha(fecha);
-    }
-
     public List<Asistencia> findByEstudianteIdAndClaseId(Long estudianteId, Long claseId) {
         return asistenciaRepository.findByEstudianteIdAndClaseId(estudianteId, claseId);
     }
 
-    public List<Asistencia> findByEstudianteIdAndFechaBetween(Long estudianteId, Date fechaInicio, Date fechaFin) {
-        return asistenciaRepository.findByEstudianteIdAndFechaBetween(estudianteId, fechaInicio, fechaFin);
-    }
-
-    public Optional<Asistencia> findByEstudianteIdAndClaseIdAndFecha(Long estudianteId, Long claseId, Date fecha) {
-        return asistenciaRepository.findByEstudianteIdAndClaseIdAndFecha(estudianteId, claseId, fecha);
-    }
-
-    // Métodos de negocio no implementados aún
     @Transactional
     public void registrarAsistencia() {
         throw new UnsupportedOperationException("Método no implementado");

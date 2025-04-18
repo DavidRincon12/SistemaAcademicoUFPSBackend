@@ -34,6 +34,7 @@ public class Materia implements Serializable {
     @JoinColumn(name = "programa_id", referencedColumnName = "id")
     @JsonBackReference("materia-programa")
     private Programa programa;
+
     private boolean electiva;
 
     @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -44,10 +45,16 @@ public class Materia implements Serializable {
     @JoinColumn(name = "prerrequisito_id", referencedColumnName = "id")
     private Materia prerrequisito;
 
+
     private String contenido;
     private String objetivos;
     private String competencias;
     private short cupoMaximo;
     private short creditos;
     private short horas;
+
+    @Enumerated(EnumType.STRING)
+    private TipoRequisito tipoRequisito;
+
+    private Integer creditosRequeridos;
 }

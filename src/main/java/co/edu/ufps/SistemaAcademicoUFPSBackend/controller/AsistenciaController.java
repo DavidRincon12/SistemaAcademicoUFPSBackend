@@ -5,11 +5,9 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.AsistenciaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,37 +72,11 @@ public class AsistenciaController {
                 .map(AsistenciaDTO::new).collect(Collectors.toList());
     }
 
-    @GetMapping("/fecha")
-    public List<AsistenciaDTO> getAsistenciasByFecha(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
-        return asistenciaService.findByFecha(fecha).stream()
-                .map(AsistenciaDTO::new).collect(Collectors.toList());
-    }
-
     @GetMapping("/estudiante/{estudianteId}/clase/{claseId}")
     public List<AsistenciaDTO> getAsistenciasByEstudianteAndClase(@PathVariable Long estudianteId,
                                                                   @PathVariable Long claseId) {
         return asistenciaService.findByEstudianteIdAndClaseId(estudianteId, claseId).stream()
                 .map(AsistenciaDTO::new).collect(Collectors.toList());
-    }
-
-    @GetMapping("/estudiante/{estudianteId}/rango")
-    public List<AsistenciaDTO> getAsistenciasByEstudianteAndFechaBetween(
-            @PathVariable Long estudianteId,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaInicio,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin) {
-        return asistenciaService.findByEstudianteIdAndFechaBetween(estudianteId, fechaInicio, fechaFin).stream()
-                .map(AsistenciaDTO::new).collect(Collectors.toList());
-    }
-
-    @GetMapping("/estudiante/{estudianteId}/clase/{claseId}/fecha")
-    public ResponseEntity<AsistenciaDTO> getAsistenciaByEstudianteAndClaseAndFecha(
-            @PathVariable Long estudianteId,
-            @RequestParam Long claseId,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
-        Optional<Asistencia> asistencia = asistenciaService.findByEstudianteIdAndClaseIdAndFecha(estudianteId, claseId, fecha);
-        return asistencia.map(a -> ResponseEntity.ok(new AsistenciaDTO(a)))
-                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/registrar")

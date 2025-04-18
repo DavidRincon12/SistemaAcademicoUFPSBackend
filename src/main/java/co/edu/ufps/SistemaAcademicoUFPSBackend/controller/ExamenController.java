@@ -52,18 +52,10 @@ public class ExamenController {
         ExamenDTO dto = new ExamenDTO();
         dto.setId(examen.getId());
         dto.setTipo(examen.getTipo());
-        dto.setFecha(examen.getFecha());
-        dto.setHoraInicio(examen.getHoraInicio());
-        dto.setHoraFin(examen.getHoraFin());
 
-        if (examen.getAsignatura() != null) {
-            dto.setAsignaturaId(examen.getAsignatura().getId());
-            dto.setAsignaturaNombre(examen.getAsignatura().getNombre());
-        }
-
-        if (examen.getRecurso() != null) {
-            dto.setRecursoId(examen.getRecurso().getId());
-            dto.setRecursoNombre(examen.getRecurso().getNombre());
+        if (examen.getClase() != null) {
+            dto.setClaseId(examen.getClase().getId());
+            dto.setClaseNombre(examen.getClase().getNombre());
         }
 
         return dto;

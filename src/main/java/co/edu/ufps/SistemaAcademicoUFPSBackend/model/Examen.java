@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "Examen")
@@ -21,21 +20,7 @@ public class Examen implements Serializable {
 
     private String tipo; // Parcial, Final, Recuperación, etc.
 
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
-
-    @Temporal(TemporalType.TIME)
-    private Date horaInicio;
-
-    @Temporal(TemporalType.TIME)
-    private Date horaFin;
-
     @ManyToOne
-    @JoinColumn(name = "asignatura_id", nullable = false)
-    private Asignatura asignatura;
-
-    @ManyToOne
-    @JoinColumn(name = "recurso_id", nullable = true)
-    private RecursoAcademico recurso; // Aula, laboratorio, etc.
+    @JoinColumn(name = "clase_id", nullable = false)
+    private Clase clase;
 }
-
