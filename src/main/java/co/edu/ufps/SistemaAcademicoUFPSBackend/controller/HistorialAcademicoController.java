@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/historiales")
+@RequestMapping("/historiales")
 @CrossOrigin(origins = "*")
 public class HistorialAcademicoController {
 
