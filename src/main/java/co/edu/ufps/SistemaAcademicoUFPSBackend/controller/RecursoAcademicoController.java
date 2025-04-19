@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/recursos-academicos")
+@RequestMapping("/recursos-academicos")
 @CrossOrigin(origins = "*")
 public class RecursoAcademicoController {
 
