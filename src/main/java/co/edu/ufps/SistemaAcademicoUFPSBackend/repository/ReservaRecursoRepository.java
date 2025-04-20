@@ -9,13 +9,9 @@ import java.util.List;
 
 @Repository
 public interface ReservaRecursoRepository extends JpaRepository<ReservaRecurso, Long> {
-
-    // Buscar reservas por estado (ejemplo: "Pendiente", "Aprobada")
     List<ReservaRecurso> findByEstado(String estado);
-
-    // Buscar reservas activas dentro de un rango de fechas
     List<ReservaRecurso> findByFechaInicioBeforeAndFechaFinAfter(Date fechaInicio, Date fechaFin);
-
-    // Buscar reservas por nombre del recurso
     List<ReservaRecurso> findByNombre(String nombre);
+    // Nuevo: buscar reservas de un recurso por estados determinados
+    List<ReservaRecurso> findByRecursoAcademicoIdAndEstadoIn(Long recursoId, List<String> estados);
 }

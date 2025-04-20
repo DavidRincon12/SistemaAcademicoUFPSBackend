@@ -15,39 +15,42 @@ public class ReservaRecursoService {
     @Autowired
     private ReservaRecursoRepository reservaRecursoRepository;
 
-    // Obtener todas las reservas
-
     public List<ReservaRecurso> getAllReservas() {
         return reservaRecursoRepository.findAll();
     }
 
-    // Obtener una reserva por ID
     public Optional<ReservaRecurso> getReservaById(Long id) {
         return reservaRecursoRepository.findById(id);
     }
 
-    // Obtener reservas por estado
     public List<ReservaRecurso> getReservasByEstado(String estado) {
         return reservaRecursoRepository.findByEstado(estado);
     }
 
-    // Obtener reservas activas dentro de un rango de fechas
     public List<ReservaRecurso> getReservasActivas(Date fechaInicio, Date fechaFin) {
         return reservaRecursoRepository.findByFechaInicioBeforeAndFechaFinAfter(fechaInicio, fechaFin);
     }
 
-    // Obtener reservas por nombre del recurso
     public List<ReservaRecurso> getReservasByNombre(String nombre) {
         return reservaRecursoRepository.findByNombre(nombre);
     }
 
-    // Crear una nueva reserva
+    @Transactional
     public ReservaRecurso createReserva(ReservaRecurso reserva) {
-        return reservaRecursoRepository.save(reserva);
+        // Validar conflictos de horario
+        List<ReservaRecurso> existentes = reservaRecursoRepository
+                .findByRecursoAcademicoIdAndEstadoIn(reserva.getRecursoAcademico().getId(), List.of("Pendiente", "Aprobada"));
 
+        for (ReservaRecurso r : existentes) {
+            if (r.getFechaInicio().before(reserva.getFechaFin()) && r.getFechaFin().after(reserva.getFechaInicio())) {
+                throw new RuntimeException("Conflicto de horario con reserva existente ID: " + r.getId());
+            }
+        }
+        reserva.setEstado("Pendiente");
+        return reservaRecursoRepository.save(reserva);
     }
 
-    // Actualizar una reserva
+    @Transactional
     public ReservaRecurso updateReserva(Long id, ReservaRecurso reservaDetails) {
         return reservaRecursoRepository.findById(id).map(reserva -> {
             reserva.setFechaInicio(reservaDetails.getFechaInicio());
@@ -58,8 +61,7 @@ public class ReservaRecursoService {
         }).orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
     }
 
-    // Aprobar una reserva
-
+    @Transactional
     public ReservaRecurso aprobarReserva(Long id) {
         return reservaRecursoRepository.findById(id).map(reserva -> {
             reserva.setEstado("Aprobada");
@@ -67,7 +69,7 @@ public class ReservaRecursoService {
         }).orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
     }
 
-    // Eliminar una reserva
+    @Transactional
     public void deleteReserva(Long id) {
         if (!reservaRecursoRepository.existsById(id)) {
             throw new RuntimeException("Reserva no encontrada");
@@ -75,10 +77,22 @@ public class ReservaRecursoService {
         reservaRecursoRepository.deleteById(id);
     }
 
-    // ------------------------- Métodos de Negocio -------------------------
-
     @Transactional
     public ReservaRecurso extenderReserva(Long id, Date nuevaFechaFin) {
-        throw new UnsupportedOperationException("Método no implementado");
+        ReservaRecurso reserva = reservaRecursoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+
+        // Validar solapamientos
+        List<ReservaRecurso> existentes = reservaRecursoRepository
+                .findByRecursoAcademicoIdAndEstadoIn(reserva.getRecursoAcademico().getId(), List.of("Pendiente", "Aprobada"));
+        for (ReservaRecurso r : existentes) {
+            if (!r.getId().equals(id)
+                    && r.getFechaInicio().before(nuevaFechaFin)
+                    && r.getFechaFin().after(reserva.getFechaInicio())) {
+                throw new RuntimeException("Extensión genera conflicto con reserva ID: " + r.getId());
+            }
+        }
+        reserva.setFechaFin(nuevaFechaFin);
+        return reservaRecursoRepository.save(reserva);
     }
 }
