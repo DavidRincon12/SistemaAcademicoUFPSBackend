@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/semestres")
+@RequestMapping("/semestres")
 @CrossOrigin(origins = "*")
 public class SemestreController {
 

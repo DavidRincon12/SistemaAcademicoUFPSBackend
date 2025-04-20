@@ -31,15 +31,24 @@ public class DocenteService {
     }
 
     // Crear un nuevo docente
+    // Crear un nuevo docente
     public Docente createDocente(Docente docente) {
-        if (docente.getPersona() != null && docente.getPersona().getId() != null) {
-            Persona persona = personaRepository.findById(docente.getPersona().getId())
-                    .orElseThrow(() -> new RuntimeException(
-                            "Persona no encontrada con id: " + docente.getPersona().getId()));
-            docente.setPersona(persona);
+        // Verificar si la persona asociada al docente es válida y existe
+        if (docente.getPersona() == null || docente.getPersona().getId() == null) {
+            throw new RuntimeException("Debe asociarse una persona al docente.");
         }
+
+        // Intentar encontrar la persona en la base de datos
+        Persona persona = personaRepository.findById(docente.getPersona().getId())
+                .orElseThrow(() -> new RuntimeException("Persona no encontrada con id: " + docente.getPersona().getId()));
+
+        // Asociar la persona encontrada al docente
+        docente.setPersona(persona);
+
+        // Guardar el docente en la base de datos
         return docenteRepository.save(docente);
     }
+
 
     // Actualizar un docente
     public Docente updateDocente(Long id, Docente docenteDetails) {
