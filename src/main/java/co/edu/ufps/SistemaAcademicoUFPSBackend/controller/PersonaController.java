@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -17,6 +18,18 @@ public class PersonaController {
 
     @Autowired
     private PersonaService personaService;
+
+
+
+    @PutMapping("/{id}/rol")
+    public ResponseEntity<Persona> asignarRol(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+
+        String nombreRol = body.get("rol");
+        Persona actualizado = personaService.asignarRol(id, nombreRol);
+        return ResponseEntity.ok(actualizado);
+    }
 
     // Obtener todas las personas
     @GetMapping

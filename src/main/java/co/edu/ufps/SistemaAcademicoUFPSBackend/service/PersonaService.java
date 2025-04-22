@@ -20,6 +20,18 @@ public class PersonaService {
     @Autowired
     private RolRepository rolRepository;
 
+
+    public Persona asignarRol(Long usuarioId, String nombreRol) {
+        Persona usuario = personaRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        Rol rol = rolRepository.findByNombre(nombreRol.toUpperCase())
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+
+        usuario.setRol(rol);
+        return personaRepository.save(usuario);
+    }
+
     // Obtener todas las personas
 
     public List<Persona> getAllPersons() {
