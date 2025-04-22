@@ -33,5 +33,5 @@ public class Asignatura implements Serializable {
     @OneToMany(mappedBy = "asignatura", cascade = CascadeType.ALL)
     private List<Horario> horarios; 
     
-    private short horasSemanales;
+
 }

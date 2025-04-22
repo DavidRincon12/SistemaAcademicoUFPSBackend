@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,17 @@ public class AsignaturaController {
         Asignatura actualizada = asignaturaService.updateAsignatura(id, asignatura);
         return ResponseEntity.ok(new AsignaturaDTO(actualizada));
     }
+
+    @PatchMapping("/{id}/docente")
+    public ResponseEntity<AsignaturaDTO> cambiarDocente(
+            @PathVariable Long id,
+            @RequestBody(required = false) Map<String, Long> body) {
+    
+        Long nuevoDocenteId = (body != null) ? body.get("id") : null;
+        Asignatura actualizada = asignaturaService.cambiarDocente(id, nuevoDocenteId);
+        return ResponseEntity.ok(new AsignaturaDTO(actualizada));
+    }
+    
 
     // Eliminar asignatura
     @DeleteMapping("/{id}")

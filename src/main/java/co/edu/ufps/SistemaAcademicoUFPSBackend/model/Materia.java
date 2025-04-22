@@ -52,6 +52,7 @@ public class Materia implements Serializable {
     private short cupoMaximo;
     private short creditos;
     private short horas;
+    private short horasSemanales;
 
     @Enumerated(EnumType.STRING)
     private TipoRequisito tipoRequisito;
