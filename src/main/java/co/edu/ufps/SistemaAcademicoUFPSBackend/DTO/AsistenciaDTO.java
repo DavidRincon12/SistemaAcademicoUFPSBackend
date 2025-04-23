@@ -1,6 +1,7 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.DTO;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asistencia;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoAsistencia;
 import lombok.Data;
 
 @Data
@@ -11,7 +12,7 @@ public class AsistenciaDTO {
     private String nombreEstudiante;
     private Long claseId;
     private String nombreClase;
-    private String estado;
+    private EstadoAsistencia estado;
 
     public AsistenciaDTO(Asistencia asistencia) {
         this.id = asistencia.getId();

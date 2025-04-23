@@ -3,6 +3,7 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Clase;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoAsistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsistenciaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ClaseRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.EstudianteRepository;
@@ -41,6 +42,9 @@ public class AsistenciaService {
 
         asistencia.setEstudiante(estudiante);
         asistencia.setClase(clase);
+        if (asistencia.getEstado() == null) {
+            asistencia.setEstado(EstadoAsistencia.AUSENTE); // Estado por defecto si no se especifica
+        }
 
         return asistenciaRepository.save(asistencia);
     }
@@ -55,6 +59,7 @@ public class AsistenciaService {
             asistencia.setEstudiante(estudiante);
             asistencia.setClase(clase);
             asistencia.setEstado(asistenciaDetails.getEstado());
+
             return asistenciaRepository.save(asistencia);
         }).orElseThrow(() -> new RuntimeException("Asistencia no encontrada"));
     }
@@ -76,6 +81,14 @@ public class AsistenciaService {
 
     public List<Asistencia> findByEstudianteIdAndClaseId(Long estudianteId, Long claseId) {
         return asistenciaRepository.findByEstudianteIdAndClaseId(estudianteId, claseId);
+    }
+
+    public List<Asistencia> findByEstado(EstadoAsistencia estado) {
+        return asistenciaRepository.findByEstado(estado);
+    }
+
+    public List<Asistencia> findByClaseIdAndEstado(Long claseId, EstadoAsistencia estado) {
+        return asistenciaRepository.findByClaseIdAndEstado(claseId, estado);
     }
 
     @Transactional

@@ -1,5 +1,7 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.DTO;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoCurso;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoCurso;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.HistorialAcademico;
 import lombok.Data;
 
@@ -14,7 +16,7 @@ public class HistorialAcademicoDTO {
     private String nombreAsignatura;
 
     private float nota;
-    private String estado;
+    private EstadoCurso estado;
     private String periodo;
 
     public HistorialAcademicoDTO(HistorialAcademico h) {
@@ -26,7 +28,7 @@ public class HistorialAcademicoDTO {
         this.nombreAsignatura = h.getAsignatura().getMateria().getNombre();
 
         this.nota = h.getNota();
-        this.estado = h.getEstado().name();
+        this.estado = h.getEstado(); // directamente el enum
         this.periodo = h.getPeriodo();
     }
 }

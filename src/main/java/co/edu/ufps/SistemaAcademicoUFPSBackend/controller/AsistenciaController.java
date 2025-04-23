@@ -2,6 +2,7 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.AsistenciaDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asistencia;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoAsistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.AsistenciaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,19 @@ public class AsistenciaController {
     public List<AsistenciaDTO> getAsistenciasByEstudianteAndClase(@PathVariable Long estudianteId,
                                                                   @PathVariable Long claseId) {
         return asistenciaService.findByEstudianteIdAndClaseId(estudianteId, claseId).stream()
+                .map(AsistenciaDTO::new).collect(Collectors.toList());
+    }
+
+    @GetMapping("/estado/{estado}")
+    public List<AsistenciaDTO> getAsistenciasByEstado(@PathVariable EstadoAsistencia estado) {
+        return asistenciaService.findByEstado(estado).stream()
+                .map(AsistenciaDTO::new).collect(Collectors.toList());
+    }
+
+    @GetMapping("/clase/{claseId}/estado/{estado}")
+    public List<AsistenciaDTO> getAsistenciasByClaseAndEstado(@PathVariable Long claseId,
+                                                              @PathVariable EstadoAsistencia estado) {
+        return asistenciaService.findByClaseIdAndEstado(claseId, estado).stream()
                 .map(AsistenciaDTO::new).collect(Collectors.toList());
     }
 

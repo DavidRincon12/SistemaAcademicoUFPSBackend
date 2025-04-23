@@ -28,5 +28,6 @@ public class Asistencia implements Serializable {
     @JsonBackReference
     private Clase clase;
 
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private EstadoAsistencia estado;
 }
