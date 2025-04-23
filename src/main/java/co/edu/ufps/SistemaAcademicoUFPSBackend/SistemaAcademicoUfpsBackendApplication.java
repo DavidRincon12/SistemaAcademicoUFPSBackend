@@ -8,6 +8,7 @@ public class SistemaAcademicoUfpsBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SistemaAcademicoUfpsBackendApplication.class, args);
+
 	}
 
 }

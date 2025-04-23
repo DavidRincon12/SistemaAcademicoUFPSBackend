@@ -5,21 +5,55 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Rol;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PersonaService {
+public class PersonaService implements UserDetailsService {
+
     @Autowired
     private PersonaRepository personaRepository;
 
     @Autowired
     private RolRepository rolRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
+        Persona usuario = personaRepository.findByCorreo(correo)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+    
+        // Validar que el correo y la contraseña no sean nulos
+        if (usuario.getCorreo() == null || usuario.getContrasena() == null) {
+            throw new IllegalStateException("El usuario tiene datos incompletos (correo o contraseña nulos)");
+        }
+    
+        // Validar que la contraseña esté codificada
+        if (!usuario.getContrasena().startsWith("$2a$")) {
+            throw new IllegalStateException("La contraseña del usuario no está codificada correctamente");
+        }
+    
+        // Validar que el usuario tenga un rol asignado
+        if (usuario.getRol() == null) {
+            throw new IllegalStateException("El usuario no tiene un rol asignado");
+        }
+    
+        return new org.springframework.security.core.userdetails.User(
+                usuario.getCorreo(),
+                usuario.getContrasena(),
+                List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre()))
+        );
+    }
 
     public Persona asignarRol(Long usuarioId, String nombreRol) {
         Persona usuario = personaRepository.findById(usuarioId)
@@ -43,13 +77,19 @@ public class PersonaService {
         return personaRepository.findById(id);
     }
 
-    // Crear una nueva persona
     public Persona createPerson(Persona persona) {
         if (persona.getRol() != null && persona.getRol().getId() != null) {
             Rol rol = rolRepository.findById(persona.getRol().getId())
                     .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
             persona.setRol(rol); // asignas el rol gestionado por Hibernate
         }
+
+        // Codificar la contraseña si no está ya codificada
+        if (persona.getContrasena() != null && !persona.getContrasena().startsWith("$2a$")) {
+            String encodedPassword = bCryptPasswordEncoder.encode(persona.getContrasena());
+            persona.setContrasena(encodedPassword);
+        }
+
         return personaRepository.save(persona);
     }
 
