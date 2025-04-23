@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Estudiante")
@@ -45,4 +47,8 @@ public class Estudiante implements Serializable {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     private Persona persona;
+
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
+    private List<HistorialAcademico> historial = new ArrayList<>();
+
 }

@@ -52,24 +52,4 @@ public class HistorialAcademicoController {
         historialService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping("/{historialId}/aprobadas/{asignaturaId}")
-    public ResponseEntity<HistorialAcademicoDTO> agregarAsignaturaAprobada(@PathVariable Long historialId, @PathVariable Long asignaturaId) {
-        try {
-            HistorialAcademico actualizado = historialService.agregarAsignaturaAprobada(historialId, asignaturaId);
-            return ResponseEntity.ok(new HistorialAcademicoDTO(actualizado));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
-    @PostMapping("/{historialId}/proceso/{asignaturaId}")
-    public ResponseEntity<HistorialAcademicoDTO> agregarAsignaturaEnProceso(@PathVariable Long historialId, @PathVariable Long asignaturaId) {
-        try {
-            HistorialAcademico actualizado = historialService.agregarAsignaturaEnProceso(historialId, asignaturaId);
-            return ResponseEntity.ok(new HistorialAcademicoDTO(actualizado));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
 }
