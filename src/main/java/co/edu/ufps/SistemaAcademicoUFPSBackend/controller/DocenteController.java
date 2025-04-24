@@ -4,6 +4,7 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Docente;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.DocenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
@@ -18,6 +19,7 @@ public class DocenteController {
     private DocenteService docenteService;
 
     // Obtener todos los docentes
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @GetMapping
     public List<Docente> getAllDocentes() {
         return docenteService.getAllDocentes();
