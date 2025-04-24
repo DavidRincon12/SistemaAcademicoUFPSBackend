@@ -17,14 +17,6 @@ public class AsignaturaDTO {
     private String nombre;
     private Long docenteId;
     private Long materiaId;
-    private List<Long> estudiantesIds;
-    private float primerPrevio;
-    private float segundoPrevio;
-    private float tercerPrevio;
-    private float examenFinal;
-    private boolean habilitacion;
-    private boolean vacacional;
-    private float definitiva;
 
     public AsignaturaDTO(Asignatura asignatura) {
         this.id = asignatura.getId();
