@@ -1,8 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asignatura;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.AsignaturaEstudiante;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.*;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsignaturaEstudianteRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsignaturaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.EstudianteRepository;
@@ -36,7 +34,9 @@ public class AsignaturaEstudianteService {
         return asignaturaEstudianteRepository.findById(id);
     }
 
-    // Crear nuevo
+    @Autowired
+    private HistorialAcademicoService historialAcademicoService; // inyecta el servicio
+
     public AsignaturaEstudiante create(AsignaturaEstudiante ae) {
         if (ae.getEstudiante() != null && ae.getEstudiante().getId() != null) {
             Estudiante estudiante = estudianteRepository.findById(ae.getEstudiante().getId())
@@ -50,7 +50,18 @@ public class AsignaturaEstudianteService {
             ae.setAsignatura(asignatura);
         }
 
-        return asignaturaEstudianteRepository.save(ae);
+        AsignaturaEstudiante saved = asignaturaEstudianteRepository.save(ae);
+
+        // 👇 Aquí se crea automáticamente el Historial
+        HistorialAcademico historial = new HistorialAcademico();
+        historial.setEstudiante(saved.getEstudiante());
+        historial.setAsignatura(saved.getAsignatura());
+        historial.setNota(saved.getDefinitiva());
+        historial.setEstado(EstadoCurso.EN_CURSO);
+        historial.setPeriodo("2025-1"); // configurar despues
+        historial = historialAcademicoService.save(historial);
+
+        return saved;
     }
 
     // Actualizar

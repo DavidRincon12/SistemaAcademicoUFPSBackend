@@ -1,55 +1,64 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
-import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.HistorialAcademicoDTO;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.InformeAcademicoDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.HistorialAcademico;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.HistorialAcademicoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/historiales")
-@CrossOrigin(origins = "*")
 public class HistorialAcademicoController {
 
-    @Autowired
-    private HistorialAcademicoService historialService;
+    private final HistorialAcademicoService historialService;
+
+    public HistorialAcademicoController(HistorialAcademicoService historialService) {
+        this.historialService = historialService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<HistorialAcademicoDTO>> getAllHistoriales() {
-        var historiales = historialService.findAll().stream()
-                .map(HistorialAcademicoDTO::new).collect(Collectors.toList());
-        return ResponseEntity.ok(historiales);
+    public List<HistorialAcademico> getAll() {
+        return historialService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HistorialAcademicoDTO> getHistorialById(@PathVariable Long id) {
-        var historial = historialService.findById(id);
-        return historial != null
-                ? ResponseEntity.ok(new HistorialAcademicoDTO(historial))
-                : ResponseEntity.notFound().build();
+    public ResponseEntity<HistorialAcademico> getById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(historialService.findById(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public ResponseEntity<HistorialAcademicoDTO> createHistorial(@RequestBody HistorialAcademico historial) {
-        HistorialAcademico nuevo = historialService.save(historial);
-        return ResponseEntity.ok(new HistorialAcademicoDTO(nuevo));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<HistorialAcademicoDTO> updateHistorial(@PathVariable Long id, @RequestBody HistorialAcademico actualizado) {
-        HistorialAcademico actualizadoResult = historialService.update(id, actualizado);
-        return actualizadoResult != null
-                ? ResponseEntity.ok(new HistorialAcademicoDTO(actualizadoResult))
-                : ResponseEntity.notFound().build();
+    public HistorialAcademico create(@RequestBody HistorialAcademico historial) {
+        return historialService.save(historial);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHistorial(@PathVariable Long id) {
-        historialService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        historialService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/informe/estudiante/{id}")
+    public ResponseEntity<InformeAcademicoDTO> getInforme(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(historialService.generarInformePorEstudiante(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/informe/estudiante/{id}/pdf")
+    public ResponseEntity<byte[]> descargarInformePDF(@PathVariable Long id) {
+        byte[] pdfBytes = historialService.generarInformePDF(id);
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=informe_estudiante_" + id + ".pdf")
+                .contentType(org.springframework.http.MediaType.APPLICATION_PDF)
+                .body(pdfBytes);
     }
 }
