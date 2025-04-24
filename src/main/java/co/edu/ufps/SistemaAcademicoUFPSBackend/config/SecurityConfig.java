@@ -1,57 +1,65 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.config;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.security.JwtAuthenticationFilter;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.security.JwtUtil;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.service.PersonaService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.config.Customizer;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/auth/**").permitAll()
-            .requestMatchers("/personas/**").permitAll()
+    @Bean
+    public UserDetailsService userDetailsService(PersonaService personaService) {
+        return personaService;
+    }
 
-            .requestMatchers("/estudiantes/**").permitAll()
-            .requestMatchers("/matricula/**", "/inscripcion/**").hasAnyRole("ADMINISTRADOR", "ESTUDIANTE")
-            .requestMatchers("/historial/**", "/asistencia/**").hasAnyRole("ADMINISTRADOR", "ESTUDIANTE")
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+        return new JwtAuthenticationFilter(jwtUtil, userDetailsService);
+    }
 
-            .requestMatchers("/docentes/**").hasRole("ADMINISTRADOR")
-            .requestMatchers("/asignacion-docente/**").hasAnyRole("ADMINISTRADOR", "DOCENTE")
-            .requestMatchers("/evaluaciones/**").hasRole("DOCENTE")
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth", "/auth/**").permitAll()
+                        .requestMatchers("/auth/request-reset", "/auth/reset-password", "/reset-password").permitAll()
+                        .requestMatchers("/personas/**", "/roles/**").permitAll()
 
-            .requestMatchers("/cursos/**", "/asignaturas/**").hasRole("ADMINISTRADOR")
-            .requestMatchers("/inscripciones/**", "/cancelaciones/**").hasRole("ESTUDIANTE")
+                        .requestMatchers("/matricula/**", "/inscripcion/**").hasAnyRole("ADMINISTRADOR", "ESTUDIANTE")
+                        .requestMatchers("/historial/**", "/asistencia/**").hasAnyRole("ADMINISTRADOR", "ESTUDIANTE")
 
-            .requestMatchers("/calificaciones/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers("/docentes/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/asignacion-docente/**").hasAnyRole("ADMINISTRADOR", "DOCENTE")
+                        .requestMatchers("/evaluaciones/**").hasRole("DOCENTE")
 
-            .requestMatchers("/mensajes/**", "/notificaciones/**").authenticated()
+                        .requestMatchers("/cursos/**", "/asignaturas/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/inscripciones/**", "/cancelaciones/**").hasRole("ESTUDIANTE")
 
-            .requestMatchers("/recursos/**").hasAnyRole("ADMINISTRADOR", "ADMINISTRATIVO")
+                        .requestMatchers("/calificaciones/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
 
-            .requestMatchers("/usuarios/**", "/roles/**").hasRole("ADMINISTRADOR")
-            .requestMatchers("/reportes/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/mensajes/**", "/notificaciones/**").authenticated()
 
-            .anyRequest().authenticated()
-        )
-        .sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .httpBasic(Customizer.withDefaults());
+                        .requestMatchers("/recursos/**").hasAnyRole("ADMINISTRADOR", "ADMINISTRATIVO")
 
-    return http.build();
-}
+                        .requestMatchers("/reportes/**").hasRole("ADMINISTRADOR")
 
+                        .anyRequest().authenticated())
+                        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
