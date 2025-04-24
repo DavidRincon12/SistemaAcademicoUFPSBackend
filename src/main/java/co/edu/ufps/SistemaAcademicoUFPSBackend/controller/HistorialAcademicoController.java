@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.HistorialAcademicoDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.InformeAcademicoDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.HistorialAcademico;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.HistorialAcademicoService;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/historiales")
@@ -19,22 +21,27 @@ public class HistorialAcademicoController {
     }
 
     @GetMapping
-    public List<HistorialAcademico> getAll() {
-        return historialService.findAll();
+    public List<HistorialAcademicoDTO> getAll() {
+        return historialService.findAll()
+                .stream()
+                .map(HistorialAcademicoDTO::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HistorialAcademico> getById(@PathVariable Long id) {
+    public ResponseEntity<HistorialAcademicoDTO> getById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(historialService.findById(id));
+            HistorialAcademico historial = historialService.findById(id);
+            return ResponseEntity.ok(new HistorialAcademicoDTO(historial));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public HistorialAcademico create(@RequestBody HistorialAcademico historial) {
-        return historialService.save(historial);
+    public ResponseEntity<HistorialAcademicoDTO> create(@RequestBody HistorialAcademico historial) {
+        HistorialAcademico saved = historialService.save(historial);
+        return ResponseEntity.ok(new HistorialAcademicoDTO(saved));
     }
 
     @DeleteMapping("/{id}")
