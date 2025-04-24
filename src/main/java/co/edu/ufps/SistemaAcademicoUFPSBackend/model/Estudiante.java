@@ -51,4 +51,12 @@ public class Estudiante implements Serializable {
     @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
     private List<HistorialAcademico> historial = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "estudiante_materia",
+            joinColumns = @JoinColumn(name = "estudiante_id"),
+            inverseJoinColumns = @JoinColumn(name = "materia_id")
+    )
+    private List<Materia> materias = new ArrayList<>();
+
 }

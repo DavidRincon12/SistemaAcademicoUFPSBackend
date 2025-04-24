@@ -3,6 +3,7 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Materia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Programa;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Semestre;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.TipoRequisito;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.MateriaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ProgramaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.SemestreRepository;
@@ -108,4 +109,26 @@ public class MateriaService {
     public void eliminarAsignatura() {
         throw new UnsupportedOperationException("Método no implementado");
     }
+
+    public boolean validarRequisitosInscripcion(Long estudianteId, Materia materia, Integer creditosAprobados, List<Long> materiasAprobadasIds) {
+        TipoRequisito tipo = materia.getTipoRequisito();
+
+        if (tipo == null || tipo == TipoRequisito.NINGUNO) {
+            return true; // Sin requisitos
+        }
+
+        boolean cumpleCreditos = true;
+        boolean cumpleMateria = true;
+
+        if (tipo == TipoRequisito.SOLO_CREDITOS || tipo == TipoRequisito.AMBOS) {
+            cumpleCreditos = creditosAprobados >= (materia.getCreditosRequeridos() != null ? materia.getCreditosRequeridos() : 0);
+        }
+
+        if ((tipo == TipoRequisito.SOLO_MATERIA || tipo == TipoRequisito.AMBOS) && materia.getPrerrequisito() != null) {
+            cumpleMateria = materiasAprobadasIds.contains(materia.getPrerrequisito().getId());
+        }
+
+        return cumpleCreditos && cumpleMateria;
+    }
+
 }
