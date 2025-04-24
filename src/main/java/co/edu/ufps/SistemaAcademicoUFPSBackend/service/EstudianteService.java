@@ -1,11 +1,7 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Persona;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Programa;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.EstudianteRepository;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.PersonaRepository;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ProgramaRepository;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.model.*;
+import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +17,10 @@ public class EstudianteService {
     private ProgramaRepository programaRepository;
     @Autowired
     private PersonaRepository personaRepository;
+    @Autowired
+    private AsignaturaRepository asignaturaRepository;  // Inyección del repositorio Asignatura
+    @Autowired
+    private AsignaturaEstudianteRepository asignaturaEstudianteRepository;
 
     // Obtener todos los estudiantes
 
@@ -157,18 +157,40 @@ public class EstudianteService {
         throw new UnsupportedOperationException("Método no implementado");
     }
 
-    @Transactional(readOnly = true)
-    public boolean validarCupo() {
-        throw new UnsupportedOperationException("Método no implementado");
+
+    @Autowired
+    private MateriaRepository materiaRepository;
+
+    @Transactional
+    public boolean matricular(Long idEstudiante, Long idAsignatura) {
+        // Buscar estudiante
+        Estudiante estudiante = estudianteRepository.findById(idEstudiante)
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con id: " + idEstudiante));
+
+        // Buscar asignatura
+        Asignatura asignatura = asignaturaRepository.findById(idAsignatura)
+                .orElseThrow(() -> new RuntimeException("Asignatura no encontrada con id: " + idAsignatura));
+
+        // Verificar si ya está inscrito en la asignatura
+        Optional<AsignaturaEstudiante> existingInscription = asignaturaEstudianteRepository.findByEstudianteIdAndAsignaturaId(idEstudiante, idAsignatura);
+        if (existingInscription.isPresent()) {
+            throw new RuntimeException("El estudiante ya está inscrito en esta asignatura");
+        }
+
+        // Crear nueva inscripción
+        AsignaturaEstudiante asignaturaEstudiante = new AsignaturaEstudiante();
+        asignaturaEstudiante.setEstudiante(estudiante);
+        asignaturaEstudiante.setAsignatura(asignatura);
+
+
+        // Guardar la inscripción
+        asignaturaEstudianteRepository.save(asignaturaEstudiante);
+
+        return true;
     }
 
-    @Transactional(readOnly = true)
-    public boolean validarHorario() {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
 
-    @Transactional(readOnly = true)
-    public boolean validarCreditos() {
-        throw new UnsupportedOperationException("Método no implementado");
-    }
+
+
+
 }

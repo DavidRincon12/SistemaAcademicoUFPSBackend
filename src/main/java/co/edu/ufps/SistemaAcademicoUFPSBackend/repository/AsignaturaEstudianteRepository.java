@@ -5,11 +5,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AsignaturaEstudianteRepository extends JpaRepository<AsignaturaEstudiante, Long> {
 
-    List<AsignaturaEstudiante> findByEstudianteId(Long estudianteId);
+    // Buscar inscripción por estudiante y asignatura
+    Optional<AsignaturaEstudiante> findByEstudianteIdAndAsignaturaId(Long idEstudiante, Long idAsignatura);
 
-    List<AsignaturaEstudiante> findByAsignaturaId(Long asignaturaId);
+    // Buscar todas las inscripciones de un estudiante
+    List<AsignaturaEstudiante> findByEstudianteId(Long idEstudiante);
+
+    // Buscar todas las inscripciones de una asignatura
+    List<AsignaturaEstudiante> findByAsignaturaId(Long idAsignatura);
 }

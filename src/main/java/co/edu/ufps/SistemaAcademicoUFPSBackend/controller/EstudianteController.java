@@ -112,4 +112,14 @@ public class EstudianteController {
                 .map(EstudianteDTO::new)
                 .collect(Collectors.toList());
     }
+
+    @PostMapping("/{idEstudiante}/matricular/{idAsignatura}")
+    public ResponseEntity<String> matricular(@PathVariable Long idEstudiante, @PathVariable Long idAsignatura) {
+        try {
+            estudianteService.matricular(idEstudiante, idAsignatura);
+            return ResponseEntity.ok("Estudiante matriculado exitosamente en la asignatura.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
