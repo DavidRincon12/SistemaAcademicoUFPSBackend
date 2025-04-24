@@ -34,4 +34,7 @@ public class HistorialAcademico implements Serializable {
     private EstadoCurso estado; // APROBADO, EN_CURSO, REPROBADO, RETIRADO, etc.
 
     private String periodo; // Ej: "2024-2", "2025-1"
+
+    @Column(name = "promedio_ponderado")
+    private Float promedioPonderado;
 }
