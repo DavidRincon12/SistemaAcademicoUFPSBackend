@@ -1,6 +1,4 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.DTO;
-
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoCurso;
 import lombok.Data;
 
 import java.util.List;

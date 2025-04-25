@@ -1,7 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.DTO;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoCurso;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoCurso;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.HistorialAcademico;
 import lombok.Data;
 

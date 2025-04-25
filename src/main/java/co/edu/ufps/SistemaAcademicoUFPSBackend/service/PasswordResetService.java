@@ -33,7 +33,8 @@ private EmailService emailService;
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     
         String resetToken = jwtUtil.generateToken(correo);
-        String resetLink = "https://miaplicacion.com/reset-password?token=" + resetToken;
+        String resetLink = "http://localhost:8080/auth/reset-password?token=" + resetToken;
+
     
         String mensaje = "Hola " + persona.getNombre() + ",\n\n"
                        + "Haga clic en el siguiente enlace para restablecer su contraseña:\n" + resetLink;

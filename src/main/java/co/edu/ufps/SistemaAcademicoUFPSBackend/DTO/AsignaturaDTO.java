@@ -1,13 +1,8 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.DTO;
-
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asignatura;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-
 
 @Data
 @NoArgsConstructor

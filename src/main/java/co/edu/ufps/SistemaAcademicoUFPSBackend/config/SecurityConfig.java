@@ -39,8 +39,8 @@ public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilte
 
     return http.build();
 }
-//
-//
+
+
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
 //        http
@@ -48,7 +48,7 @@ public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilte
 //                .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/auth", "/auth/**").permitAll()
 //                        .requestMatchers("/auth/request-reset", "/auth/reset-password", "/reset-password").permitAll()
-//                        .requestMatchers("/personas/**", "/roles/**").permitAll()
+//                        .requestMatchers("/personas/**", "/roles/**").hasAnyRole("ADMINISTRADOR", "ADMINISTRATIVO")
 //
 //                        .requestMatchers("/matricula/**", "/inscripcion/**").hasAnyRole("ADMINISTRADOR", "ESTUDIANTE")
 //                        .requestMatchers("/historial/**", "/asistencia/**").hasAnyRole("ADMINISTRADOR", "ESTUDIANTE")
@@ -74,7 +74,7 @@ public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilte
 //
 //        return http.build();
 //    }
-//
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
