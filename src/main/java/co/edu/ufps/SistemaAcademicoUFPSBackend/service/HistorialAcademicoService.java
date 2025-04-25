@@ -2,7 +2,6 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
 import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.DetalleAsignaturaDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.InformeAcademicoDTO;
-import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoCurso;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.HistorialAcademico;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.HistorialAcademicoRepository;

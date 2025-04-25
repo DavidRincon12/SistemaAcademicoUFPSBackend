@@ -158,9 +158,6 @@ public class EstudianteService {
     }
 
 
-    @Autowired
-    private MateriaRepository materiaRepository;
-
     @Transactional
     public boolean matricular(Long idEstudiante, Long idAsignatura) {
         // Buscar estudiante
