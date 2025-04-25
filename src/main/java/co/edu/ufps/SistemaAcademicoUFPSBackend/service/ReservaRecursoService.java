@@ -27,9 +27,10 @@ public class ReservaRecursoService {
         return reservaRecursoRepository.findByEstado(estado);
     }
 
-    public List<ReservaRecurso> getReservasActivas(Date fechaInicio, Date fechaFin) {
-        return reservaRecursoRepository.findByFechaInicioBeforeAndFechaFinAfter(fechaInicio, fechaFin);
+    public List<ReservaRecurso> getReservasActivas(Date inicio, Date fin) {
+        return reservaRecursoRepository.findReservasSolapadas(inicio, fin);
     }
+
 
     public List<ReservaRecurso> getReservasByNombre(String nombre) {
         return reservaRecursoRepository.findByNombre(nombre);

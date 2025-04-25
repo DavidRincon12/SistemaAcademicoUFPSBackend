@@ -3,6 +3,7 @@ package co.edu.ufps.SistemaAcademicoUFPSBackend.controller;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.ReservaRecurso;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.service.ReservaRecursoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -41,9 +42,11 @@ public class ReservaRecursoController {
         return reservaRecursoService.getReservasByNombre(nombre);
     }
 
-    // Obtener reservas activas dentro de un rango de fechas
     @GetMapping("/activas")
-    public List<ReservaRecurso> getReservasActivas(@RequestParam Date inicio, @RequestParam Date fin) {
+    public List<ReservaRecurso> getReservasActivas(
+            @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss") Date inicio,
+            @RequestParam @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss") Date fin
+    ) {
         return reservaRecursoService.getReservasActivas(inicio, fin);
     }
 

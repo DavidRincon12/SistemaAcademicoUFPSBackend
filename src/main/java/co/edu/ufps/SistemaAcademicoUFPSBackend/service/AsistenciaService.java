@@ -1,5 +1,6 @@
 package co.edu.ufps.SistemaAcademicoUFPSBackend.service;
 
+import co.edu.ufps.SistemaAcademicoUFPSBackend.DTO.ReporteAsistenciaDTO;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Asistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Clase;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.model.Estudiante;
@@ -7,12 +8,18 @@ import co.edu.ufps.SistemaAcademicoUFPSBackend.model.EstadoAsistencia;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.AsistenciaRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.ClaseRepository;
 import co.edu.ufps.SistemaAcademicoUFPSBackend.repository.EstudianteRepository;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AsistenciaService {
@@ -99,5 +106,77 @@ public class AsistenciaService {
     @Transactional(readOnly = true)
     public void consultarAsistencia() {
         throw new UnsupportedOperationException("Método no implementado");
+    }
+
+    // ✅ Reporte por estudiante y clase específica
+    public List<ReporteAsistenciaDTO> generarReportePorEstudianteYClase(Long estudianteId, Long claseId) {
+        List<Asistencia> asistencias = this.findByEstudianteIdAndClaseId(estudianteId, claseId);
+
+        return asistencias.stream().map(asistencia -> {
+            return new ReporteAsistenciaDTO(
+                    asistencia.getEstudiante().getPersona().getNombre(),
+                    asistencia.getEstudiante().getCorreoEstudiantil(),
+                    asistencia.getClase().getNombre(),
+                    asistencia.getClase().getFecha(),
+                    asistencia.getClase().getTemaVisto(),
+                    asistencia.getClase().getDocente().getPersona().getNombre(),
+                    asistencia.getEstado()
+            );
+        }).collect(Collectors.toList());
+    }
+
+    // ✅ NUEVO: Reporte general por estudiante (todas las clases)
+    public List<ReporteAsistenciaDTO> generarReportePorEstudiante(Long estudianteId) {
+        List<Asistencia> asistencias = this.findByEstudianteId(estudianteId);
+
+        return asistencias.stream().map(asistencia -> {
+            return new ReporteAsistenciaDTO(
+                    asistencia.getEstudiante().getPersona().getNombre(),
+                    asistencia.getEstudiante().getCorreoEstudiantil(),
+                    asistencia.getClase().getNombre(),
+                    asistencia.getClase().getFecha(),
+                    asistencia.getClase().getTemaVisto(),
+                    asistencia.getClase().getDocente().getPersona().getNombre(),
+                    asistencia.getEstado()
+            );
+        }).collect(Collectors.toList());
+    }
+
+    // ✅ Generador PDF reutilizable
+    public byte[] generarPdfReporte(List<ReporteAsistenciaDTO> reporte) {
+        try {
+            Document document = new Document();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            document.add(new Paragraph("Reporte de Asistencia", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16)));
+            document.add(new Paragraph("Estudiante: " + reporte.get(0).getNombreEstudiante()));
+            document.add(new Paragraph("Correo: " + reporte.get(0).getCorreoEstudiantil()));
+            document.add(new Paragraph(" ")); // espacio
+
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
+
+            table.addCell("Clase");
+            table.addCell("Fecha");
+            table.addCell("Tema Visto");
+            table.addCell("Estado");
+
+            for (ReporteAsistenciaDTO dto : reporte) {
+                table.addCell(dto.getNombreClase());
+                table.addCell(dto.getFechaClase().toString());
+                table.addCell(dto.getTemaVisto() != null ? dto.getTemaVisto() : "N/A");
+                table.addCell(dto.getEstadoAsistencia().name());
+            }
+
+            document.add(table);
+            document.close();
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Error generando PDF", e);
+        }
     }
 }
