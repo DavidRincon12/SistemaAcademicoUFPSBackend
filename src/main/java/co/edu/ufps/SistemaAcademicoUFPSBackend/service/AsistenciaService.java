@@ -92,29 +92,9 @@ public class AsistenciaService {
     }
 
     @Transactional
-    public void registrarAsistencia(Long claseId, List<Asistencia> asistencias) {
-        Clase clase = claseRepository.findById(claseId)
-                .orElseThrow(() -> new RuntimeException("Clase no encontrada"));
-
-        for (Asistencia asistencia : asistencias) {
-            Estudiante estudiante = estudianteRepository.findById(asistencia.getEstudiante().getId())
-                    .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-
-            // Verificar si ya existe una asistencia para esta clase y estudiante
-            List<Asistencia> existentes = asistenciaRepository.findByEstudianteIdAndClaseId(estudiante.getId(), clase.getId());
-            if (!existentes.isEmpty()) {
-                continue; // Ya hay asistencia registrada para este estudiante y clase
-            }
-
-            asistencia.setClase(clase);
-            asistencia.setEstudiante(estudiante);
-            if (asistencia.getEstado() == null) {
-                asistencia.setEstado(EstadoAsistencia.AUSENTE); // Por defecto
-            }
-            asistenciaRepository.save(asistencia);
-        }
+    public void registrarAsistencia() {
+        throw new UnsupportedOperationException("Método no implementado");
     }
-
 
     @Transactional(readOnly = true)
     public void consultarAsistencia() {
